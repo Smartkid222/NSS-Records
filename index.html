@@ -226,6 +226,29 @@
         border-color: var(--primary);
         background-color: #f8fafc;
       }
+      /* Password Toggle Icon */
+      .pwd-wrapper {
+        position: relative;
+        display: flex;
+        align-items: center;
+      }
+
+      .pwd-toggle {
+        position: absolute;
+        right: 12px;
+        cursor: pointer;
+        user-select: none;
+        font-size: 1.1rem;
+        color: var(--secondary);
+        transition: color 0.2s;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+
+      .pwd-toggle:hover {
+        color: var(--primary);
+      }
       /* --- DASHBOARD --- */
       header {
         background: var(--surface);
@@ -911,13 +934,23 @@
             </div>
             <div class="form-group">
               <label>Password</label>
-              <input
-                type="password"
-                id="loginPass"
-                class="form-control"
-                placeholder="•••••••"
-                required
-              />
+              <div class="pwd-wrapper">
+                <input
+                  type="password"
+                  id="loginPass"
+                  class="form-control"
+                  style="padding-right: 40px"
+                  placeholder="•••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  class="pwd-toggle"
+                  onclick="app.togglePassword('loginPass', this)"
+                >
+                  👁️
+                </button>
+              </div>
             </div>
             <button type="submit" class="btn btn-primary w-full">
               Access Dashboard
@@ -965,12 +998,22 @@
             </div>
             <div class="form-group">
               <label>Create Password</label>
-              <input
-                type="password"
-                id="signupPass"
-                class="form-control"
-                required
-              />
+              <div class="pwd-wrapper">
+                <input
+                  type="password"
+                  id="signupPass"
+                  class="form-control"
+                  style="padding-right: 40px"
+                  required
+                />
+                <button
+                  type="button"
+                  class="pwd-toggle"
+                  onclick="app.togglePassword('signupPass', this)"
+                >
+                  👁️
+                </button>
+              </div>
             </div>
             <button type="submit" class="btn btn-primary w-full">
               Create Account
@@ -1657,6 +1700,50 @@
         </div>
       </div>
     </div>
+    <!-- Edit Student Modal -->
+    <div id="modal-edit-student" class="modal-overlay">
+      <div class="modal">
+        <h3>Edit Student Details</h3>
+        <div class="form-group">
+          <label>Admission Number (ID)</label>
+          <input
+            type="text"
+            id="editStdId"
+            class="form-control"
+            readonly
+            style="background: #f1f5f9; cursor: not-allowed"
+          />
+          <small style="color: var(--secondary)">ID cannot be changed.</small>
+        </div>
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="editStdName" class="form-control" />
+        </div>
+        <div class="flex gap-4">
+          <div class="form-group w-full">
+            <label>Gender</label>
+            <select id="editStdGender" class="form-control">
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+          <div class="form-group w-full">
+            <label>Class</label>
+            <select id="editStdClass" class="form-control">
+              <!-- Populated via JS -->
+            </select>
+          </div>
+        </div>
+        <div class="flex justify-between" style="margin-top: 20px">
+          <button class="btn btn-outline" onclick="app.closeModals()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="app.confirmEditStudent()">
+            Update Student
+          </button>
+        </div>
+      </div>
+    </div>
     <!-- Hidden Printable Areas -->
     <div id="printable-area"></div>
     <div id="printable-debtors"></div>
@@ -1888,6 +1975,9 @@
         async addStudent(data) {
           return await this._call({ ...data, action: "addStudent" });
         },
+        async updateStudent(data) {
+          return await this._call({ ...data, action: "updateStudent" });
+        },
         async saveScores(id, scores) {
           return await this._call({
             action: "saveScores",
@@ -1914,7 +2004,15 @@
       };
       // --- 5. APP CONTROLLER ---
       const app = {
-        state: { currentUser: null, currentClass: null, currentStudent: null },
+        // UPDATED STATE: Added 'displayedStudents' to cache what is currently on screen
+        state: {
+          currentUser: null,
+          currentClass: null,
+          currentStudent: null,
+          displayedStudents: [], // <--- NEW
+          teachersList: [], // <--- ADD THIS LINE
+        },
+
         init: function () {
           AssetService.init(); // Inventory still local
           const populateSel = (id) => {
@@ -1928,6 +2026,7 @@
           };
           populateSel("signupClass");
           populateSel("newStdClass");
+          populateSel("editStdClass"); // <--- ADD THIS LINE
           populateSel("feeClassFilter");
           populateSel("bookClassFilter");
           const u = sessionStorage.getItem("ps_user");
@@ -1968,6 +2067,18 @@
             sessionStorage.setItem("ps_user", JSON.stringify(res.user));
             app.showDashboard();
           } else app.showToast("Login Failed", "error");
+        },
+        togglePassword: (id, btn) => {
+          const input = document.getElementById(id);
+          if (input.type === "password") {
+            input.type = "text";
+            btn.textContent = "🔒"; // Change to Lock icon when visible
+            btn.style.color = "var(--primary)";
+          } else {
+            input.type = "password";
+            btn.textContent = "👁️"; // Change back to Eye when hidden
+            btn.style.color = "var(--secondary)";
+          }
         },
         /* --- MAIN FEE SECTION NAVIGATION --- */
         loadFees: async () => {
@@ -2145,7 +2256,6 @@
           app.switchFeeSubTab("collect");
           app.renderFeeDashboard(); // This will fetch fresh students and apply new config
         },
-        // --- Inside your 'app' object in index3.html ---
         openPayModal: async function (sid, name, cls) {
           this.toggleLoader(true);
           try {
@@ -2250,7 +2360,6 @@
           document.getElementById("pay-total-due").value = total;
           document.getElementById("pay-amount").value = total;
         },
-        // Inside your 'app' object in index3.html
         savePayment: async function (e) {
           if (e) e.preventDefault();
           const studentId = document.getElementById("pay-student-id").value;
@@ -2618,6 +2727,16 @@
             app.state.currentUser.name;
           document.getElementById("user-role").textContent =
             app.state.currentUser.role;
+
+          // --- FIX: Fetch teachers first so we know who is assigned to which class ---
+          try {
+            const teachers = await DataService.getTeachers();
+            app.state.teachersList = teachers;
+          } catch (e) {
+            console.error("Failed to load teachers list", e);
+            app.state.teachersList = []; // Fallback to empty array if error
+          }
+
           app.renderClassGrid();
         },
         renderClassGrid: () => {
@@ -2713,14 +2832,35 @@
             )
             .join("");
         },
+
+        // --- FIXED: loadStudentList ---
         loadStudentList: async (cn) => {
           app.state.currentClass = cn;
           app.showSection("section-students");
-          document.getElementById("crumb-class-name").textContent = cn;
-          document.getElementById("list-title").textContent = `${cn} Students`;
+
+          // Handle Admin view title
+          if (!cn) {
+            document.getElementById("crumb-class-name").textContent =
+              "All Classes";
+            document.getElementById("list-title").textContent = `All Students`;
+          } else {
+            document.getElementById("crumb-class-name").textContent = cn;
+            document.getElementById("list-title").textContent =
+              `${cn} Students`;
+          }
+
           app.toggleLoader(true);
-          const s = await DataService.getStudents(cn);
+
+          // FIX: If cn is null (Admin view), send "" (empty string) to backend to get ALL students.
+          // Sending null often breaks Google Apps Script filters.
+          const filterClass = cn || "";
+          const s = await DataService.getStudents(filterClass);
+
           app.toggleLoader(false);
+
+          // FIX: Save to cache so we don't have to fetch again when clicking "Enter Scores"
+          app.state.displayedStudents = s;
+
           document.getElementById("student-count").textContent =
             `${s.length} Students`;
           document.getElementById("students-tbody").innerHTML = s
@@ -2732,26 +2872,53 @@
                   std.gender === "Male" ? "#e0f2fe" : "#fce7f3"
                 }; color:${std.gender === "Male" ? "#0369a1" : "#be185d"}">${
                   std.gender
-                }</span></td><td style="text-align:right;"><button class="btn btn-primary btn-sm" onclick="app.loadScoreEntry('${
-                  std.id
-                }')">Enter Scores</button></td></tr>`,
+                }</span></td><td style="text-align:right;">
+                    <div class="flex gap-2 justify-end">
+                        <button class="btn btn-outline btn-sm" onclick="app.openEditStudentModal('${
+                          std.id
+                        }')">Edit</button>
+                        <button class="btn btn-primary btn-sm" onclick="app.loadScoreEntry('${
+                          std.id
+                        }')">Scores</button>
+                    </div>
+                </td></tr>`,
             )
             .join("");
         },
+
+        // --- FIXED: loadScoreEntry ---
         loadScoreEntry: async (sid) => {
-          const s = (
-            await DataService.getStudents(app.state.currentClass)
-          ).find((x) => x.id === sid);
+          let s = null;
+
+          // 1. Try to find student in the currently displayed list (Cache)
+          // This is instant and avoids network errors
+          if (
+            app.state.displayedStudents &&
+            app.state.displayedStudents.length > 0
+          ) {
+            s = app.state.displayedStudents.find((x) => x.id === sid);
+          }
+
+          // 2. Fallback: If not found in cache (e.g. user refreshed page), fetch ALL students to find them
+          if (!s) {
+            app.toggleLoader(true);
+            const allStudents = await DataService.getStudents(""); // Get all students
+            app.toggleLoader(false);
+            s = allStudents.find((x) => x.id === sid);
+          }
+
           if (!s) return app.showToast("Student not found", "error");
+
           app.state.currentStudent = s;
           document.getElementById("crumb-back-class").textContent =
-            app.state.currentClass;
+            app.state.currentClass || "All Classes";
           document.getElementById("crumb-student-name").textContent = s.name;
           document.getElementById("score-subtitle").textContent =
             `Assessment for ${s.name} (${s.id})`;
           app.showSection("section-scores");
           app.generateScoreForm(s);
         },
+
         generateScoreForm: (s) => {
           const c = document.getElementById("score-rows-container");
           c.innerHTML = "";
@@ -2827,6 +2994,59 @@
             app.loadStudentList(c);
           else app.loadAllStudentsRegister();
         },
+        openEditStudentModal: (id) => {
+          // Find the student in the currently displayed list (Cache)
+          const student = app.state.displayedStudents.find((s) => s.id === id);
+
+          if (!student) {
+            // Fallback if not in cache (shouldn't happen often)
+            return app.showToast("Error: Student data not loaded", "error");
+          }
+
+          // Populate the modal with current data
+          document.getElementById("editStdId").value = student.id;
+          document.getElementById("editStdName").value = student.name;
+          document.getElementById("editStdGender").value = student.gender;
+          document.getElementById("editStdClass").value = student.class;
+
+          document.getElementById("modal-edit-student").style.display = "flex";
+        },
+
+        confirmEditStudent: async () => {
+          const id = document.getElementById("editStdId").value;
+          const name = document.getElementById("editStdName").value;
+          const gender = document.getElementById("editStdGender").value;
+          const cls = document.getElementById("editStdClass").value;
+
+          if (!name || !cls)
+            return app.showToast("Name and Class are required", "warning");
+
+          app.toggleLoader(true);
+          try {
+            const payload = { id, name, gender, class: cls };
+            const res = await DataService.updateStudent(payload);
+
+            if (res.status === "success") {
+              app.showToast("Student Updated Successfully", "success");
+              app.closeModals();
+
+              // Refresh the list to show changes
+              // If we are in "All Classes" view (cn is null), reload that, else reload specific class
+              if (app.state.currentClass) {
+                app.loadStudentList(app.state.currentClass);
+              } else {
+                app.loadStudentList(null);
+              }
+            } else {
+              throw new Error(res.message || "Failed to update");
+            }
+          } catch (err) {
+            console.error(err);
+            app.showToast("Error updating student", "error");
+          } finally {
+            app.toggleLoader(false);
+          }
+        },
         filterStudents: () => {
           const q = document
             .getElementById("searchStudent")
@@ -2882,7 +3102,7 @@
           const p = document.getElementById("printable-area");
           p.innerHTML = `
               <div class="report-card">
-                 <div class="rc-header"><div class="rc-title">Nifty Steps College</div><div class="rc-subtitle">(Primary School Section)</div><div>31 Yinka Ogunfile Street, Igbo Oluwo Estate, Ikorodu, Lagos</div><div style="margin-top:5px;font-weight:bold;">${sess} - ${term.toUpperCase()} REPORT SHEET</div></div>
+                 <div class="rc-header"><div class="rc-title">Nifty Steps Nursery & Primary School</div><div>5/9 Kunle Shobanjo Street, Igbo Oluwo Estate, Ikorodu, Lagos State</div><div style="margin-top:5px;font-weight:bold;">${sess} - ${term.toUpperCase()} REPORT SHEET</div></div>
                  <div class="rc-info-row"><div><strong>Name:</strong> ${s.name.toUpperCase()}</div><div><strong>Class:</strong> ${
                    s.class
                  }</div><div><strong>Adm No:</strong> ${s.id}</div></div>
