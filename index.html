@@ -7,11 +7,10 @@
     <style>
       /* --- CORE VARIABLES & RESET --- */
       :root {
-        /* Primary School Palette: Friendly and Trustworthy */
-        --primary: #0ea5e9; /* Sky Blue */
+        --primary: #0ea5e9;
         --primary-dark: #0284c7;
         --secondary: #64748b;
-        --bg: #f0f9ff; /* Very light blue tint */
+        --bg: #f0f9ff;
         --surface: #ffffff;
         --text: #0f172a;
         --border: #cbd5e1;
@@ -226,13 +225,11 @@
         border-color: var(--primary);
         background-color: #f8fafc;
       }
-      /* Password Toggle Icon */
       .pwd-wrapper {
         position: relative;
         display: flex;
         align-items: center;
       }
-
       .pwd-toggle {
         position: absolute;
         right: 12px;
@@ -245,7 +242,6 @@
         border: none;
         padding: 0;
       }
-
       .pwd-toggle:hover {
         color: var(--primary);
       }
@@ -336,7 +332,7 @@
         background: #e0f2fe;
         color: var(--primary-dark);
       }
-      /* Tables & Lists */
+      /* Tables */
       .list-container {
         background: var(--surface);
         border-radius: 16px;
@@ -389,9 +385,6 @@
         border-bottom: 1px solid #f1f5f9;
         align-items: center;
       }
-      .score-label {
-        font-weight: 600;
-      }
       .score-input {
         width: 100%;
         padding: 10px;
@@ -418,61 +411,25 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(15, 23, 42, 0.7);
         display: none;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        backdrop-filter: blur(2px);
-      }
-      .modal {
-        background: white;
-        width: 90%;
-        max-width: 500px;
-        border-radius: 16px;
-        padding: 30px;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-        animation: slideUp 0.3s ease;
-      }
-      .modal h3 {
-        margin-bottom: 20px;
-        color: var(--primary-dark);
-      }
-      /* Modal Overlay - The dark background */
-      .modal-overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(15, 23, 42, 0.7); /* Dark semi-transparent */
-        display: none; /* Hidden by default */
         align-items: center;
         justify-content: center;
         z-index: 9999;
-        backdrop-filter: blur(4px); /* Modern blur effect */
+        backdrop-filter: blur(4px);
       }
-      /* Modal Content - The actual form card */
       .modal-content {
         background: var(--surface);
         padding: 2rem;
         border-radius: var(--radius);
         width: 90%;
         max-width: 500px;
-        max-height: 90vh; /* Takes up 90% of screen height maximum */
-        overflow-y: auto; /* Adds scrollbar if content is too long */
+        max-height: 90vh;
+        overflow-y: auto;
         box-shadow:
           0 20px 25px -5px rgb(0 0 0 / 0.1),
           0 8px 10px -6px rgb(0 0 0 / 0.1);
         animation: modalSlideUp 0.3s ease-out;
-      }
-      /* Custom Scrollbar for a cleaner look */
-      .modal-content::-webkit-scrollbar {
-        width: 6px;
-      }
-      .modal-content::-webkit-scrollbar-thumb {
-        background: var(--border);
-        border-radius: 10px;
       }
       @keyframes modalSlideUp {
         from {
@@ -484,72 +441,19 @@
           opacity: 1;
         }
       }
-      /* Ensure the header stays visible or has space */
       .modal-header {
         position: sticky;
-        top: -2rem; /* Matches the padding of modal-content */
+        top: -2rem;
         background: var(--surface);
         padding-bottom: 1rem;
         margin-bottom: 1rem;
         z-index: 10;
         border-bottom: 1px solid var(--border);
       }
-      /* Style the price tags inside the modal */
-      #price-tags {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 8px;
-        margin: 10px 0 20px 0;
-      }
-      #price-tags span {
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-align: center;
-        padding: 8px 4px;
-        border-radius: 6px;
-        border: 1px solid rgba(0, 0, 0, 0.05);
-      }
-      /* Form Layout */
       .grid-2 {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 15px;
-      }
-      /* Ensure actions at the bottom are easy to reach */
-      .modal-actions {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-        margin-top: 2rem;
-        padding-top: 1rem;
-      }
-      /* Form Controls */
-      .form-group {
-        margin-bottom: 1rem;
-      }
-      .form-group label {
-        display: block;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: var(--secondary);
-        margin-bottom: 5px;
-      }
-      .form-control {
-        width: 100%;
-        padding: 10px 12px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        font-size: 1rem;
-        transition: border-color 0.2s;
-      }
-      .form-control:focus {
-        border-color: var(--primary);
-        outline: none;
-        ring: 2px var(--primary);
-      }
-      .form-control[readonly] {
-        background-color: #f8fafc;
-        cursor: not-allowed;
       }
       /* Toast */
       .toast {
@@ -600,9 +504,8 @@
         font-weight: 700;
         text-decoration: none;
       }
-      /* =========================================
-         NEW FEE MANAGEMENT STYLES (Updated)
-         ========================================= */
+
+      /* FEE MANAGEMENT STYLES */
       .fee-summary-cards {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -653,7 +556,6 @@
         background-color: #fee2e2;
         color: #b91c1c;
       }
-      /* Main Navigation Tabs for Fee Section */
       .fee-main-tabs {
         display: flex;
         gap: 10px;
@@ -675,30 +577,6 @@
         color: white;
         border-color: var(--primary);
       }
-      /* Books & Uniforms Matrix Styles */
-      .asset-cell {
-        cursor: pointer;
-        text-align: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 4px;
-        transition: background 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-      }
-      .asset-cell:hover {
-        background-color: #e2e8f0;
-      }
-      .asset-cell.checked {
-        background-color: var(--success);
-        color: white;
-      }
-      .asset-cell.checked::after {
-        content: "✔";
-      }
-      /* Sub Tabs for Fee Section */
       .fee-sub-tabs {
         display: flex;
         gap: 10px;
@@ -718,6 +596,7 @@
         color: white;
         border-color: var(--primary);
       }
+
       /* Print Styles */
       #printable-area,
       #printable-debtors {
@@ -744,38 +623,6 @@
           padding: 0;
           background: white;
         }
-        /* Report Card Design */
-        .report-card {
-          font-family: "Times New Roman", serif;
-          padding: 20px;
-          color: #000;
-          max-width: 100%;
-        }
-        .rc-header {
-          text-align: center;
-          border-bottom: 3px double #000;
-          margin-bottom: 20px;
-          padding-bottom: 10px;
-        }
-        .rc-title {
-          font-size: 24pt;
-          font-weight: bold;
-          text-transform: uppercase;
-          margin: 0;
-        }
-        .rc-subtitle {
-          font-size: 14pt;
-          margin: 5px 0;
-          font-weight: bold;
-        }
-        .rc-info-row {
-          display: flex;
-          justify-content: space-between;
-          border: 1px solid #000;
-          padding: 10px;
-          margin-bottom: 20px;
-          font-size: 12pt;
-        }
         .rc-table {
           width: 100%;
           border-collapse: collapse;
@@ -788,106 +635,16 @@
           padding: 5px;
           text-align: center;
         }
-        .rc-table th {
-          background-color: #f0f0f0 !important;
-          -webkit-print-color-adjust: exact;
-        }
-        .rc-footer {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 50px;
-        }
-        .rc-signature {
-          text-align: center;
-          width: 30%;
-        }
-        .signature-line {
-          border-bottom: 1px solid #000;
-          height: 50px;
-          margin-bottom: 5px;
-        }
-        /* Debtors Report Design */
-        .debtors-report {
-          font-family: "Arial", sans-serif;
-          padding: 20px;
-        }
-        .debtors-header {
-          text-align: center;
-          border-bottom: 2px solid #000;
-          margin-bottom: 20px;
-        }
-        .debtors-header h2 {
-          margin-bottom: 5px;
-        }
-        .debtors-summary {
-          margin-bottom: 20px;
-          font-weight: bold;
-          display: flex;
-          justify-content: space-between;
-        }
-        .debtors-table {
-          width: 100%;
-          border-collapse: collapse;
-        }
-        .debtors-table th,
-        .debtors-table td {
-          border: 1px solid #000;
-          padding: 8px;
-          font-size: 12pt;
-        }
-        .debtors-table th {
-          background-color: #eee !important;
-          -webkit-print-color-adjust: exact;
-        }
       }
-      /* --- MOBILE RESPONSIVENESS --- */
-      /* --- FEE MANAGEMENT MOBILE FIXES --- */
       @media (max-width: 768px) {
         .fee-summary-cards {
-          grid-template-columns: 1fr; /* Stack cards vertically */
-          gap: 10px;
+          grid-template-columns: 1fr;
         }
         .fee-main-tabs {
           flex-wrap: wrap;
         }
-        .fee-main-tab-btn {
-          flex: 1 1 40%; /* Allow tabs to wrap but maintain order */
-          text-align: center;
-          padding: 12px 5px;
-          font-size: 0.85rem;
-        }
-        .fee-sub-tabs {
-          flex-wrap: wrap;
-        }
-        /* Make table scrollable horizontally instead of squishing */
         #fee-table-wrapper {
-          /* Ensure a wrapper div exists or style the container */
           overflow-x: auto;
-        }
-        #fee-table {
-          min-width: 600px; /* Force width to prevent unreadable squashing */
-        }
-        th,
-        td {
-          padding: 10px;
-          white-space: nowrap; /* Keep text on one line */
-        }
-        /* Specific mobile fixes for table inputs */
-        .fee-setting-input {
-          width: 100% !important;
-        }
-        .radio-group {
-          flex-direction: column; /* Stack radio buttons vertically */
-          gap: 8px;
-        }
-        .radio-item {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          background: #f8fafc;
-          padding: 8px;
-          border-radius: 6px;
-          border: 1px solid #e2e8f0;
         }
       }
     </style>
@@ -902,7 +659,8 @@
     </div>
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="toast"></div>
-    <!-- ================= AUTH VIEW ================= -->
+
+    <!-- AUTH VIEW -->
     <div id="view-auth" class="auth-wrapper">
       <div class="auth-container">
         <div class="auth-header">
@@ -920,11 +678,10 @@
           </div>
         </div>
         <div class="forms-wrapper">
-          <!-- LOGIN FORM -->
           <form id="form-login" onsubmit="app.handleLogin(event)">
             <div class="form-group">
-              <label>Email Address</label>
-              <input
+              <label>Email Address</label
+              ><input
                 type="email"
                 id="loginEmail"
                 class="form-control"
@@ -962,15 +719,14 @@
               Demo: <b>admin@school.com</b> / <b>12345</b>
             </p>
           </form>
-          <!-- SIGNUP FORM -->
           <form
             id="form-signup"
             class="hidden"
             onsubmit="app.handleSignup(event)"
           >
             <div class="form-group">
-              <label>Full Name</label>
-              <input
+              <label>Full Name</label
+              ><input
                 type="text"
                 id="signupName"
                 class="form-control"
@@ -978,8 +734,8 @@
               />
             </div>
             <div class="form-group">
-              <label>Role</label>
-              <select
+              <label>Role</label
+              ><select
                 id="signupRole"
                 class="form-control"
                 onchange="app.handleRoleChange()"
@@ -990,11 +746,8 @@
               </select>
             </div>
             <div id="class-select-group" class="form-group">
-              <label>Assigned Class</label>
-              <select id="signupClass" class="form-control">
-                <option value="" disabled selected>Select Class</option>
-                <!-- Populated via JS -->
-              </select>
+              <label>Assigned Class</label
+              ><select id="signupClass" class="form-control"></select>
             </div>
             <div class="form-group">
               <label>Create Password</label>
@@ -1022,7 +775,8 @@
         </div>
       </div>
     </div>
-    <!-- ================= DASHBOARD VIEW ================= -->
+
+    <!-- DASHBOARD VIEW -->
     <div id="view-dashboard" class="hidden">
       <header>
         <div class="logo">
@@ -1071,17 +825,17 @@
           </button>
         </div>
       </header>
+
       <main class="container">
-        <!-- 1. LANDING (CLASS SELECTION) -->
+        <!-- LANDING -->
         <section id="section-landing">
           <h2 style="margin-bottom: 20px; color: var(--text)">
             Welcome Back! 👋
           </h2>
-          <div class="dashboard-grid" id="class-grid">
-            <!-- Cards injected via JS -->
-          </div>
+          <div class="dashboard-grid" id="class-grid"></div>
         </section>
-        <!-- 2. STUDENT LIST -->
+
+        <!-- STUDENT LIST -->
         <section id="section-students" class="hidden">
           <div class="breadcrumbs">
             <span onclick="app.goHome()">Home</span> >
@@ -1098,7 +852,7 @@
                   type="text"
                   id="searchStudent"
                   class="search-input"
-                  placeholder="Search name or ID..."
+                  placeholder="Search name..."
                   onkeyup="app.filterStudents()"
                 />
                 <button
@@ -1119,20 +873,18 @@
                     <th style="text-align: right">Actions</th>
                   </tr>
                 </thead>
-                <tbody id="students-tbody">
-                  <!-- Rows injected via JS -->
-                </tbody>
+                <tbody id="students-tbody"></tbody>
               </table>
             </div>
           </div>
         </section>
-        <!-- 3. SCORE ENTRY -->
+
+        <!-- SCORE ENTRY -->
         <section id="section-scores" class="hidden">
           <div class="breadcrumbs">
             <span onclick="app.goHome()">Home</span> >
             <span onclick="app.backToClass()" id="crumb-back-class">Class</span>
-            >
-            <span id="crumb-student-name" class="font-bold"></span>
+            > <span id="crumb-student-name" class="font-bold"></span>
           </div>
           <div class="list-container" style="padding: 20px">
             <div
@@ -1173,22 +925,19 @@
                 <div style="text-align: center">Exam (60)</div>
                 <div style="text-align: center">Total</div>
               </div>
-              <div id="score-rows-container">
-                <!-- Score rows injected via JS -->
-              </div>
+              <div id="score-rows-container"></div>
             </form>
           </div>
         </section>
-        <!-- ================= TEACHERS LIST SECTION ================= -->
+
+        <!-- TEACHERS -->
         <section id="section-teachers" class="hidden">
           <div class="breadcrumbs">
             <span onclick="app.goHome()">Home</span> >
             <span class="font-bold">All Teachers</span>
           </div>
           <div class="list-container">
-            <div class="list-header">
-              <h2>Staff Directory</h2>
-            </div>
+            <div class="list-header"><h2>Staff Directory</h2></div>
             <div style="overflow-x: auto">
               <table>
                 <thead>
@@ -1198,14 +947,13 @@
                     <th>Assigned Class</th>
                   </tr>
                 </thead>
-                <tbody id="teachers-tbody">
-                  <!-- JS Injected -->
-                </tbody>
+                <tbody id="teachers-tbody"></tbody>
               </table>
             </div>
           </div>
         </section>
-        <!-- ================= PERFORMANCE SECTION ================= -->
+
+        <!-- PERFORMANCE -->
         <section id="section-performance" class="hidden">
           <div class="breadcrumbs">
             <span onclick="app.goHome()">Home</span> >
@@ -1230,20 +978,19 @@
                     <th>Average %</th>
                   </tr>
                 </thead>
-                <tbody id="perf-tbody">
-                  <!-- JS Injected -->
-                </tbody>
+                <tbody id="perf-tbody"></tbody>
               </table>
             </div>
           </div>
         </section>
-        <!-- ================= FEE MANAGEMENT (3 SECTIONS) ================= -->
+
+        <!-- FEE MANAGEMENT -->
         <section id="section-fees" class="hidden">
           <div class="breadcrumbs">
             <span onclick="app.goHome()">Home</span> >
             <span class="font-bold">Admin Center</span>
           </div>
-          <!-- 3 Main Sections Tabs -->
+          <!-- Tabs -->
           <div class="fee-main-tabs">
             <button
               class="fee-main-tab-btn active"
@@ -1264,9 +1011,9 @@
               🎓 Student Register
             </button>
           </div>
-          <!-- SECTION 1: SCHOOL FEES (Existing Logic) -->
+
+          <!-- SECTION 1: SCHOOL FEES -->
           <div id="fee-section-fees">
-            <!-- Sub Tabs for Fees: Collect vs Settings -->
             <div class="fee-sub-tabs">
               <button
                 class="fee-sub-tab-btn active"
@@ -1281,7 +1028,7 @@
                 Fee Settings
               </button>
             </div>
-            <!-- TAB 1: COLLECT FEES -->
+            <!-- TAB: COLLECT -->
             <div id="fee-tab-collect">
               <div class="fee-summary-cards">
                 <div class="fee-stat-card">
@@ -1318,10 +1065,8 @@
                       id="feeClassFilter"
                       class="form-control"
                       style="width: 200px"
-                      onchange="app.loadFees()"
-                    >
-                      <!-- Populated JS -->
-                    </select>
+                      onchange="app.renderFeeDashboard()"
+                    ></select>
                   </div>
                 </div>
                 <div style="overflow-x: auto">
@@ -1337,22 +1082,21 @@
                         <th style="text-align: right">Action</th>
                       </tr>
                     </thead>
-                    <tbody id="fee-tbody">
-                      <!-- JS Injected -->
-                    </tbody>
+                    <tbody id="fee-tbody"></tbody>
                   </table>
                 </div>
               </div>
             </div>
-            <!-- TAB 2: FEE SETTINGS -->
+            <!-- TAB: SETTINGS -->
             <div id="fee-tab-settings" class="hidden">
               <div class="list-container" style="padding: 20px">
                 <div class="list-header">
-                  <h2>Class Fee Configuration</h2>
-                  <p class="text-sm text-secondary">
-                    Set the standard fee for each class. New students will
-                    inherit this amount.
-                  </p>
+                  <div>
+                    <h2>Class Fee Configuration</h2>
+                    <p class="text-sm text-secondary">
+                      Set standard fees for each class.
+                    </p>
+                  </div>
                   <button
                     class="btn btn-primary"
                     onclick="app.saveFeeSettings()"
@@ -1360,30 +1104,32 @@
                     Save Configuration
                   </button>
                 </div>
+                <!-- FIX: Updated Headers to match JS Logic -->
                 <div style="max-height: 500px; overflow-y: auto">
                   <table>
                     <thead>
                       <tr>
                         <th>Class</th>
                         <th>School Fee (₦)</th>
+                        <th>Reg Fee (₦)</th>
+                        <th>Teacher Subsidy (₦)</th>
                       </tr>
                     </thead>
-                    <tbody id="fee-settings-tbody">
-                      <!-- Injected -->
-                    </tbody>
+                    <tbody id="fee-settings-tbody"></tbody>
                   </table>
                 </div>
               </div>
             </div>
           </div>
-          <!-- SECTION 2: BOOKS & UNIFORMS -->
+
+          <!-- SECTION 2: BOOKS -->
           <div id="fee-section-books" class="hidden">
             <div class="list-container">
               <div class="list-header">
                 <div>
                   <h2>Books & Uniforms Distribution</h2>
                   <p class="text-sm text-secondary">
-                    Select class to mark items as given to students.
+                    Select class to mark items.
                   </p>
                 </div>
                 <div class="flex gap-2">
@@ -1398,32 +1144,25 @@
                     class="form-control"
                     style="width: 200px"
                     onchange="app.loadBooksMatrix()"
-                  >
-                    <!-- Populated JS -->
-                  </select>
+                  ></select>
                 </div>
               </div>
               <div style="overflow-x: auto">
                 <table id="books-table">
-                  <thead id="books-thead">
-                    <!-- Items go here -->
-                  </thead>
-                  <tbody id="books-tbody">
-                    <!-- Students & Checkboxes go here -->
-                  </tbody>
+                  <thead id="books-thead"></thead>
+                  <tbody id="books-tbody"></tbody>
                 </table>
               </div>
             </div>
           </div>
-          <!-- SECTION 3: STUDENT REGISTER (New Students) -->
+
+          <!-- SECTION 3: REGISTER -->
           <div id="fee-section-register" class="hidden">
             <div class="list-container" style="padding: 20px">
               <div class="list-header">
                 <div>
                   <h2>Student Registration</h2>
-                  <p class="text-sm text-secondary">
-                    View all students or add a new one.
-                  </p>
+                  <p class="text-sm text-secondary">View all students.</p>
                 </div>
                 <button
                   class="btn btn-primary"
@@ -1432,7 +1171,6 @@
                   + Add New Student
                 </button>
               </div>
-              <!-- Reusing existing student table structure for simplicity, or we could make it a grid -->
               <div style="overflow-x: auto">
                 <table>
                   <thead>
@@ -1443,9 +1181,7 @@
                       <th>Gender</th>
                     </tr>
                   </thead>
-                  <tbody id="register-tbody">
-                    <!-- JS Injected -->
-                  </tbody>
+                  <tbody id="register-tbody"></tbody>
                 </table>
               </div>
             </div>
@@ -1453,49 +1189,48 @@
         </section>
       </main>
     </div>
-    <!-- ================= MODALS ================= -->
-    <!-- Add Student Modal -->
+
+    <!-- MODALS -->
     <div id="modal-add-student" class="modal-overlay">
-      <div class="modal">
+      <div class="modal-content">
         <h3>Register New Student</h3>
         <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="newStdName" class="form-control" />
+          <label>Full Name</label
+          ><input type="text" id="newStdName" class="form-control" />
         </div>
         <div class="form-group">
-          <label>Admission Number</label>
-          <input type="text" id="newStdId" class="form-control" />
+          <label>Admission Number</label
+          ><input type="text" id="newStdId" class="form-control" />
         </div>
         <div class="flex gap-4">
           <div class="form-group w-full">
-            <label>Gender</label>
-            <select id="newStdGender" class="form-control">
+            <label>Gender</label
+            ><select id="newStdGender" class="form-control">
               <option>Male</option>
               <option>Female</option>
             </select>
           </div>
           <div id="modal-class-group" class="form-group w-full hidden">
-            <label>Class</label>
-            <select id="newStdClass" class="form-control"></select>
+            <label>Class</label
+            ><select id="newStdClass" class="form-control"></select>
           </div>
         </div>
         <div class="flex justify-between" style="margin-top: 20px">
           <button class="btn btn-outline" onclick="app.closeModals()">
-            Cancel
-          </button>
-          <button class="btn btn-primary" onclick="app.confirmAddStudent()">
+            Cancel</button
+          ><button class="btn btn-primary" onclick="app.confirmAddStudent()">
             Save Student
           </button>
         </div>
       </div>
     </div>
-    <!-- Print Modal -->
+
     <div id="modal-print" class="modal-overlay">
-      <div class="modal">
+      <div class="modal-content">
         <h3>Print Report Card</h3>
         <div class="form-group">
-          <label>Academic Session</label>
-          <input
+          <label>Academic Session</label
+          ><input
             type="text"
             id="printSession"
             value="2024/2025"
@@ -1503,39 +1238,41 @@
           />
         </div>
         <div class="form-group">
-          <label>Term</label>
-          <select id="printTerm" class="form-control">
+          <label>Term</label
+          ><select id="printTerm" class="form-control">
             <option>First Term</option>
             <option>Second Term</option>
             <option>Third Term</option>
           </select>
         </div>
         <div class="form-group">
-          <label>Next Term Begins:</label>
-          <input type="date" id="printNextTerm" class="form-control" />
+          <label>Next Term Begins:</label
+          ><input type="date" id="printNextTerm" class="form-control" />
         </div>
         <div class="flex justify-between" style="margin-top: 20px">
           <button class="btn btn-outline" onclick="app.closeModals()">
-            Cancel
-          </button>
-          <button class="btn btn-primary" onclick="app.executePrint()">
+            Cancel</button
+          ><button class="btn btn-primary" onclick="app.executePrint()">
             Print Preview
           </button>
         </div>
       </div>
     </div>
-    <!-- Payment Modal (Updated) -->
+
+    <!-- PAYMENT MODAL -->
     <div id="modal-pay" class="modal-overlay" style="display: none">
       <div class="modal-content">
         <div class="modal-header">
           <h3 style="color: var(--primary-dark)">Record Fee Payment</h3>
         </div>
         <form id="form-pay">
-          <input type="hidden" id="pay-student-id" />
-          <input type="hidden" id="pay-class" />
+          <input type="hidden" id="pay-student-id" /><input
+            type="hidden"
+            id="pay-class"
+          />
           <div class="form-group">
-            <label>Student Name</label>
-            <input type="text" id="pay-name" class="form-control" readonly />
+            <label>Student Name</label
+            ><input type="text" id="pay-name" class="form-control" readonly />
           </div>
           <div class="form-group">
             <label>Student Type</label>
@@ -1552,7 +1289,6 @@
             </select>
           </div>
           <div
-            id="price-tags"
             style="
               display: flex;
               gap: 10px;
@@ -1577,22 +1313,21 @@
             >
           </div>
           <div class="form-group">
-            <label>Remaining to Pay (₦)</label>
-            <input
+            <label>Remaining to Pay (₦)</label
+            ><input
               type="number"
               id="pay-total-due"
               class="form-control"
               readonly
               style="font-weight: bold; background: #f8fafc"
-            />
-            <small
+            /><small
               id="already-paid-info"
               style="color: #64748b; display: block; margin-top: 4px"
             ></small>
           </div>
           <div class="form-group">
-            <label>Amount to Pay (₦)</label>
-            <input
+            <label>Amount to Pay (₦)</label
+            ><input
               type="number"
               id="pay-amount"
               class="form-control"
@@ -1600,21 +1335,18 @@
               placeholder="0.00"
             />
           </div>
-          <div
-            class="grid-2"
-            style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px"
-          >
+          <div class="grid-2">
             <div class="form-group">
-              <label>Term</label>
-              <select id="pay-term" class="form-control">
+              <label>Term</label
+              ><select id="pay-term" class="form-control">
                 <option>1st Term</option>
                 <option>2nd Term</option>
                 <option>3rd Term</option>
               </select>
             </div>
             <div class="form-group">
-              <label>Session</label>
-              <input
+              <label>Session</label
+              ><input
                 type="text"
                 id="pay-session"
                 class="form-control"
@@ -1623,133 +1355,121 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Payment Date</label>
-            <input type="date" id="pay-date" class="form-control" readonly />
+            <label>Payment Date</label
+            ><input type="date" id="pay-date" class="form-control" readonly />
           </div>
-          <div
-            class="modal-actions"
-            style="margin-top: 20px; display: flex; gap: 10px"
-          >
+          <div style="margin-top: 20px; display: flex; gap: 10px">
             <button
               type="button"
               class="btn btn-outline w-full"
               onclick="app.closeModals()"
             >
-              Cancel
-            </button>
-            <button type="submit" class="btn btn-primary w-full">
+              Cancel</button
+            ><button type="submit" class="btn btn-primary w-full">
               Save Payment
             </button>
           </div>
         </form>
       </div>
     </div>
-    <!-- Debtors Print Modal -->
+
     <div id="modal-debtors" class="modal-overlay">
-      <div class="modal">
+      <div class="modal-content">
         <h3>Print Debtors Report</h3>
         <div class="form-group">
-          <label>Select Class</label>
-          <select id="debtorsClassSelect" class="form-control">
+          <label>Select Class</label
+          ><select id="debtorsClassSelect" class="form-control">
             <option value="ALL">All Classes</option>
-            <!-- Populated JS -->
           </select>
         </div>
         <div class="flex justify-between" style="margin-top: 20px">
           <button class="btn btn-outline" onclick="app.closeModals()">
-            Cancel
-          </button>
-          <button class="btn btn-primary" onclick="app.generateDebtorReport()">
+            Cancel</button
+          ><button class="btn btn-primary" onclick="app.generateDebtorReport()">
             Generate Report
           </button>
         </div>
       </div>
     </div>
-    <!-- Inventory Settings Modal -->
+
     <div id="modal-inventory" class="modal-overlay">
-      <div class="modal">
+      <div class="modal-content">
         <h3>Inventory Settings</h3>
         <p class="text-sm text-secondary" style="margin-bottom: 15px">
-          Enter items (Books, Uniforms) for the selected class. Separate items
-          with commas.
+          Enter items (Books, Uniforms) for the selected class. Separate with
+          commas.
         </p>
         <div class="form-group">
-          <label>Select Class</label>
-          <select
+          <label>Select Class</label
+          ><select
             id="invClassSelect"
             class="form-control"
             onchange="app.loadInventoryInput()"
           ></select>
         </div>
         <div class="form-group">
-          <label>Items List</label>
-          <textarea
+          <label>Items List</label
+          ><textarea
             id="invItemsList"
             class="form-control"
             rows="5"
-            placeholder="e.g. English Textbook, Math Textbook, Blue Shirt, White Shorts"
+            placeholder="e.g. English Textbook, Math Textbook"
           ></textarea>
         </div>
         <div class="flex justify-between" style="margin-top: 20px">
           <button class="btn btn-outline" onclick="app.closeModals()">
-            Cancel
-          </button>
-          <button class="btn btn-primary" onclick="app.saveInventory()">
+            Cancel</button
+          ><button class="btn btn-primary" onclick="app.saveInventory()">
             Save Items
           </button>
         </div>
       </div>
     </div>
-    <!-- Edit Student Modal -->
+
     <div id="modal-edit-student" class="modal-overlay">
-      <div class="modal">
+      <div class="modal-content">
         <h3>Edit Student Details</h3>
         <div class="form-group">
-          <label>Admission Number (ID)</label>
-          <input
+          <label>Admission Number (ID)</label
+          ><input
             type="text"
             id="editStdId"
             class="form-control"
             readonly
             style="background: #f1f5f9; cursor: not-allowed"
-          />
-          <small style="color: var(--secondary)">ID cannot be changed.</small>
+          /><small style="color: var(--secondary)">ID cannot be changed.</small>
         </div>
         <div class="form-group">
-          <label>Full Name</label>
-          <input type="text" id="editStdName" class="form-control" />
+          <label>Full Name</label
+          ><input type="text" id="editStdName" class="form-control" />
         </div>
         <div class="flex gap-4">
           <div class="form-group w-full">
-            <label>Gender</label>
-            <select id="editStdGender" class="form-control">
+            <label>Gender</label
+            ><select id="editStdGender" class="form-control">
               <option>Male</option>
               <option>Female</option>
             </select>
           </div>
           <div class="form-group w-full">
-            <label>Class</label>
-            <select id="editStdClass" class="form-control">
-              <!-- Populated via JS -->
-            </select>
+            <label>Class</label
+            ><select id="editStdClass" class="form-control"></select>
           </div>
         </div>
         <div class="flex justify-between" style="margin-top: 20px">
           <button class="btn btn-outline" onclick="app.closeModals()">
-            Cancel
-          </button>
-          <button class="btn btn-primary" onclick="app.confirmEditStudent()">
+            Cancel</button
+          ><button class="btn btn-primary" onclick="app.confirmEditStudent()">
             Update Student
           </button>
         </div>
       </div>
     </div>
-    <!-- Hidden Printable Areas -->
+
     <div id="printable-area"></div>
     <div id="printable-debtors"></div>
-    <!-- JAVASCRIPT LOGIC (Replace the existing script section with this) -->
+
     <script>
-      /* --- 1. CONFIGURATION & DATA --- */
       const CLASSES = [
         "Playgroup",
         "Nursery 1",
@@ -1826,7 +1546,8 @@
           "Home Economics",
         ],
       };
-      // --- 2. FEE SERVICE (OPTIMIZED) ---
+
+      // FIX: Improved Fee Service Logic
       const FeeService = {
         KEYS: { CONFIG: "ps_fee_config_cache" },
         getConfig: async function () {
@@ -1845,53 +1566,48 @@
         addTransaction: async function (tx) {
           await DataService.addFee(tx);
         },
-        // --- NEW: Optimized Summary Logic (Uses Local Data, No Network Calls) ---
-        // 1. Calculate summary for a specific student using PRE-FETCHED transaction list
+        // CRITICAL FIX: Recalculate Expected Total based on CURRENT Config, not old transaction
         getStudentSummary: function (sid, cls, allTransactions, config) {
-          // Note: allTransactions and config are passed in to avoid multiple fetch calls
+          const studentTxs = allTransactions.filter((t) => t.studentId === sid);
+          let type = "Old Student";
+
+          // Determine Type from latest transaction
+          if (studentTxs.length > 0) {
+            studentTxs.sort((a, b) => new Date(b.date) - new Date(a.date));
+            type = studentTxs[0].type || "Old Student";
+          }
+
+          // Calculate Expected Total using LIVE config
           const classConfig = config[cls] || {
             schoolFee: 0,
             regFee: 0,
             teacherSubsidy: 0,
           };
-          const studentTxs = allTransactions.filter((t) => t.studentId === sid);
-          let expectedTotal = 0;
-          let paid = 0;
-          let type = "Old Student"; // Default
-          if (studentTxs.length > 0) {
-            studentTxs.sort((a, b) => new Date(b.date) - new Date(a.date));
-            type = studentTxs[0].type || "Old Student";
-            if (type === "New Student")
-              expectedTotal = classConfig.schoolFee + classConfig.regFee;
-            else if (type === "Teacher's Child")
-              expectedTotal = Math.max(
-                0,
-                classConfig.schoolFee +
-                  classConfig.regFee -
-                  classConfig.teacherSubsidy,
-              );
-            else expectedTotal = classConfig.schoolFee;
-          } else {
-            type = "Old Student";
-            expectedTotal = classConfig.schoolFee;
+          let expectedTotal = Number(classConfig.schoolFee);
+
+          if (type === "New Student") {
+            expectedTotal += Number(classConfig.regFee);
+          } else if (type === "Teacher's Child") {
+            expectedTotal += Number(classConfig.regFee);
+            expectedTotal -= Number(classConfig.teacherSubsidy);
           }
-          paid = studentTxs.reduce((s, t) => s + parseInt(t.amount), 0);
+
+          // Sum paid amounts
+          const paid = studentTxs.reduce(
+            (s, t) => s + (Number(t.amount) || 0),
+            0,
+          );
           const balance = expectedTotal - paid;
+
           let status = "Owing";
           if (balance <= 0) status = "Paid";
           else if (paid > 0) status = "Partial";
-          return {
-            expectedTotal,
-            paid,
-            balance,
-            status,
-            type,
-          };
+
+          return { expectedTotal, paid, balance, status, type };
         },
-        // 2. Calculate Class Summary using PRE-FETCHED data
         getClassSummary: function (cls, studs, allTransactions, config) {
-          let exp = 0;
-          let col = 0;
+          let exp = 0,
+            col = 0;
           for (const s of studs) {
             const sum = FeeService.getStudentSummary(
               s.id,
@@ -1905,7 +1621,7 @@
           return { expected: exp, collected: col, outstanding: exp - col };
         },
       };
-      // --- 3. ASSET SERVICE (Kept Local for Demo Speed, can be moved to GAS if needed) ---
+
       const AssetService = {
         KEYS: {
           INVENTORY: "ps_asset_inventory",
@@ -1935,17 +1651,14 @@
         toggleItem: (sid, itemName) => {
           const dist = AssetService.getDistribution();
           if (!dist[sid]) dist[sid] = {};
-          dist[sid][itemName] = !dist[sid][itemName]; // toggle boolean
+          dist[sid][itemName] = !dist[sid][itemName];
           localStorage.setItem(
             AssetService.KEYS.DISTRIBUTION,
             JSON.stringify(dist),
           );
         },
       };
-      /* --- 4. API SERVICE (Google Apps Script) --- */
-      // UPDATE THIS URL TO YOUR DEPLOYED WEB APP URL
-      const SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbyoLN0o6qPU7waz6J9-KpNILcXXJtyFMjt_b44l7MoFUFVAaVRYOyLTEoUSWWCnycFW/exec";
+
       const DataService = {
         async _call(payload) {
           try {
@@ -1969,7 +1682,6 @@
           return await this._call({ ...u, action: "signup" });
         },
         async getStudents(cls) {
-          // NOW CALLS API
           return await this._call({ action: "getStudents", className: cls });
         },
         async addStudent(data) {
@@ -1988,7 +1700,6 @@
         async getTeachers() {
           return await this._call({ action: "getTeachers" });
         },
-        // --- NEW FEE API CALLS ---
         async getFeeConfig() {
           return await this._call({ action: "getFeeConfig" });
         },
@@ -2002,19 +1713,21 @@
           return await this._call({ action: "addFee", ...data });
         },
       };
-      // --- 5. APP CONTROLLER ---
+
+      const SCRIPT_URL =
+        "https://script.google.com/macros/s/AKfycbyoLN0o6qPU7waz6J9-KpNILcXXJtyFMjt_b44l7MoFUFVAaVRYOyLTEoUSWWCnycFW/exec";
+
       const app = {
-        // UPDATED STATE: Added 'displayedStudents' to cache what is currently on screen
         state: {
           currentUser: null,
           currentClass: null,
           currentStudent: null,
-          displayedStudents: [], // <--- NEW
-          teachersList: [], // <--- ADD THIS LINE
+          displayedStudents: [],
+          teachersList: [],
         },
 
         init: function () {
-          AssetService.init(); // Inventory still local
+          AssetService.init();
           const populateSel = (id) => {
             const sel = document.getElementById(id);
             if (!sel) return;
@@ -2026,7 +1739,7 @@
           };
           populateSel("signupClass");
           populateSel("newStdClass");
-          populateSel("editStdClass"); // <--- ADD THIS LINE
+          populateSel("editStdClass");
           populateSel("feeClassFilter");
           populateSel("bookClassFilter");
           const u = sessionStorage.getItem("ps_user");
@@ -2035,7 +1748,8 @@
             this.showDashboard();
           }
         },
-        /* --- AUTH --- */
+
+        /* AUTH */
         switchAuth: (m) => {
           document
             .querySelectorAll(".tab-btn")
@@ -2072,15 +1786,16 @@
           const input = document.getElementById(id);
           if (input.type === "password") {
             input.type = "text";
-            btn.textContent = "🔒"; // Change to Lock icon when visible
+            btn.textContent = "🔒";
             btn.style.color = "var(--primary)";
           } else {
             input.type = "password";
-            btn.textContent = "👁️"; // Change back to Eye when hidden
+            btn.textContent = "👁️";
             btn.style.color = "var(--secondary)";
           }
         },
-        /* --- MAIN FEE SECTION NAVIGATION --- */
+
+        /* FEE NAVIGATION */
         loadFees: async () => {
           if (
             app.state.currentUser.role !== "Admin" &&
@@ -2089,8 +1804,6 @@
             return app.showToast("Access Denied", "error");
           app.showSection("section-fees");
           app.switchFeeSection("fees");
-          // Ensure Config is loaded initially
-          app.renderFeeDashboard();
         },
         switchFeeSection: (sec) => {
           document
@@ -2107,17 +1820,10 @@
           document
             .getElementById(`fee-section-${sec}`)
             .classList.remove("hidden");
-          if (sec === "fees") {
-            app.switchFeeSubTab("collect");
-          }
-          if (sec === "books") {
-            app.loadBooksMatrix();
-          }
-          if (sec === "register") {
-            app.loadAllStudentsRegister();
-          }
+          if (sec === "fees") app.switchFeeSubTab("collect");
+          if (sec === "books") app.loadBooksMatrix();
+          if (sec === "register") app.loadAllStudentsRegister();
         },
-        /* --- FEE TAB LOGIC --- */
         switchFeeSubTab: (t) => {
           document
             .querySelectorAll(".fee-sub-tab-btn")
@@ -2133,18 +1839,19 @@
             .classList.toggle("hidden", t !== "settings");
           if (t === "settings") app.renderFeeSettings();
         },
+
+        /* FEE LOGIC */
         renderFeeDashboard: async () => {
           const cls = document.getElementById("feeClassFilter").value;
           if (!cls) return;
           app.toggleLoader(true);
-          // --- OPTIMIZATION: Fetch ONCE for the whole class ---
           const [studs, allTxs, config] = await Promise.all([
             DataService.getStudents(cls),
-            FeeService.getTransactions(), // Fetch all at once
+            FeeService.getTransactions(),
             FeeService.getConfig(),
           ]);
           app.toggleLoader(false);
-          // Calculate Class Summary Instantly (No Network)
+
           const sum = FeeService.getClassSummary(cls, studs, allTxs, config);
           document.getElementById("fee-total-expected").textContent =
             app.formatMoney(sum.expected);
@@ -2152,11 +1859,10 @@
             app.formatMoney(sum.collected);
           document.getElementById("fee-total-outstanding").textContent =
             app.formatMoney(sum.outstanding);
+
           const tbody = document.getElementById("fee-tbody");
           tbody.innerHTML = "";
-          // Render each student using Local Data
           studs.forEach((s) => {
-            // Pass data directly to avoid network calls
             const f = FeeService.getStudentSummary(
               s.id,
               s.class,
@@ -2166,31 +1872,23 @@
             let typeLabel = "Old";
             if (f.type === "New Student") typeLabel = "New";
             if (f.type === "Teacher's Child") typeLabel = "Teacher's";
+
             tbody.innerHTML += `
                <tr>
-                  <td><div class="font-bold">${
-                    s.name
-                  }</div><div class="text-sm text-secondary">${s.id}</div></td>
+                  <td><div class="font-bold">${s.name}</div><div class="text-sm text-secondary">${s.id}</div></td>
                   <td><span class="badge" style="background:${f.type === "Teacher's Child" ? "#fef9c3" : "#e0f2fe"}; color:${f.type === "Teacher's Child" ? "#a16207" : "#0369a1"}">${typeLabel}</span></td>
                   <td>${app.formatMoney(f.expectedTotal)}</td>
                   <td>${app.formatMoney(f.paid)}</td>
-                  <td style="font-weight:bold; color:var(--danger)">${app.formatMoney(
-                    f.balance,
-                  )}</td>
-                  <td><span class="fee-status-badge status-${f.status.toLowerCase()}">${
-                    f.status
-                  }</span></td>
+                  <td style="font-weight:bold; color:var(--danger)">${app.formatMoney(f.balance)}</td>
+                  <td><span class="fee-status-badge status-${f.status.toLowerCase()}">${f.status}</span></td>
                   <td style="text-align:right;">
-                      ${
-                        f.balance > 0
-                          ? `<button class="btn btn-primary btn-sm" onclick="app.openPayModal('${s.id}', '${s.name}', '${s.class}')">Pay</button>`
-                          : `<button class="btn btn-outline btn-sm" disabled>Paid</button>`
-                      }
+                      ${f.balance > 0 ? `<button class="btn btn-primary btn-sm" onclick="app.openPayModal('${s.id}', '${s.name}', '${s.class}')">Pay</button>` : `<button class="btn btn-outline btn-sm" disabled>Paid</button>`}
                   </td>
                </tr>
             `;
           });
         },
+
         renderFeeSettings: async () => {
           app.toggleLoader(true);
           const cfg = await FeeService.getConfig();
@@ -2206,34 +1904,14 @@
             tb.innerHTML += `
                  <tr>
                     <td style="font-weight:bold;">${c}</td>
-                    <td>
-                       <div class="flex items-center gap-2">
-                          <span style="font-weight:bold;">₦</span>
-                          <input type="number" class="form-control fee-setting-input" data-type="schoolFee" data-class="${c}" value="${
-                            config.schoolFee
-                          }" style="max-width:120px;">
-                       </div>
-                    </td>
-                    <td>
-                       <div class="flex items-center gap-2">
-                          <span style="font-weight:bold;">₦</span>
-                          <input type="number" class="form-control fee-setting-input" data-type="regFee" data-class="${c}" value="${
-                            config.regFee
-                          }" style="max-width:120px;">
-                       </div>
-                    </td>
-                    <td>
-                       <div class="flex items-center gap-2">
-                          <span style="font-weight:bold;">₦</span>
-                          <input type="number" class="form-control fee-setting-input" data-type="teacherSubsidy" data-class="${c}" value="${
-                            config.teacherSubsidy
-                          }" style="max-width:120px;">
-                       </div>
-                    </td>
+                    <td><div class="flex items-center gap-2"><span style="font-weight:bold;">₦</span><input type="number" class="form-control fee-setting-input" data-type="schoolFee" data-class="${c}" value="${config.schoolFee}" style="max-width:120px;"></div></td>
+                    <td><div class="flex items-center gap-2"><span style="font-weight:bold;">₦</span><input type="number" class="form-control fee-setting-input" data-type="regFee" data-class="${c}" value="${config.regFee}" style="max-width:120px;"></div></td>
+                    <td><div class="flex items-center gap-2"><span style="font-weight:bold;">₦</span><input type="number" class="form-control fee-setting-input" data-type="teacherSubsidy" data-class="${c}" value="${config.teacherSubsidy}" style="max-width:120px;"></div></td>
                  </tr>
               `;
           });
         },
+
         saveFeeSettings: async () => {
           const ins = document.querySelectorAll(".fee-setting-input");
           const currentConfig = await FeeService.getConfig();
@@ -2251,57 +1929,29 @@
           app.toggleLoader(true);
           await FeeService.updateConfig(currentConfig);
           app.toggleLoader(false);
-          app.showToast("Settings Saved to Sheet", "success");
-          // --- AUTO RESTART: Go back to Collect view with new data ---
+          app.showToast("Settings Saved", "success");
           app.switchFeeSubTab("collect");
-          app.renderFeeDashboard(); // This will fetch fresh students and apply new config
+          app.renderFeeDashboard();
         },
+
         openPayModal: async function (sid, name, cls) {
           this.toggleLoader(true);
           try {
-            // 1. Get class config
             const allConfigs = await FeeService.getConfig();
             const config = allConfigs[cls] || {
               schoolFee: 0,
               regFee: 0,
               teacherSubsidy: 0,
             };
-            // 2. Get ALL transactions (we already fetch them in renderFeeDashboard anyway)
             const allTxs = await FeeService.getTransactions();
-            // 3. Calculate current summary for this student
             const summary = FeeService.getStudentSummary(
               sid,
               cls,
               allTxs,
               config,
             );
-            // 4. Determine student's type (from latest transaction or default "Old")
-            let studentType = summary.type; // "Old Student", "New Student", "Teacher's Child"
-            // 5. Calculate expected total based on type
-            let expectedTotal = 0;
-            if (studentType === "New Student") {
-              expectedTotal = Number(config.schoolFee) + Number(config.regFee);
-            } else if (studentType === "Teacher's Child") {
-              expectedTotal = Math.max(
-                0,
-                Number(config.schoolFee) +
-                  Number(config.regFee) -
-                  Number(config.teacherSubsidy),
-              );
-            } else {
-              expectedTotal = Number(config.schoolFee);
-            }
-            // 6. Real remaining = expected - already paid
-            const alreadyPaid = summary.paid || 0;
-            const remaining = Math.max(0, expectedTotal - alreadyPaid);
-            // Populate form fields
-            document.getElementById("pay-student-id").value = sid;
-            document.getElementById("pay-name").value = name;
-            document.getElementById("pay-class").value = cls;
-            document.getElementById("pay-date").value = new Date()
-              .toISOString()
-              .split("T")[0];
-            // Show rates (still useful for reference)
+
+            let studentType = summary.type;
             const oldRate = Number(config.schoolFee);
             const newRate = Number(config.schoolFee) + Number(config.regFee);
             const teacherRate = Math.max(
@@ -2310,69 +1960,80 @@
                 Number(config.regFee) -
                 Number(config.teacherSubsidy),
             );
+            const alreadyPaid = summary.paid || 0;
+
+            let expectedTotal = 0;
+            if (studentType === "New Student") expectedTotal = newRate;
+            else if (studentType === "Teacher's Child")
+              expectedTotal = teacherRate;
+            else expectedTotal = oldRate;
+
+            const initialRemaining = Math.max(0, expectedTotal - alreadyPaid);
+
+            document.getElementById("pay-student-id").value = sid;
+            document.getElementById("pay-name").value = name;
+            document.getElementById("pay-class").value = cls;
+            document.getElementById("pay-date").value = new Date()
+              .toISOString()
+              .split("T")[0];
+
             document.getElementById("rate-old").textContent =
               `Old: ₦${oldRate.toLocaleString()}`;
             document.getElementById("rate-new").textContent =
               `New: ₦${newRate.toLocaleString()}`;
             document.getElementById("rate-teacher").textContent =
               `Staff: ₦${teacherRate.toLocaleString()}`;
-            // Pre-select correct type
-            document.getElementById("pay-type").value = studentType;
-            // Store values for calculation
+
             const typeSelect = document.getElementById("pay-type");
+            typeSelect.value = studentType;
             typeSelect.dataset.old = oldRate;
             typeSelect.dataset.new = newRate;
             typeSelect.dataset.teacher = teacherRate;
-            typeSelect.dataset.remaining = remaining; // ← key change
-            // Show real remaining as Total Due
-            document.getElementById("pay-total-due").value = remaining;
-            // Default amount to pay = remaining (but user can change)
-            document.getElementById("pay-amount").value = remaining;
-            // Optional: show already paid info
+            typeSelect.dataset.already_paid = alreadyPaid;
+
+            document.getElementById("pay-total-due").value = initialRemaining;
+            document.getElementById("pay-amount").value = initialRemaining;
+
             document.getElementById("already-paid-info").innerHTML =
               `Already Paid: ₦${alreadyPaid.toLocaleString()} • Total Expected: ₦${expectedTotal.toLocaleString()}`;
             document.getElementById("modal-pay").style.display = "flex";
           } catch (err) {
-            console.error("Payment modal error:", err);
+            console.error(err);
             this.showToast("Failed to load payment details", "danger");
           } finally {
             this.toggleLoader(false);
           }
         },
+
         calculateTotalDue: function () {
           const type = document.getElementById("pay-type").value;
           const rates = document.getElementById("pay-type").dataset;
-          // If student already has payments → use remaining instead of full rate
-          if (rates.remaining && Number(rates.remaining) > 0) {
-            document.getElementById("pay-total-due").value = Number(
-              rates.remaining,
-            );
-            document.getElementById("pay-amount").value = Number(
-              rates.remaining,
-            );
-            return;
-          }
-          // Fallback: full amount (first payment)
-          let total = 0;
-          if (type === "Old Student") total = Number(rates.old);
-          else if (type === "New Student") total = Number(rates.new);
-          else if (type === "Teacher's Child") total = Number(rates.teacher);
-          document.getElementById("pay-total-due").value = total;
-          document.getElementById("pay-amount").value = total;
+          const alreadyPaid = Number(rates.already_paid) || 0;
+          let expected = 0;
+          if (type === "Old Student") expected = Number(rates.old);
+          else if (type === "New Student") expected = Number(rates.new);
+          else if (type === "Teacher's Child") expected = Number(rates.teacher);
+
+          const remaining = Math.max(0, expected - alreadyPaid);
+          document.getElementById("pay-total-due").value = remaining;
+          document.getElementById("pay-amount").value = remaining;
+          document.getElementById("already-paid-info").innerHTML =
+            `Already Paid: ₦${alreadyPaid.toLocaleString()} • Total Expected: ₦${expected.toLocaleString()}`;
         },
+
         savePayment: async function (e) {
           if (e) e.preventDefault();
           const studentId = document.getElementById("pay-student-id").value;
           const amount = Number(document.getElementById("pay-amount").value);
           const payType = document.getElementById("pay-type").value;
-          // Basic validation
-          if (!studentId || !payType || amount <= 0) {
-            this.showToast(
+          const studentClass = document.getElementById("pay-class").value;
+
+          if (!studentId || !payType || amount <= 0)
+            return this.showToast(
               "Please select student type and enter valid amount",
               "warning",
             );
-            return;
-          }
+
           this.toggleLoader(true);
           try {
             const payload = {
@@ -2390,89 +2051,22 @@
             };
             const res = await DataService.addFee(payload);
             if (res.status === "success") {
-              // What you asked for:
               this.showToast("Payment added successfully", "success");
               this.closeModals();
               document.getElementById("form-pay").reset();
-              // Make sure we are still showing the Collect Fees tab
-              // and refresh the table + summary cards
-              app.switchFeeSection("fees"); // ensure fees tab
-              app.switchFeeSubTab("collect"); // ensure collect sub-tab
-              await app.renderFeeDashboard(); // refresh data
-            } else {
-              throw new Error(res.message || "Server returned failure");
-            }
+              document.getElementById("feeClassFilter").value = studentClass;
+              await new Promise((resolve) => setTimeout(resolve, 500));
+              await app.renderFeeDashboard();
+            } else throw new Error(res.message || "Server returned failure");
           } catch (err) {
             console.error("Save payment failed:", err);
-            this.showToast(
-              "Failed to save payment: " + (err.message || "Unknown error"),
-              "error",
-            );
+            this.showToast("Failed to save payment", "error");
           } finally {
             this.toggleLoader(false);
           }
         },
-        calcModalTotal: () => {
-          const type = document.querySelector(
-            'input[name="stdType"]:checked',
-          ).value;
-          const cfg = app.state.payContext || {
-            schoolFee: 0,
-            regFee: 0,
-            teacherSubsidy: 0,
-          };
-          let base = cfg.schoolFee;
-          let reg = type === "New" ? cfg.regFee : 0;
-          let subsidy = type === "Teacher" ? cfg.teacherSubsidy : 0;
-          document.getElementById("payBaseFee").textContent =
-            `₦${base.toLocaleString()}`;
-          document.getElementById("payRegFee").textContent =
-            `₦${reg.toLocaleString()}`;
-          document.getElementById("paySubsidy").textContent =
-            `-₦${subsidy.toLocaleString()}`;
-          const total = base + reg - subsidy;
-          document.getElementById("payOutstandingBalance").textContent =
-            app.formatMoney(total);
-          document.getElementById("payTotalFeeCalc").value = total;
-          return total;
-        },
-        confirmPayment: async () => {
-          const sid = document.getElementById("payStudentId").value;
-          const amt = parseInt(document.getElementById("payAmount").value);
-          const totalDue = parseInt(
-            document.getElementById("payTotalFeeCalc").value,
-          );
-          // Safety check for null
-          const typeRadio = document.querySelector(
-            'input[name="stdType"]:checked',
-          );
-          const type = typeRadio ? typeRadio.value : "Old";
-          if (!amt || amt <= 0) return app.showToast("Invalid Amount", "error");
-          if (amt > totalDue)
-            return app.showToast("Amount exceeds due", "error");
-          const term = document.getElementById("payTerm").value;
-          const sess = document.getElementById("paySession").value;
-          const date = document.getElementById("payDate").value;
-          const name = document.getElementById("payStudentName").value;
-          app.toggleLoader(true);
-          await FeeService.addTransaction({
-            id: Date.now().toString(),
-            studentId: sid,
-            name: name,
-            amount: amt,
-            type: type,
-            calculatedTotal: totalDue,
-            term,
-            session: sess,
-            date,
-          });
-          app.toggleLoader(false);
-          app.showToast("Payment Saved to Sheet", "success");
-          app.closeModals();
-          // --- AUTO RESTART: Refresh dashboard to show updated balance ---
-          app.renderFeeDashboard();
-        },
-        /* --- BOOKS TAB LOGIC (Keep Local as requested/implemented previously) --- */
+
+        /* BOOKS LOGIC */
         loadBooksMatrix: async () => {
           const cls = document.getElementById("bookClassFilter").value;
           if (!cls) return;
@@ -2482,21 +2076,14 @@
           const dist = AssetService.getDistribution();
           app.toggleLoader(false);
           const thead = document.getElementById("books-thead");
-          thead.innerHTML = `<tr><th style="min-width:150px;">Student Name</th>${items
-            .map(
-              (i) =>
-                `<th style="min-width:100px; text-align:center;">${i}</th>`,
-            )
-            .join("")}</tr>`;
+          thead.innerHTML = `<tr><th style="min-width:150px;">Student Name</th>${items.map((i) => `<th style="min-width:100px; text-align:center;">${i}</th>`).join("")}</tr>`;
           const tbody = document.getElementById("books-tbody");
           tbody.innerHTML = "";
           studs.forEach((s) => {
-            const row = `<tr><td style="font-weight:bold;">${s.name}</td>`;
+            let row = `<tr><td style="font-weight:bold;">${s.name}</td>`;
             items.forEach((item) => {
               const hasItem = dist[s.id] && dist[s.id][item];
-              row += `<td style="text-align:center;"><div class="asset-cell ${
-                hasItem ? "checked" : ""
-              }" onclick="app.toggleAsset('${s.id}', '${item}')"></div></td>`;
+              row += `<td style="text-align:center;"><div class="asset-cell ${hasItem ? "checked" : ""}" onclick="app.toggleAsset('${s.id}', '${item}')"></div></td>`;
             });
             row += `</tr>`;
             tbody.innerHTML += row;
@@ -2536,10 +2123,11 @@
           AssetService.toggleItem(sid, itemName);
           app.loadBooksMatrix();
         },
-        /* --- REGISTER TAB LOGIC --- */
+
+        /* REGISTER LOGIC */
         loadAllStudentsRegister: async () => {
           app.toggleLoader(true);
-          const studs = await DataService.getStudents(""); // Get all
+          const studs = await DataService.getStudents("");
           app.toggleLoader(false);
           const tb = document.getElementById("register-tbody");
           tb.innerHTML = "";
@@ -2549,16 +2137,13 @@
                     <td>${s.id}</td>
                     <td>${s.name}</td>
                     <td><span class="badge">${s.class}</span></td>
-                    <td><span class="badge" style="background:${
-                      s.gender === "Male" ? "#e0f2fe" : "#fce7f3"
-                    }; color:${s.gender === "Male" ? "#0369a1" : "#be185d"}">${
-                      s.gender
-                    }</span></td>
+                    <td><span class="badge" style="background:${s.gender === "Male" ? "#e0f2fe" : "#fce7f3"}; color:${s.gender === "Male" ? "#0369a1" : "#be185d"}">${s.gender}</span></td>
                  </tr>
               `;
           });
         },
-        /* --- DEBTORS & UTILS --- */
+
+        /* DEBTORS LOGIC */
         openDebtorModal: () => {
           const sel = document.getElementById("debtorsClassSelect");
           sel.innerHTML = '<option value="ALL">All Classes</option>';
@@ -2571,25 +2156,17 @@
           const tcls = document.getElementById("debtorsClassSelect").value;
           app.closeModals();
           app.toggleLoader(true);
-
           try {
-            // Fetch everything once
             const [allStudents, allTxs, config] = await Promise.all([
-              DataService.getStudents(""), // all students
-              FeeService.getTransactions(), // all payments
-              FeeService.getConfig(), // fee settings
+              DataService.getStudents(""),
+              FeeService.getTransactions(),
+              FeeService.getConfig(),
             ]);
-
-            // Filter students
             let relevantStudents = allStudents;
-            if (tcls !== "ALL") {
+            if (tcls !== "ALL")
               relevantStudents = allStudents.filter((s) => s.class === tcls);
-            }
-
-            // Calculate debtors
             const debtors = [];
             let totalOutstanding = 0;
-
             for (const student of relevantStudents) {
               const summary = FeeService.getStudentSummary(
                 student.id,
@@ -2597,7 +2174,6 @@
                 allTxs,
                 config,
               );
-
               if (summary.balance > 0) {
                 debtors.push({
                   ...student,
@@ -2610,92 +2186,41 @@
                 totalOutstanding += summary.balance;
               }
             }
-
-            // Sort by class
             debtors.sort((a, b) => a.class.localeCompare(b.class));
-
             const con = document.getElementById("printable-debtors");
             con.innerHTML = `
             <div class="debtors-report">
-                <div class="debtors-header">
-                    <h2>Nifty Steps Primary School</h2>
-                    <p>Fee Debtors Report</p>
-                    <p>Date: ${new Date().toLocaleDateString("en-GB")}</p>
-                    <p>Class Filter: ${tcls === "ALL" ? "All Classes" : tcls}</p>
-                </div>
-
-                <div class="debtors-summary">
-                    <span>Total Debtors: ${debtors.length}</span>
-                    <span>Total Outstanding: <strong>${app.formatMoney(totalOutstanding)}</strong></span>
-                </div>
-
+                <div class="debtors-header"><h2>Nifty Steps Primary School</h2><p>Fee Debtors Report</p><p>Date: ${new Date().toLocaleDateString("en-GB")}</p><p>Class Filter: ${tcls === "ALL" ? "All Classes" : tcls}</p></div>
+                <div class="debtors-summary"><span>Total Debtors: ${debtors.length}</span><span>Total Outstanding: <strong>${app.formatMoney(totalOutstanding)}</strong></span></div>
                 ${
                   debtors.length === 0
-                    ? `
-                    <h3 style="text-align:center; color:#22c55e; margin:40px 0;">
-                        ✓ No outstanding fees at this time
-                    </h3>
-                `
-                    : `
-                    <table class="debtors-table">
-                        <thead>
-                            <tr>
-                                <th>Class</th>
-                                <th>Adm No</th>
-                                <th>Student Name</th>
-                                <th>Type</th>
-                                <th>Total Fee</th>
-                                <th>Paid</th>
-                                <th>Balance</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${debtors
-                              .map((s) => {
-                                let typeLabel = s.type;
-                                if (s.type === "New Student") typeLabel = "New";
-                                if (s.type === "Teacher's Child")
-                                  typeLabel = "Staff";
-                                return `
-                                    <tr>
-                                        <td>${s.class}</td>
-                                        <td>${s.id}</td>
-                                        <td>${s.name}</td>
-                                        <td>${typeLabel}</td>
-                                        <td>${app.formatMoney(s.expectedTotal)}</td>
-                                        <td>${app.formatMoney(s.paid)}</td>
-                                        <td style="font-weight:bold; color:#b91c1c;">
-                                            ${app.formatMoney(s.balance)}
-                                        </td>
-                                    </tr>
-                                `;
-                              })
-                              .join("")}
-                            <tr style="background:#f1f5f9; font-weight:bold;">
-                                <td colspan="6" style="text-align:right;">GRAND TOTAL OUTSTANDING:</td>
-                                <td>${app.formatMoney(totalOutstanding)}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                `
+                    ? `<h3 style="text-align:center; color:#22c55e; margin:40px 0;">✓ No outstanding fees at this time</h3>`
+                    : `<table class="debtors-table"><thead><tr><th>Class</th><th>Adm No</th><th>Student Name</th><th>Type</th><th>Total Fee</th><th>Paid</th><th>Balance</th></tr></thead><tbody>
+                    ${debtors
+                      .map((s) => {
+                        let typeLabel =
+                          s.type === "New Student"
+                            ? "New"
+                            : s.type === "Teacher's Child"
+                              ? "Staff"
+                              : "Old";
+                        return `<tr><td>${s.class}</td><td>${s.id}</td><td>${s.name}</td><td>${typeLabel}</td><td>${app.formatMoney(s.expectedTotal)}</td><td>${app.formatMoney(s.paid)}</td><td style="font-weight:bold; color:#b91c1c;">${app.formatMoney(s.balance)}</td></tr>`;
+                      })
+                      .join("")}
+                    <tr style="background:#f1f5f9; font-weight:bold;"><td colspan="6" style="text-align:right;">GRAND TOTAL OUTSTANDING:</td><td>${app.formatMoney(totalOutstanding)}</td></tr></tbody></table>`
                 }
-
-                <div style="margin-top:40px; text-align:center; font-style:italic; color:#64748b;">
-                    Generated on ${new Date().toLocaleString("en-GB")}
-                </div>
-            </div>
-        `;
-
-            // Give the browser a moment to render before printing
+                <div style="margin-top:40px; text-align:center; font-style:italic; color:#64748b;">Generated on ${new Date().toLocaleString("en-GB")}</div>
+            </div>`;
             setTimeout(() => window.print(), 300);
           } catch (err) {
-            console.error("Debtors report error:", err);
-            app.showToast("Failed to generate debtors report", "error");
+            console.error(err);
+            app.showToast("Failed to generate report", "error");
           } finally {
             app.toggleLoader(false);
           }
         },
-        /* --- COMMON LOGIC --- */
+
+        /* COMMON LOGIC */
         handleSignup: async (e) => {
           e.preventDefault();
           const u = {
@@ -2727,16 +2252,12 @@
             app.state.currentUser.name;
           document.getElementById("user-role").textContent =
             app.state.currentUser.role;
-
-          // --- FIX: Fetch teachers first so we know who is assigned to which class ---
           try {
             const teachers = await DataService.getTeachers();
             app.state.teachersList = teachers;
           } catch (e) {
-            console.error("Failed to load teachers list", e);
-            app.state.teachersList = []; // Fallback to empty array if error
+            app.state.teachersList = [];
           }
-
           app.renderClassGrid();
         },
         renderClassGrid: () => {
@@ -2776,9 +2297,7 @@
             ? [app.state.currentUser.assignedClass]
             : CLASSES
           ).forEach((c) => {
-            grid.innerHTML += `<div class="card" onclick="app.loadStudentList('${c}')"><div class="card-content"><div class="card-icon">🏫</div><div class="card-title">${c}</div><div class="card-meta">Class Teacher: ${app.getClassTeacherName(
-              c,
-            )}</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full">Manage</button></div></div>`;
+            grid.innerHTML += `<div class="card" onclick="app.loadStudentList('${c}')"><div class="card-content"><div class="card-icon">🏫</div><div class="card-title">${c}</div><div class="card-meta">Class Teacher: ${app.getClassTeacherName(c)}</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full">Manage</button></div></div>`;
           });
         },
         getClassTeacherName: (cls) =>
@@ -2795,11 +2314,7 @@
           document.getElementById("teachers-tbody").innerHTML = t
             .map(
               (t) =>
-                `<tr><td>${t.name}</td><td>${
-                  t.role
-                }</td><td><span class="badge">${
-                  t.assignedClass || "N/A"
-                }</span></td></tr>`,
+                `<tr><td>${t.name}</td><td>${t.role}</td><td><span class="badge">${t.assignedClass || "N/A"}</span></td></tr>`,
             )
             .join("");
         },
@@ -2824,21 +2339,13 @@
           document.getElementById("perf-tbody").innerHTML = stats
             .map(
               (x, i) =>
-                `<tr><td style="font-weight:bold;color:${
-                  i === 0 ? "#f59e0b" : "inherit"
-                }">#${i + 1}</td><td>${x.name}</td><td>${x.class}</td><td>${
-                  x.avg
-                }%</td></tr>`,
+                `<tr><td style="font-weight:bold;color:${i === 0 ? "#f59e0b" : "inherit"}">#${i + 1}</td><td>${x.name}</td><td>${x.class}</td><td>${x.avg}%</td></tr>`,
             )
             .join("");
         },
-
-        // --- FIXED: loadStudentList ---
         loadStudentList: async (cn) => {
           app.state.currentClass = cn;
           app.showSection("section-students");
-
-          // Handle Admin view title
           if (!cn) {
             document.getElementById("crumb-class-name").textContent =
               "All Classes";
@@ -2848,67 +2355,33 @@
             document.getElementById("list-title").textContent =
               `${cn} Students`;
           }
-
           app.toggleLoader(true);
-
-          // FIX: If cn is null (Admin view), send "" (empty string) to backend to get ALL students.
-          // Sending null often breaks Google Apps Script filters.
-          const filterClass = cn || "";
-          const s = await DataService.getStudents(filterClass);
-
+          const s = await DataService.getStudents(cn || "");
           app.toggleLoader(false);
-
-          // FIX: Save to cache so we don't have to fetch again when clicking "Enter Scores"
           app.state.displayedStudents = s;
-
           document.getElementById("student-count").textContent =
             `${s.length} Students`;
           document.getElementById("students-tbody").innerHTML = s
             .map(
               (std) =>
-                `<tr><td><b>${std.id}</b></td><td>${
-                  std.name
-                }</td><td><span class="badge" style="background:${
-                  std.gender === "Male" ? "#e0f2fe" : "#fce7f3"
-                }; color:${std.gender === "Male" ? "#0369a1" : "#be185d"}">${
-                  std.gender
-                }</span></td><td style="text-align:right;">
-                    <div class="flex gap-2 justify-end">
-                        <button class="btn btn-outline btn-sm" onclick="app.openEditStudentModal('${
-                          std.id
-                        }')">Edit</button>
-                        <button class="btn btn-primary btn-sm" onclick="app.loadScoreEntry('${
-                          std.id
-                        }')">Scores</button>
-                    </div>
-                </td></tr>`,
+                `<tr><td><b>${std.id}</b></td><td>${std.name}</td><td><span class="badge" style="background:${std.gender === "Male" ? "#e0f2fe" : "#fce7f3"}; color:${std.gender === "Male" ? "#0369a1" : "#be185d"}">${std.gender}</span></td><td style="text-align:right;"><div class="flex gap-2 justify-end"><button class="btn btn-outline btn-sm" onclick="app.openEditStudentModal('${std.id}')">Edit</button><button class="btn btn-primary btn-sm" onclick="app.loadScoreEntry('${std.id}')">Scores</button></div></td></tr>`,
             )
             .join("");
         },
-
-        // --- FIXED: loadScoreEntry ---
         loadScoreEntry: async (sid) => {
           let s = null;
-
-          // 1. Try to find student in the currently displayed list (Cache)
-          // This is instant and avoids network errors
           if (
             app.state.displayedStudents &&
             app.state.displayedStudents.length > 0
-          ) {
+          )
             s = app.state.displayedStudents.find((x) => x.id === sid);
-          }
-
-          // 2. Fallback: If not found in cache (e.g. user refreshed page), fetch ALL students to find them
           if (!s) {
             app.toggleLoader(true);
-            const allStudents = await DataService.getStudents(""); // Get all students
+            const allStudents = await DataService.getStudents("");
             app.toggleLoader(false);
             s = allStudents.find((x) => x.id === sid);
           }
-
           if (!s) return app.showToast("Student not found", "error");
-
           app.state.currentStudent = s;
           document.getElementById("crumb-back-class").textContent =
             app.state.currentClass || "All Classes";
@@ -2918,7 +2391,6 @@
           app.showSection("section-scores");
           app.generateScoreForm(s);
         },
-
         generateScoreForm: (s) => {
           const c = document.getElementById("score-rows-container");
           c.innerHTML = "";
@@ -2995,51 +2467,37 @@
           else app.loadAllStudentsRegister();
         },
         openEditStudentModal: (id) => {
-          // Find the student in the currently displayed list (Cache)
           const student = app.state.displayedStudents.find((s) => s.id === id);
-
-          if (!student) {
-            // Fallback if not in cache (shouldn't happen often)
+          if (!student)
             return app.showToast("Error: Student data not loaded", "error");
-          }
-
-          // Populate the modal with current data
           document.getElementById("editStdId").value = student.id;
           document.getElementById("editStdName").value = student.name;
           document.getElementById("editStdGender").value = student.gender;
           document.getElementById("editStdClass").value = student.class;
-
           document.getElementById("modal-edit-student").style.display = "flex";
         },
-
         confirmEditStudent: async () => {
           const id = document.getElementById("editStdId").value;
           const name = document.getElementById("editStdName").value;
           const gender = document.getElementById("editStdGender").value;
           const cls = document.getElementById("editStdClass").value;
-
           if (!name || !cls)
             return app.showToast("Name and Class are required", "warning");
-
           app.toggleLoader(true);
           try {
-            const payload = { id, name, gender, class: cls };
-            const res = await DataService.updateStudent(payload);
-
+            const res = await DataService.updateStudent({
+              id,
+              name,
+              gender,
+              class: cls,
+            });
             if (res.status === "success") {
               app.showToast("Student Updated Successfully", "success");
               app.closeModals();
-
-              // Refresh the list to show changes
-              // If we are in "All Classes" view (cn is null), reload that, else reload specific class
-              if (app.state.currentClass) {
+              if (app.state.currentClass)
                 app.loadStudentList(app.state.currentClass);
-              } else {
-                app.loadStudentList(null);
-              }
-            } else {
-              throw new Error(res.message || "Failed to update");
-            }
+              else app.loadStudentList(null);
+            } else throw new Error(res.message || "Failed to update");
           } catch (err) {
             console.error(err);
             app.showToast("Error updating student", "error");
@@ -3086,13 +2544,7 @@
             const scObj = s.scores[x] || { ca: 0, exam: 0 };
             const tot = (scObj.ca || 0) + (scObj.exam || 0);
             const gr = app.getGrade(tot);
-            rows += `<tr><td style="text-align:left;font-weight:bold;">${x}</td><td>${
-              scObj.ca
-            }</td><td>${
-              scObj.exam
-            }</td><td>${tot}</td><td>${gr}</td><td>${app.getRemark(
-              gr,
-            )}</td></tr>`;
+            rows += `<tr><td style="text-align:left;font-weight:bold;">${x}</td><td>${scObj.ca}</td><td>${scObj.exam}</td><td>${tot}</td><td>${gr}</td><td>${app.getRemark(gr)}</td></tr>`;
             if (scObj.ca || scObj.exam) {
               gt += tot;
               sc++;
@@ -3101,22 +2553,29 @@
           const avg = sc ? Math.round(gt / sc) : 0;
           const p = document.getElementById("printable-area");
           p.innerHTML = `
-              <div class="report-card">
-                 <div class="rc-header"><div class="rc-title">Nifty Steps Nursery & Primary School</div><div>5/9 Kunle Shobanjo Street, Igbo Oluwo Estate, Ikorodu, Lagos State</div><div style="margin-top:5px;font-weight:bold;">${sess} - ${term.toUpperCase()} REPORT SHEET</div></div>
-                 <div class="rc-info-row"><div><strong>Name:</strong> ${s.name.toUpperCase()}</div><div><strong>Class:</strong> ${
-                   s.class
-                 }</div><div><strong>Adm No:</strong> ${s.id}</div></div>
-                 <table class="rc-table"><thead><tr><th style="width:35%;">SUBJECTS</th><th>CA (40)</th><th>EXAM (60)</th><th>TOTAL (100)</th><th>GRADE</th><th>REMARK</th></tr></thead><tbody>${rows}<tr style="background:#f0f0f0;font-weight:bold;"><td colspan="3" style="text-align:right;">GRAND TOTAL / AVERAGE:</td><td>${gt}</td><td>-</td><td>${avg}%</td></tr></tbody></table>
+              <div class="report-card" style="font-family: 'Times New Roman', serif; padding: 20px; color: #000;">
+                 <div class="rc-header" style="text-align: center; border-bottom: 3px double #000; margin-bottom: 20px; padding-bottom: 10px;">
+                    <div class="rc-title" style="font-size: 24pt; font-weight: bold; text-transform: uppercase; margin: 0;">Nifty Steps Nursery & Primary School</div>
+                    <div style="margin-top:5px;font-weight:bold;">${sess} - ${term.toUpperCase()} REPORT SHEET</div>
+                 </div>
+                 <div class="rc-info-row" style="display: flex; justify-content: space-between; border: 1px solid #000; padding: 10px; margin-bottom: 20px; font-size: 12pt;">
+                    <div><strong>Name:</strong> ${s.name.toUpperCase()}</div>
+                    <div><strong>Class:</strong> ${s.class}</div>
+                    <div><strong>Adm No:</strong> ${s.id}</div>
+                 </div>
+                 <table class="rc-table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 11pt;">
+                    <thead><tr><th style="width:35%;">SUBJECTS</th><th>CA (40)</th><th>EXAM (60)</th><th>TOTAL (100)</th><th>GRADE</th><th>REMARK</th></tr></thead>
+                    <tbody>${rows}<tr style="background:#f0f0f0;font-weight:bold;"><td colspan="3" style="text-align:right;">GRAND TOTAL / AVERAGE:</td><td>${gt}</td><td>-</td><td>${avg}%</td></tr></tbody>
+                 </table>
                  <div style="display:flex;justify-content:space-between;margin-top:30px;font-size:12pt;">
-                    <div style="width:48%;border:1px solid #000;padding:10px;"><strong>Teacher's Comment:</strong><br>${app.getTeacherComment(
-                      avg,
-                    )}</div>
+                    <div style="width:48%;border:1px solid #000;padding:10px;"><strong>Teacher's Comment:</strong><br>${app.getTeacherComment(avg)}</div>
                     <div style="width:48%;border:1px solid #000;padding:10px;"><strong>Head Teacher's Comment:</strong><br>Good performance. Keep it up.</div>
                  </div>
-                 <div class="rc-footer"><div class="rc-signature"><div class="signature-line"></div><div>Teacher's Signature</div></div><div class="rc-signature"><div class="signature-line"></div><div>Head Teacher's Signature</div></div></div>
-                 <div style="margin-top:30px;text-align:center;border:1px dashed #000;padding:10px;"><strong>School Resumes:</strong> ${
-                   nt || "Pending"
-                 }</div>
+                 <div class="rc-footer" style="display: flex; justify-content: space-between; margin-top: 50px;">
+                    <div class="rc-signature" style="text-align: center; width: 30%;"><div class="signature-line" style="border-bottom: 1px solid #000; height: 50px; margin-bottom: 5px;"></div><div>Teacher's Signature</div></div>
+                    <div class="rc-signature" style="text-align: center; width: 30%;"><div class="signature-line" style="border-bottom: 1px solid #000; height: 50px; margin-bottom: 5px;"></div><div>Head Teacher's Signature</div></div>
+                 </div>
+                 <div style="margin-top:30px;text-align:center;border:1px dashed #000;padding:10px;"><strong>School Resumes:</strong> ${nt || "Pending"}</div>
               </div>
            `;
         },
@@ -3167,13 +2626,11 @@
         },
         formatMoney: (a) => "₦" + parseInt(a || 0).toLocaleString(),
       };
-      document.addEventListener("DOMContentLoaded", () => app.init());
-      // This tells the browser to run app.savePayment when the form is submitted
       document.addEventListener("DOMContentLoaded", () => {
+        app.init();
         const payForm = document.getElementById("form-pay");
-        if (payForm) {
+        if (payForm)
           payForm.addEventListener("submit", (e) => app.savePayment(e));
-        }
       });
     </script>
   </body>
