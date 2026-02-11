@@ -709,6 +709,20 @@
                 </button>
               </div>
             </div>
+            <!-- inside <form id="form-login"> ... after password field -->
+            <div class="form-group" style="margin: 12px 0">
+              <label
+                style="
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                  cursor: pointer;
+                "
+              >
+                <input type="checkbox" id="rememberMe" />
+                Remember me (30 days)
+              </label>
+            </div>
             <button type="submit" class="btn btn-primary w-full">
               Access Dashboard
             </button>
@@ -1280,13 +1294,32 @@
               id="pay-type"
               class="form-control"
               required
-              onchange="app.calculateTotalDue()"
+              onchange="app.onPaymentTypeChange()"
             >
               <option value="">-- Select Type --</option>
               <option value="Old Student">Old Student</option>
               <option value="New Student">New Student</option>
-              <option value="Teacher's Child">Teacher's Child</option>
+              <option value="Teacher's Child">Teacher's Child (50% fee)</option>
+              <option value="Scholarship">Scholarship (Free)</option>
+              <option value="Custom">Custom Amount (Admin sets)</option>
             </select>
+            <div
+              id="custom-amount-group"
+              class="form-group hidden"
+              style="margin-top: 12px"
+            >
+              <label>Fixed / Agreed Total Amount for this term (₦)</label>
+              <input
+                type="number"
+                id="custom-fixed-amount"
+                class="form-control"
+                placeholder="e.g. 45000"
+                min="0"
+              />
+              <small style="color: #64748b"
+                >This will override class fee settings for this payment.</small
+              >
+            </div>
           </div>
           <div
             style="
@@ -1747,6 +1780,23 @@
             this.state.currentUser = JSON.parse(u);
             this.showDashboard();
           }
+          const remembered = localStorage.getItem("ps_remember_user");
+          if (remembered) {
+            try {
+              const user = JSON.parse(remembered);
+              const savedTime = parseInt(
+                localStorage.getItem("ps_remember_time") || "0",
+              );
+              const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+              if (Date.now() - savedTime < THIRTY_DAYS) {
+                this.state.currentUser = user;
+                this.showDashboard();
+                return;
+              }
+            } catch (e) {}
+            localStorage.removeItem("ps_remember_user");
+            localStorage.removeItem("ps_remember_time");
+          }
         },
 
         /* AUTH */
@@ -1768,19 +1818,29 @@
               ? "block"
               : "none";
         },
-        handleLogin: async (e) => {
+        handleLogin: async function (e) {
           e.preventDefault();
-          app.toggleLoader(true);
-          const res = await DataService.login(
-            document.getElementById("loginEmail").value,
-            document.getElementById("loginPass").value,
-          );
-          app.toggleLoader(false);
+          this.toggleLoader(true);
+
+          const email = document.getElementById("loginEmail").value.trim();
+          const pass = document.getElementById("loginPass").value;
+
+          const res = await DataService.login(email, pass);
+          this.toggleLoader(false);
+
           if (res.status === "success") {
-            app.state.currentUser = res.user;
-            sessionStorage.setItem("ps_user", JSON.stringify(res.user));
-            app.showDashboard();
-          } else app.showToast("Login Failed", "error");
+            const user = res.user;
+            if (document.getElementById("rememberMe").checked) {
+              localStorage.setItem("ps_remember_user", JSON.stringify(user));
+              localStorage.setItem("ps_remember_time", Date.now().toString());
+            } else {
+              sessionStorage.setItem("ps_user", JSON.stringify(user));
+            }
+            this.state.currentUser = user;
+            this.showDashboard();
+          } else {
+            this.showToast(res.message || "Login failed", "error");
+          }
         },
         togglePassword: (id, btn) => {
           const input = document.getElementById(id);
@@ -1882,7 +1942,11 @@
                   <td style="font-weight:bold; color:var(--danger)">${app.formatMoney(f.balance)}</td>
                   <td><span class="fee-status-badge status-${f.status.toLowerCase()}">${f.status}</span></td>
                   <td style="text-align:right;">
-                      ${f.balance > 0 ? `<button class="btn btn-primary btn-sm" onclick="app.openPayModal('${s.id}', '${s.name}', '${s.class}')">Pay</button>` : `<button class="btn btn-outline btn-sm" disabled>Paid</button>`}
+                    <button class="btn btn-outline btn-sm" style="margin-right:6px;" 
+                      onclick="app.showPaymentHistory('${s.id}', '${s.name.replace(/'/g, "\\'")}')">
+                      History
+                    </button>
+                    ${f.balance > 0 ? `<button class="btn btn-primary btn-sm" onclick="app.openPayModal('${s.id}', '${s.name.replace(/'/g, "\\'")}', '${s.class}')">Pay</button>` : `<button class="btn btn-outline btn-sm" disabled>Paid</button>`}
                   </td>
                </tr>
             `;
@@ -1934,42 +1998,32 @@
           app.renderFeeDashboard();
         },
 
+        // Update openPayModal – remove teacherSubsidy logic
         openPayModal: async function (sid, name, cls) {
           this.toggleLoader(true);
           try {
-            const allConfigs = await FeeService.getConfig();
-            const config = allConfigs[cls] || {
-              schoolFee: 0,
-              regFee: 0,
-              teacherSubsidy: 0,
-            };
-            const allTxs = await FeeService.getTransactions();
-            const summary = FeeService.getStudentSummary(
-              sid,
-              cls,
-              allTxs,
-              config,
-            );
+            const [configAll, txs] = await Promise.all([
+              FeeService.getConfig(),
+              FeeService.getTransactions(),
+            ]);
+            const config = configAll[cls] || { schoolFee: 0, regFee: 0 };
 
-            let studentType = summary.type;
-            const oldRate = Number(config.schoolFee);
-            const newRate = Number(config.schoolFee) + Number(config.regFee);
-            const teacherRate = Math.max(
-              0,
-              Number(config.schoolFee) +
-                Number(config.regFee) -
-                Number(config.teacherSubsidy),
-            );
+            const summary = FeeService.getStudentSummary(sid, cls, txs, config);
             const alreadyPaid = summary.paid || 0;
 
-            let expectedTotal = 0;
-            if (studentType === "New Student") expectedTotal = newRate;
-            else if (studentType === "Teacher's Child")
-              expectedTotal = teacherRate;
-            else expectedTotal = oldRate;
+            const oldRate = Number(config.schoolFee);
+            const newRate = oldRate + Number(config.regFee);
+            const teacherRate = Math.round(oldRate * 0.5);
+            const scholarship = 0;
 
-            const initialRemaining = Math.max(0, expectedTotal - alreadyPaid);
+            let expected = oldRate;
+            if (summary.type === "New Student") expected = newRate;
+            else if (summary.type === "Teacher's Child") expected = teacherRate;
+            else if (summary.type === "Scholarship") expected = scholarship;
 
+            const remaining = Math.max(0, expected - alreadyPaid);
+
+            // Fill form
             document.getElementById("pay-student-id").value = sid;
             document.getElementById("pay-name").value = name;
             document.getElementById("pay-class").value = cls;
@@ -1977,48 +2031,161 @@
               .toISOString()
               .split("T")[0];
 
+            // Rates display
             document.getElementById("rate-old").textContent =
               `Old: ₦${oldRate.toLocaleString()}`;
             document.getElementById("rate-new").textContent =
               `New: ₦${newRate.toLocaleString()}`;
             document.getElementById("rate-teacher").textContent =
-              `Staff: ₦${teacherRate.toLocaleString()}`;
+              `Staff 50%: ₦${teacherRate.toLocaleString()}`;
+            // You can add scholarship rate display if you want
 
-            const typeSelect = document.getElementById("pay-type");
-            typeSelect.value = studentType;
-            typeSelect.dataset.old = oldRate;
-            typeSelect.dataset.new = newRate;
-            typeSelect.dataset.teacher = teacherRate;
-            typeSelect.dataset.already_paid = alreadyPaid;
+            const typeSel = document.getElementById("pay-type");
+            typeSel.value = summary.type;
+            typeSel.dataset.old = oldRate;
+            typeSel.dataset.new = newRate;
+            // no teacherSubsidy anymore
 
-            document.getElementById("pay-total-due").value = initialRemaining;
-            document.getElementById("pay-amount").value = initialRemaining;
-
+            document.getElementById("pay-total-due").value = remaining;
+            document.getElementById("pay-amount").value = remaining;
             document.getElementById("already-paid-info").innerHTML =
-              `Already Paid: ₦${alreadyPaid.toLocaleString()} • Total Expected: ₦${expectedTotal.toLocaleString()}`;
+              `Already Paid: ₦${alreadyPaid.toLocaleString()} • Expected this term: ₦${expected.toLocaleString()}`;
+
             document.getElementById("modal-pay").style.display = "flex";
+            this.onPaymentTypeChange(); // important!
           } catch (err) {
             console.error(err);
-            this.showToast("Failed to load payment details", "danger");
+            this.showToast("Cannot load payment form", "error");
           } finally {
             this.toggleLoader(false);
           }
         },
 
+        // ────────────────────────────────────────────────
+        // Payment history & delete
+        // ────────────────────────────────────────────────
+        showPaymentHistory: async function (sid, name) {
+          this.toggleLoader(true);
+          try {
+            const txs = (await FeeService.getTransactions())
+              .filter((t) => t.studentId === sid)
+              .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const tbody = document.getElementById("payment-history-tbody");
+            tbody.innerHTML = "";
+
+            if (txs.length === 0) {
+              tbody.innerHTML =
+                '<tr><td colspan="5" style="text-align:center;padding:30px;color:#64748b;">No payments recorded yet.</td></tr>';
+            } else {
+              txs.forEach((tx) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+          <td style="padding:10px;">${tx.date || "-"}</td>
+          <td style="padding:10px;">${tx.term || "-"} ${tx.session || ""}</td>
+          <td style="padding:10px; font-weight:600;">${this.formatMoney(tx.amount)}</td>
+          <td style="padding:10px;">${tx.type}</td>
+          <td style="padding:10px;">
+            <button class="btn btn-danger btn-sm" 
+                    onclick="app.deletePayment('${tx.id}', '${sid}', '${name.replace(/'/g, "\\'")}')">
+              Delete
+            </button>
+          </td>
+        `;
+                tbody.appendChild(row);
+              });
+            }
+
+            document.getElementById(
+              "payment-history-student-name",
+            ).textContent = name;
+            document.getElementById("modal-payment-history").style.display =
+              "flex";
+          } catch (err) {
+            console.error(err);
+            this.showToast("Cannot load history", "error");
+          } finally {
+            this.toggleLoader(false);
+          }
+        },
+
+        deletePayment: async function (txId, sid, name) {
+          if (!confirm("Delete this payment record? This cannot be undone."))
+            return;
+
+          this.toggleLoader(true);
+          try {
+            const res = await DataService._call({
+              action: "deleteFeeTransaction",
+              transactionId: txId,
+            });
+
+            if (res.status === "success") {
+              this.showToast("Payment deleted", "success");
+              this.showPaymentHistory(sid, name); // refresh
+              // also refresh main fee view if visible
+              if (
+                !document
+                  .getElementById("section-fees")
+                  .classList.contains("hidden")
+              ) {
+                await this.renderFeeDashboard();
+              }
+            } else {
+              throw new Error(res.message || "delete failed");
+            }
+          } catch (err) {
+            console.error(err);
+            this.showToast("Error deleting payment", "error");
+          } finally {
+            this.toggleLoader(false);
+          }
+        },
+
+        // ────────────────────────────────────────────────
+        // Payment type change handler
+        // ────────────────────────────────────────────────
+        onPaymentTypeChange: function () {
+          const type = document.getElementById("pay-type").value;
+          const customGroup = document.getElementById("custom-amount-group");
+          const totalDueInput = document.getElementById("pay-total-due");
+
+          if (type === "Custom") {
+            customGroup.classList.remove("hidden");
+            totalDueInput.readOnly = false;
+            totalDueInput.value = "";
+            totalDueInput.placeholder = "Enter amount";
+          } else {
+            customGroup.classList.add("hidden");
+            totalDueInput.readOnly = true;
+            this.calculateTotalDue();
+          }
+        },
+
+        // Override calculateTotalDue
         calculateTotalDue: function () {
           const type = document.getElementById("pay-type").value;
+          if (type === "Custom") {
+            // handled manually by user
+            return;
+          }
+
           const rates = document.getElementById("pay-type").dataset;
-          const alreadyPaid = Number(rates.already_paid) || 0;
+          const already = Number(rates.already_paid) || 0;
           let expected = 0;
+
           if (type === "Old Student") expected = Number(rates.old);
           else if (type === "New Student") expected = Number(rates.new);
-          else if (type === "Teacher's Child") expected = Number(rates.teacher);
+          else if (type === "Teacher's Child")
+            expected = Math.round(Number(rates.old) * 0.5);
+          else if (type === "Scholarship") expected = 0;
 
-          const remaining = Math.max(0, expected - alreadyPaid);
+          const remaining = Math.max(0, expected - already);
           document.getElementById("pay-total-due").value = remaining;
           document.getElementById("pay-amount").value = remaining;
+
           document.getElementById("already-paid-info").innerHTML =
-            `Already Paid: ₦${alreadyPaid.toLocaleString()} • Total Expected: ₦${expected.toLocaleString()}`;
+            `Already Paid: ₦${already.toLocaleString()} • Expected: ₦${expected.toLocaleString()}`;
         },
 
         savePayment: async function (e) {
@@ -2555,7 +2722,7 @@
           p.innerHTML = `
               <div class="report-card" style="font-family: 'Times New Roman', serif; padding: 20px; color: #000;">
                  <div class="rc-header" style="text-align: center; border-bottom: 3px double #000; margin-bottom: 20px; padding-bottom: 10px;">
-                    <div class="rc-title" style="font-size: 24pt; font-weight: bold; text-transform: uppercase; margin: 0;">Nifty Steps Nursery & Primary School</div>
+                    <div class="rc-header"><div class="rc-title" style="font-size: 24pt; font-weight: bold; text-transform: uppercase; margin: 0;">Nifty Steps Nursery & Primary School</div><div>5/9 Kunle Shobanjo Street, Igbo Oluwo Estate, Ikorodu, Lagos State</div></div>
                     <div style="margin-top:5px;font-weight:bold;">${sess} - ${term.toUpperCase()} REPORT SHEET</div>
                  </div>
                  <div class="rc-info-row" style="display: flex; justify-content: space-between; border: 1px solid #000; padding: 10px; margin-bottom: 20px; font-size: 12pt;">
@@ -2633,5 +2800,46 @@
           payForm.addEventListener("submit", (e) => app.savePayment(e));
       });
     </script>
+    <div id="modal-payment-history" class="modal-overlay" style="display: none">
+      <div class="modal-content" style="max-width: 620px">
+        <h3>Payment History</h3>
+        <div
+          id="payment-history-student-name"
+          style="
+            margin: 8px 0 16px;
+            font-weight: 600;
+            color: var(--primary-dark);
+          "
+        ></div>
+
+        <div
+          style="
+            max-height: 420px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+          "
+        >
+          <table style="width: 100%; border-collapse: collapse">
+            <thead style="background: #f1f5f9; position: sticky; top: 0">
+              <tr>
+                <th style="padding: 10px">Date</th>
+                <th style="padding: 10px">Term / Session</th>
+                <th style="padding: 10px">Amount</th>
+                <th style="padding: 10px">Type</th>
+                <th style="padding: 10px; width: 90px">Action</th>
+              </tr>
+            </thead>
+            <tbody id="payment-history-tbody"></tbody>
+          </table>
+        </div>
+
+        <div class="flex justify-between" style="margin-top: 20px">
+          <button class="btn btn-outline" onclick="app.closeModals()">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
