@@ -1715,7 +1715,12 @@
           return await this._call({ ...u, action: "signup" });
         },
         async getStudents(cls) {
-          return await this._call({ action: "getStudents", className: cls });
+          const res = await this._call({
+            action: "getStudents",
+            className: cls,
+          });
+          // FIX: Extract the 'students' array from the response
+          return res.status === "success" ? res.students : [];
         },
         async addStudent(data) {
           return await this._call({ ...data, action: "addStudent" });
@@ -1731,16 +1736,22 @@
           });
         },
         async getTeachers() {
-          return await this._call({ action: "getTeachers" });
+          const res = await this._call({ action: "getTeachers" });
+          // FIX: Extract the 'teachers' array from the response
+          return res.status === "success" ? res.teachers : [];
         },
         async getFeeConfig() {
-          return await this._call({ action: "getFeeConfig" });
+          const res = await this._call({ action: "getFeeConfig" });
+          // FIX: Extract the 'config' object from the response
+          return res.status === "success" ? res.config : {};
         },
         async saveFeeConfig(config) {
           return await this._call({ action: "saveFeeConfig", ...config });
         },
         async getFeeTransactions() {
-          return await this._call({ action: "getFeeTransactions" });
+          const res = await this._call({ action: "getFeeTransactions" });
+          // FIX: Extract the 'transactions' array from the response
+          return res.status === "success" ? res.transactions : [];
         },
         async addFee(data) {
           return await this._call({ action: "addFee", ...data });
