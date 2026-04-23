@@ -596,6 +596,124 @@
         color: white;
         border-color: var(--primary);
       }
+      /* --- SETTINGS STYLES --- */
+      .settings-wrapper {
+        display: grid;
+        grid-template-columns: 250px 1fr;
+        gap: 20px;
+        min-height: 400px;
+      }
+      .settings-sidebar {
+        background: var(--surface);
+        border-radius: var(--radius);
+        padding: 15px 0;
+        box-shadow: var(--shadow);
+        height: fit-content;
+      }
+      .settings-sidebar button {
+        display: block;
+        width: 100%;
+        text-align: left;
+        padding: 12px 20px;
+        border: none;
+        background: transparent;
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--secondary);
+        cursor: pointer;
+        transition: 0.2s;
+      }
+      .settings-sidebar button.active,
+      .settings-sidebar button:hover {
+        background: var(--bg);
+        color: var(--primary);
+        border-right: 4px solid var(--primary);
+      }
+      .settings-content {
+        background: var(--surface);
+        border-radius: var(--radius);
+        padding: 25px;
+        box-shadow: var(--shadow);
+      }
+      .tag-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+      }
+      .tag {
+        background: #e0f2fe;
+        color: var(--primary-dark);
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .tag-remove {
+        cursor: pointer;
+        font-weight: bold;
+        color: var(--danger);
+      }
+      .settings-input-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+      .settings-input-group .form-control {
+        flex: 1;
+      }
+      .setting-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .setting-row:last-child {
+        border-bottom: none;
+      }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 45px;
+        height: 24px;
+      }
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+      }
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #cbd5e1;
+        transition: 0.4s;
+        border-radius: 24px;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 3px;
+        bottom: 3px;
+        background-color: white;
+        transition: 0.4s;
+        border-radius: 50%;
+      }
+      input:checked + .slider {
+        background-color: var(--primary);
+      }
+      input:checked + .slider:before {
+        transform: translateX(21px);
+      }
 
       /* Print Styles */
       #printable-area,
@@ -647,6 +765,31 @@
           overflow-x: auto;
         }
       }
+      /* FLOATING SAVE BUTTON */
+      .floating-save {
+        position: fixed;
+        bottom: 30px;
+        left: 90%;
+        transform: translateX(-50%);
+        z-index: 500;
+        padding: 16px 40px;
+        font-size: 1rem;
+        border-radius: 25px;
+        box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5);
+        animation: floatPulse 2s ease-in-out infinite;
+      }
+      .floating-save.hidden {
+        display: none !important;
+      }
+      @keyframes floatPulse {
+        0%,
+        100% {
+          box-shadow: 0 8px 25px rgba(14, 165, 233, 0.5);
+        }
+        50% {
+          box-shadow: 0 8px 35px rgba(14, 165, 233, 0.8);
+        }
+      }
     </style>
   </head>
   <body>
@@ -659,6 +802,15 @@
     </div>
     <!-- TOAST NOTIFICATION -->
     <div id="toast" class="toast"></div>
+
+    <!-- FLOATING SAVE BUTTON -->
+    <button
+      id="floating-save-btn"
+      class="btn btn-primary floating-save hidden"
+      onclick="app.saveScores()"
+    >
+      💾 Save Scores
+    </button>
 
     <!-- AUTH VIEW -->
     <div id="view-auth" class="auth-wrapper">
@@ -834,6 +986,20 @@
               Role
             </div>
           </div>
+          <button
+            id="btn-open-settings"
+            class="hidden"
+            style="
+              background: none;
+              border: none;
+              font-size: 1.5rem;
+              cursor: pointer;
+            "
+            onclick="app.openSettings()"
+            title="Settings"
+          >
+            ⚙️
+          </button>
           <button class="btn btn-outline btn-sm" onclick="app.logout()">
             Logout
           </button>
@@ -893,7 +1059,7 @@
           </div>
         </section>
 
-        <!-- SCORE ENTRY -->
+        <!-- NEW SCORE ENTRY SECTION WITH ATTENDANCE & OTHER RECORDS -->
         <section id="section-scores" class="hidden">
           <div class="breadcrumbs">
             <span onclick="app.goHome()">Home</span> >
@@ -906,13 +1072,17 @@
               style="margin-bottom: 20px"
             >
               <div>
-                <h2>Score Entry</h2>
+                <h2 id="score-entry-title">Score Entry</h2>
                 <p class="text-secondary" id="score-subtitle">
                   Subject Assessment
                 </p>
               </div>
               <div class="flex gap-2">
-                <button class="btn btn-outline" onclick="app.openPrintModal()">
+                <button
+                  id="print-btn"
+                  class="btn btn-outline"
+                  onclick="app.openPrintModal()"
+                >
                   🖨️ Print Result
                 </button>
                 <button class="btn btn-primary" onclick="app.saveScores()">
@@ -920,6 +1090,143 @@
                 </button>
               </div>
             </div>
+
+            <!-- NEW: ATTENDANCE SECTION -->
+            <div
+              id="attendance-section"
+              style="
+                background: #f0f9ff;
+                border: 1px solid #bae6fd;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 20px;
+              "
+            >
+              <h4
+                style="
+                  margin: 0 0 15px 0;
+                  color: var(--primary-dark);
+                  font-size: 1rem;
+                "
+              >
+                📋 Attendance Record
+              </h4>
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(4, 1fr);
+                  gap: 15px;
+                "
+              >
+                <div class="form-group" style="margin: 0">
+                  <label style="font-size: 0.85rem; color: var(--secondary)"
+                    >Times School Opened</label
+                  >
+                  <input
+                    type="number"
+                    id="att-school-opened"
+                    class="form-control"
+                    min="0"
+                    placeholder="0"
+                  />
+                </div>
+                <div class="form-group" style="margin: 0">
+                  <label style="font-size: 0.85rem; color: var(--secondary)"
+                    >Days Present</label
+                  >
+                  <input
+                    type="number"
+                    id="att-present"
+                    class="form-control"
+                    min="0"
+                    placeholder="0"
+                  />
+                </div>
+                <div class="form-group" style="margin: 0">
+                  <label style="font-size: 0.85rem; color: var(--secondary)"
+                    >Times Punctual</label
+                  >
+                  <input
+                    type="number"
+                    id="att-punctual"
+                    class="form-control"
+                    min="0"
+                    placeholder="0"
+                  />
+                </div>
+                <div class="form-group" style="margin: 0">
+                  <label style="font-size: 0.85rem; color: var(--secondary)"
+                    >Days Absent</label
+                  >
+                  <input
+                    type="number"
+                    id="att-absent"
+                    class="form-control"
+                    min="0"
+                    placeholder="0"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- NEW: OTHER RECORDS SECTION -->
+            <div
+              id="records-section"
+              style="
+                background: #fef3c7;
+                border: 1px solid #fcd34d;
+                border-radius: 12px;
+                padding: 20px;
+                margin-bottom: 20px;
+              "
+            >
+              <h4 style="margin: 0 0 15px 0; color: #92400e; font-size: 1rem">
+                🏆 Other Records
+              </h4>
+              <div
+                style="
+                  display: grid;
+                  grid-template-columns: repeat(3, 1fr);
+                  gap: 15px;
+                "
+              >
+                <div class="form-group" style="margin: 0">
+                  <label style="font-size: 0.85rem; color: var(--secondary)"
+                    >Organized Activities</label
+                  >
+                  <input
+                    type="text"
+                    id="rec-activities"
+                    class="form-control"
+                    placeholder="e.g. Sports Day, Debate"
+                  />
+                </div>
+                <div class="form-group" style="margin: 0">
+                  <label style="font-size: 0.85rem; color: var(--secondary)"
+                    >Club/Society</label
+                  >
+                  <input
+                    type="text"
+                    id="rec-club"
+                    class="form-control"
+                    placeholder="e.g. Drama Club"
+                  />
+                </div>
+                <div class="form-group" style="margin: 0">
+                  <label style="font-size: 0.85rem; color: var(--secondary)"
+                    >Office Held</label
+                  >
+                  <input
+                    type="text"
+                    id="rec-office"
+                    class="form-control"
+                    placeholder="e.g. Class Prefect"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- SCORES FORM (MODIFIED - No Grade/Remark) -->
             <form id="score-form">
               <div
                 style="
@@ -937,9 +1244,25 @@
                 <div>Subject</div>
                 <div style="text-align: center">CA (40)</div>
                 <div style="text-align: center">Exam (60)</div>
-                <div style="text-align: center">Total</div>
+                <div style="text-align: center">Total (100)</div>
               </div>
               <div id="score-rows-container"></div>
+
+              <!-- MID-TERM INPUT (Hidden by default, shown when mode=midterm) -->
+              <div
+                id="midterm-container"
+                class="hidden"
+                style="
+                  margin-top: 20px;
+                  border-top: 2px dashed var(--border);
+                  padding-top: 20px;
+                "
+              >
+                <h4 style="color: var(--success); margin-bottom: 15px">
+                  📊 Mid-Term Scores (out of 100)
+                </h4>
+                <div id="midterm-rows-container"></div>
+              </div>
             </form>
           </div>
         </section>
@@ -963,6 +1286,87 @@
                 </thead>
                 <tbody id="teachers-tbody"></tbody>
               </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- SETTING CONFIGURATION -->
+        <section id="section-settings" class="hidden">
+          <div class="breadcrumbs">
+            <span onclick="app.goHome()">Home</span> >
+            <span class="font-bold">Setting Configuration</span>
+          </div>
+          <div class="settings-wrapper">
+            <div class="settings-sidebar">
+              <button
+                class="active"
+                onclick="app.switchSettingsTab('classes', this)"
+              >
+                🏫 Manage Classes
+              </button>
+              <button onclick="app.switchSettingsTab('subjects', this)">
+                📚 Subject Allocation
+              </button>
+              <button onclick="app.switchSettingsTab('reports', this)">
+                📄 Report Config
+              </button>
+            </div>
+            <div class="settings-content">
+              <div id="settings-tab-classes">
+                <h3 style="margin-bottom: 15px">Class Management</h3>
+                <div class="settings-input-group">
+                  <input
+                    type="text"
+                    id="new-class-input"
+                    class="form-control"
+                    placeholder="Enter new class name"
+                  />
+                  <button
+                    class="btn btn-primary btn-sm"
+                    onclick="app.addNewClass()"
+                  >
+                    Add Class
+                  </button>
+                </div>
+                <div id="class-list-settings"></div>
+              </div>
+              <div id="settings-tab-subjects" class="hidden">
+                <h3 style="margin-bottom: 15px">Subject Allocation</h3>
+                <div class="form-group">
+                  <label>Select Class</label
+                  ><select
+                    id="subject-class-select"
+                    class="form-control"
+                    onchange="app.updateSubjectTags()"
+                  ></select>
+                </div>
+                <div class="settings-input-group">
+                  <input
+                    type="text"
+                    id="new-subject-input"
+                    class="form-control"
+                    placeholder="Enter subject name"
+                  /><button
+                    class="btn btn-primary btn-sm"
+                    onclick="app.addSubjectToClass()"
+                  >
+                    Add Subject
+                  </button>
+                </div>
+                <div id="subject-tags-container" class="tag-container"></div>
+              </div>
+              <div id="settings-tab-reports" class="hidden">
+                <h3 style="margin-bottom: 15px">Report Configuration</h3>
+                <div class="form-group">
+                  <label>Select Class</label
+                  ><select
+                    id="report-class-select"
+                    class="form-control"
+                    onchange="app.updateReportUI()"
+                  ></select>
+                </div>
+                <div id="report-config-options"></div>
+              </div>
             </div>
           </div>
         </section>
@@ -994,210 +1398,6 @@
                 </thead>
                 <tbody id="perf-tbody"></tbody>
               </table>
-            </div>
-          </div>
-        </section>
-
-        <!-- FEE MANAGEMENT -->
-        <section id="section-fees" class="hidden">
-          <div class="breadcrumbs">
-            <span onclick="app.goHome()">Home</span> >
-            <span class="font-bold">Admin Center</span>
-          </div>
-          <!-- Tabs -->
-          <div class="fee-main-tabs">
-            <button
-              class="fee-main-tab-btn active"
-              onclick="app.switchFeeSection('fees')"
-            >
-              💰 School Fees
-            </button>
-            <button
-              class="fee-main-tab-btn"
-              onclick="app.switchFeeSection('books')"
-            >
-              📚 Books & Uniforms
-            </button>
-            <button
-              class="fee-main-tab-btn"
-              onclick="app.switchFeeSection('register')"
-            >
-              🎓 Student Register
-            </button>
-          </div>
-
-          <!-- SECTION 1: SCHOOL FEES -->
-          <div id="fee-section-fees">
-            <div class="fee-sub-tabs">
-              <button
-                class="fee-sub-tab-btn active"
-                onclick="app.switchFeeSubTab('collect')"
-              >
-                Collect Fees
-              </button>
-              <button
-                class="fee-sub-tab-btn"
-                onclick="app.switchFeeSubTab('settings')"
-              >
-                Fee Settings
-              </button>
-            </div>
-            <!-- TAB: COLLECT -->
-            <div id="fee-tab-collect">
-              <div class="fee-summary-cards">
-                <div class="fee-stat-card">
-                  <div class="fee-stat-title">Total Expected</div>
-                  <div class="fee-stat-value" id="fee-total-expected">₦0</div>
-                </div>
-                <div class="fee-stat-card income">
-                  <div class="fee-stat-title">Total Collected</div>
-                  <div class="fee-stat-value" id="fee-total-collected">₦0</div>
-                </div>
-                <div class="fee-stat-card pending">
-                  <div class="fee-stat-title">Outstanding</div>
-                  <div class="fee-stat-value" id="fee-total-outstanding">
-                    ₦0
-                  </div>
-                </div>
-              </div>
-              <div class="list-container">
-                <div class="list-header">
-                  <div>
-                    <h2>Student Accounts</h2>
-                    <p class="text-sm text-secondary">
-                      Manage payments by class
-                    </p>
-                  </div>
-                  <div class="flex gap-2">
-                    <button
-                      class="btn btn-outline btn-sm"
-                      onclick="app.openDebtorModal()"
-                    >
-                      📄 Print Debtors
-                    </button>
-                    <select
-                      id="feeClassFilter"
-                      class="form-control"
-                      style="width: 200px"
-                      onchange="app.renderFeeDashboard()"
-                    ></select>
-                  </div>
-                </div>
-                <div style="overflow-x: auto">
-                  <table id="fee-table">
-                    <thead>
-                      <tr>
-                        <th>Student</th>
-                        <th>Type</th>
-                        <th>Total Fee</th>
-                        <th>Paid</th>
-                        <th>Balance</th>
-                        <th>Status</th>
-                        <th style="text-align: right">Action</th>
-                      </tr>
-                    </thead>
-                    <tbody id="fee-tbody"></tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-            <!-- TAB: SETTINGS -->
-            <div id="fee-tab-settings" class="hidden">
-              <div class="list-container" style="padding: 20px">
-                <div class="list-header">
-                  <div>
-                    <h2>Class Fee Configuration</h2>
-                    <p class="text-sm text-secondary">
-                      Set standard fees for each class.
-                    </p>
-                  </div>
-                  <button
-                    class="btn btn-primary"
-                    onclick="app.saveFeeSettings()"
-                  >
-                    Save Configuration
-                  </button>
-                </div>
-                <!-- FIX: Updated Headers to match JS Logic -->
-                <div style="max-height: 500px; overflow-y: auto">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Class</th>
-                        <th>School Fee (₦)</th>
-                        <th>Reg Fee (₦)</th>
-                        <th>Teacher Subsidy (₦)</th>
-                      </tr>
-                    </thead>
-                    <tbody id="fee-settings-tbody"></tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- SECTION 2: BOOKS -->
-          <div id="fee-section-books" class="hidden">
-            <div class="list-container">
-              <div class="list-header">
-                <div>
-                  <h2>Books & Uniforms Distribution</h2>
-                  <p class="text-sm text-secondary">
-                    Select class to mark items.
-                  </p>
-                </div>
-                <div class="flex gap-2">
-                  <button
-                    class="btn btn-outline btn-sm"
-                    onclick="app.openInventoryModal()"
-                  >
-                    📝 Edit Inventory
-                  </button>
-                  <select
-                    id="bookClassFilter"
-                    class="form-control"
-                    style="width: 200px"
-                    onchange="app.loadBooksMatrix()"
-                  ></select>
-                </div>
-              </div>
-              <div style="overflow-x: auto">
-                <table id="books-table">
-                  <thead id="books-thead"></thead>
-                  <tbody id="books-tbody"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-
-          <!-- SECTION 3: REGISTER -->
-          <div id="fee-section-register" class="hidden">
-            <div class="list-container" style="padding: 20px">
-              <div class="list-header">
-                <div>
-                  <h2>Student Registration</h2>
-                  <p class="text-sm text-secondary">View all students.</p>
-                </div>
-                <button
-                  class="btn btn-primary"
-                  onclick="app.openAddStudentModal()"
-                >
-                  + Add New Student
-                </button>
-              </div>
-              <div style="overflow-x: auto">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Adm No</th>
-                      <th>Student Name</th>
-                      <th>Class</th>
-                      <th>Gender</th>
-                    </tr>
-                  </thead>
-                  <tbody id="register-tbody"></tbody>
-                </table>
-              </div>
             </div>
           </div>
         </section>
@@ -1498,6 +1698,39 @@
         </div>
       </div>
     </div>
+    <!-- MID-TERM PRINT MODAL -->
+    <div id="modal-print-midterm" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Print Mid-Term Report</h3>
+        <div class="form-group">
+          <label>Academic Session</label>
+          <input
+            type="text"
+            id="printMidSession"
+            value="2024/2025"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <label>Term</label>
+          <select id="printMidTerm" class="form-control">
+            <option>First Term</option>
+            <option>Second Term</option>
+            <option>Third Term</option>
+          </select>
+        </div>
+        <div class="flex justify-between" style="margin-top: 20px">
+          <button class="btn btn-outline" onclick="app.closeModals()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="app.executeMidPrint()">
+            Print Preview
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="printable-area"></div>
 
     <div id="printable-area"></div>
     <div id="printable-debtors"></div>
@@ -1756,6 +1989,49 @@
         async addFee(data) {
           return await this._call({ action: "addFee", ...data });
         },
+        async getSystemConfig() {
+          const res = await this._call({ action: "getSystemConfig" });
+          return res.status === "success" ? res.data : null;
+        },
+        async saveSystemConfig(data) {
+          return await this._call({ action: "saveSystemConfig", ...data });
+        },
+        /* ADD TO DataService object */
+        async saveFullStudentData(data) {
+          return await this._call({
+            action: "saveFullStudentData",
+            adminNo: data.adminNo,
+            scores: data.scores,
+            attendance: data.attendance,
+            records: data.records,
+            mode: data.mode,
+          });
+        },
+      };
+      const SettingsService = {
+        data: null,
+        async load() {
+          app.toggleLoader(true);
+          this.data = await DataService.getSystemConfig();
+          if (!this.data)
+            this.data = { classes: CLASSES, subjects: SUBJECTS, config: {} }; // Fallback
+          app.toggleLoader(false);
+        },
+        getActiveClasses() {
+          return this.data?.classes || CLASSES;
+        },
+        getActiveSubjects(cls) {
+          if (!this.data?.subjects) return SUBJECTS.Primary; // fallback
+          return this.data.subjects[cls] || SUBJECTS.Primary;
+        },
+        getReportConfig(cls) {
+          return (
+            this.data?.config?.[cls] || {
+              examStructure: "ca_exam",
+              enableMidTerm: true,
+            }
+          );
+        },
       };
 
       const SCRIPT_URL =
@@ -1772,12 +2048,14 @@
 
         init: function () {
           AssetService.init();
+          SettingsService.load(); // Load settings in background
+
           const populateSel = (id) => {
             const sel = document.getElementById(id);
             if (!sel) return;
             sel.innerHTML =
               '<option value="" disabled selected>Select</option>';
-            CLASSES.forEach(
+            SettingsService.getActiveClasses().forEach(
               (c) => (sel.innerHTML += `<option value="${c}">${c}</option>`),
             );
           };
@@ -1970,7 +2248,7 @@
           app.toggleLoader(false);
           const tb = document.getElementById("fee-settings-tbody");
           tb.innerHTML = "";
-          CLASSES.forEach((c) => {
+          SettingsService.getActiveClasses().forEach((c) => {
             const config = cfg[c] || {
               schoolFee: 0,
               regFee: 0,
@@ -2270,7 +2548,7 @@
         openInventoryModal: () => {
           const sel = document.getElementById("invClassSelect");
           sel.innerHTML = "";
-          CLASSES.forEach(
+          SettingsService.getActiveClasses().forEach(
             (c) => (sel.innerHTML += `<option value="${c}">${c}</option>`),
           );
           sel.value =
@@ -2325,7 +2603,7 @@
         openDebtorModal: () => {
           const sel = document.getElementById("debtorsClassSelect");
           sel.innerHTML = '<option value="ALL">All Classes</option>';
-          CLASSES.forEach(
+          SettingsService.getActiveClasses().forEach(
             (c) => (sel.innerHTML += `<option value="${c}">${c}</option>`),
           );
           document.getElementById("modal-debtors").style.display = "flex";
@@ -2430,6 +2708,9 @@
             app.state.currentUser.name;
           document.getElementById("user-role").textContent =
             app.state.currentUser.role;
+          document
+            .getElementById("btn-open-settings")
+            .classList.toggle("hidden", app.state.currentUser.role !== "Admin");
           try {
             const teachers = await DataService.getTeachers();
             app.state.teachersList = teachers;
@@ -2438,19 +2719,32 @@
           }
           app.renderClassGrid();
         },
+        /* NEW CODE - Updated renderClassGrid */
         renderClassGrid: () => {
           const grid = document.getElementById("class-grid");
           grid.innerHTML = "";
           const role = app.state.currentUser.role;
+
           if (role === "Admin" || role === "Head Teacher") {
             const mkCard = (t, i, s, o) =>
               `<div class="card" onclick="${o}"><div class="card-content"><div class="card-icon">${t}</div><div class="card-title">${i}</div><div class="card-meta">${s}</div></div><div class="card-footer"><button class="btn btn-primary btn-sm w-full">Open</button></div></div>`;
+
+            // Renamed: Manage Classes → Manage Exam Classes
             grid.innerHTML += mkCard(
-              "🏫",
-              "Manage Classes",
-              "View, Add or Edit Students",
-              "app.loadStudentList(null,'Admin')",
+              "📝",
+              "Manage Exam Classes",
+              "View, Add or Edit Students for Exam Entry",
+              "app.loadStudentList(null,'exam')",
             );
+
+            // NEW: Manage Mid-Term Classes (from teacher.html)
+            grid.innerHTML += mkCard(
+              "📊",
+              "Manage Mid-Term Classes",
+              "Enter Mid-Term Scores by Class",
+              "app.loadStudentList(null,'midterm')",
+            );
+
             grid.innerHTML += mkCard(
               "👥",
               "All Teachers",
@@ -2463,20 +2757,25 @@
               "Top performers",
               "app.loadPerformance()",
             );
-            grid.innerHTML += mkCard(
-              "💰",
-              "Fee Management",
-              "Fees, Inventory & Register",
-              "app.loadFees()",
-            );
+
+            // REMOVED: Fee Management card entirely
+
             grid.innerHTML += `<div style="grid-column:1/-1; margin-top:40px; margin-bottom:10px; border-bottom:2px dashed var(--border); padding-bottom:15px;"><span style="background:var(--bg); padding:0 10px; color:var(--secondary); font-weight:bold; font-size:1.1rem;">Class Directory</span></div>`;
+
+            // Admin sees all classes with Exam/Mid-Term options
+            SettingsService.getActiveClasses().forEach((c) => {
+              grid.innerHTML += `<div class="card" onclick="app.loadStudentList('${c}','exam')"><div class="card-content"><div class="card-icon">🏫</div><div class="card-title">${c}</div><div class="card-meta">Exam Entry • Teacher: ${app.getClassTeacherName(c)}</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full">Exam</button></div></div>`;
+            });
+          } else if (role === "Class Teacher") {
+            // TEACHER VIEW ENHANCEMENT: Show BOTH Exam and Mid-Term cards for assigned class
+            const assignedClass = app.state.currentUser.assignedClass;
+
+            // Exam Card
+            grid.innerHTML += `<div class="card" onclick="app.loadStudentList('${assignedClass}','exam')"><div class="card-content"><div class="card-icon">📝</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:var(--primary);">(Exam)</span></div><div class="card-meta">Enter Exam Scores (CA + Exam)</div></div><div class="card-footer"><button class="btn btn-primary btn-sm w-full">Open Exam</button></div></div>`;
+
+            // Mid-Term Card (NEW)
+            grid.innerHTML += `<div class="card" onclick="app.loadStudentList('${assignedClass}','midterm')"><div class="card-content"><div class="card-icon">📊</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:var(--success);">(Mid-Term)</span></div><div class="card-meta">Enter Mid-Term Scores</div></div><div class="card-footer"><button class="btn btn-success btn-sm w-full">Open Mid-Term</button></div></div>`;
           }
-          (role === "Class Teacher"
-            ? [app.state.currentUser.assignedClass]
-            : CLASSES
-          ).forEach((c) => {
-            grid.innerHTML += `<div class="card" onclick="app.loadStudentList('${c}')"><div class="card-content"><div class="card-icon">🏫</div><div class="card-title">${c}</div><div class="card-meta">Class Teacher: ${app.getClassTeacherName(c)}</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full">Manage</button></div></div>`;
-          });
         },
         getClassTeacherName: (cls) =>
           app.state.currentUser.role === "Class Teacher" &&
@@ -2521,28 +2820,40 @@
             )
             .join("");
         },
-        loadStudentList: async (cn) => {
+        /* NEW CODE - Updated to handle mode parameter */
+        loadStudentList: async (cn, mode = "exam") => {
           app.state.currentClass = cn;
+          app.state.entryMode = mode; // Store mode: 'exam' or 'midterm'
           app.showSection("section-students");
+
           if (!cn) {
-            document.getElementById("crumb-class-name").textContent =
-              "All Classes";
-            document.getElementById("list-title").textContent = `All Students`;
+            const modeLabel =
+              mode === "midterm" ? "Mid-Term Classes" : "Exam Classes";
+            document.getElementById("crumb-class-name").textContent = modeLabel;
+            document.getElementById("list-title").textContent =
+              `All Classes (${modeLabel})`;
           } else {
             document.getElementById("crumb-class-name").textContent = cn;
+            const modeLabel =
+              mode === "midterm" ? "Mid-Term Entry" : "Exam Entry";
             document.getElementById("list-title").textContent =
-              `${cn} Students`;
+              `${cn} - ${modeLabel}`;
           }
+
           app.toggleLoader(true);
           const s = await DataService.getStudents(cn || "");
           app.toggleLoader(false);
           app.state.displayedStudents = s;
           document.getElementById("student-count").textContent =
             `${s.length} Students`;
+
+          // Update button text based on mode
+          const btnText = mode === "midterm" ? "Mid-Term Scores" : "Scores";
+
           document.getElementById("students-tbody").innerHTML = s
             .map(
               (std) =>
-                `<tr><td><b>${std.id}</b></td><td>${std.name}</td><td><span class="badge" style="background:${std.gender === "Male" ? "#e0f2fe" : "#fce7f3"}; color:${std.gender === "Male" ? "#0369a1" : "#be185d"}">${std.gender}</span></td><td style="text-align:right;"><div class="flex gap-2 justify-end"><button class="btn btn-outline btn-sm" onclick="app.openEditStudentModal('${std.id}')">Edit</button><button class="btn btn-primary btn-sm" onclick="app.loadScoreEntry('${std.id}')">Scores</button></div></td></tr>`,
+                `<tr><td><b>${std.id}</b></td><td>${std.name}</td><td><span class="badge" style="background:${std.gender === "Male" ? "#e0f2fe" : "#fce7f3"}; color:${std.gender === "Male" ? "#0369a1" : "#be185d"}">${std.gender}</span></td><td style="text-align:right;"><div class="flex gap-2 justify-end"><button class="btn btn-outline btn-sm" onclick="app.openEditStudentModal('${std.id}')">Edit</button><button class="btn btn-primary btn-sm" onclick="app.loadScoreEntry('${std.id}')">${btnText}</button></div></td></tr>`,
             )
             .join("");
         },
@@ -2569,19 +2880,76 @@
           app.showSection("section-scores");
           app.generateScoreForm(s);
         },
+        /* NEW CODE - With Attendance, Other Records, and Mid-Term support */
         generateScoreForm: (s) => {
           const c = document.getElementById("score-rows-container");
+          const mc = document.getElementById("midterm-rows-container");
           c.innerHTML = "";
-          let sub = [];
-          if (s.class.startsWith("Playgroup")) sub = SUBJECTS.Playgroup;
-          else if (s.class.startsWith("Nursery")) sub = SUBJECTS.Nursery;
-          else if (s.class.startsWith("KG")) sub = SUBJECTS.KG;
-          else sub = SUBJECTS.Primary;
-          sub.forEach((subj) => {
-            const sc = s.scores[subj] || { ca: "", exam: "" };
-            const tot = (parseInt(sc.ca) || 0) + (parseInt(sc.exam) || 0);
-            c.innerHTML += `<div class="score-grid"><div class="score-label">${subj}</div><input type="number" min="0" max="40" class="score-input input-ca" placeholder="CA" value="${sc.ca}" oninput="app.calcRowTotal(this)"><input type="number" min="0" max="60" class="score-input input-exam" placeholder="Exam" value="${sc.exam}" oninput="app.calcRowTotal(this)"><div class="total-score">${tot}</div></div>`;
-          });
+          mc.innerHTML = "";
+
+          let sub = SettingsService.getActiveSubjects(s.class);
+
+          const mode = app.state.entryMode || "exam";
+          const titleEl = document.getElementById("score-entry-title");
+          titleEl.textContent =
+            mode === "midterm" ? "Mid-Term Score Entry" : "Exam Score Entry";
+
+          // Toggle Attendance, Records, and Print Button based on mode
+          const attSection = document.getElementById("attendance-section");
+          const recSection = document.getElementById("records-section");
+          const printBtn = document.getElementById("print-btn");
+
+          if (mode === "midterm") {
+            attSection.classList.add("hidden");
+            recSection.classList.add("hidden");
+            printBtn.textContent = "🖨️ Print Mid-Term";
+            printBtn.onclick = () =>
+              (document.getElementById("modal-print-midterm").style.display =
+                "flex");
+
+            const midtermContainer =
+              document.getElementById("midterm-container");
+            midtermContainer.classList.remove("hidden");
+            sub.forEach((subj) => {
+              const sc = s.midTermScores[subj] || { total: "" };
+              const mtVal = sc.total || "";
+              mc.innerHTML += `<div class="score-grid"><div class="score-label">${subj}</div><input type="number" min="0" max="100" class="score-input input-midterm" placeholder="Score (100)" value="${mtVal}" style="grid-column: span 3;"></div></div>`;
+            });
+          } else {
+            attSection.classList.remove("hidden");
+            recSection.classList.remove("hidden");
+            printBtn.textContent = "🖨️ Print Result";
+            printBtn.onclick = () => app.openPrintModal();
+
+            const midtermContainer =
+              document.getElementById("midterm-container");
+            midtermContainer.classList.add("hidden");
+            sub.forEach((subj) => {
+              const sc = s.scores[subj] || { ca: "", exam: "" };
+              const tot = (parseInt(sc.ca) || 0) + (parseInt(sc.exam) || 0);
+              c.innerHTML += `<div class="score-grid"><div class="score-label">${subj}</div><input type="number" min="0" max="40" class="score-input input-ca" placeholder="CA" value="${sc.ca}" oninput="app.calcRowTotal(this)"><input type="number" min="0" max="60" class="score-input input-exam" placeholder="Exam" value="${sc.exam}" oninput="app.calcRowTotal(this)"><div class="total-score">${tot}</div></div>`;
+            });
+          }
+
+          // Load Attendance data if exists
+          const attData = s.attendance || {};
+          document.getElementById("att-school-opened").value =
+            attData.schoolOpened || "";
+          document.getElementById("att-present").value = attData.present || "";
+          document.getElementById("att-punctual").value =
+            attData.punctual || "";
+          document.getElementById("att-absent").value = attData.absent || "";
+
+          // Load Other Records if exists
+          const recData = s.records || {};
+          document.getElementById("rec-activities").value =
+            recData.activities || "";
+          document.getElementById("rec-club").value = recData.club || "";
+          document.getElementById("rec-office").value = recData.office || "";
+
+          document
+            .getElementById("floating-save-btn")
+            .classList.remove("hidden");
         },
         calcRowTotal: (i) => {
           const r = i.closest(".score-grid");
@@ -2589,26 +2957,76 @@
             (parseInt(r.querySelector(".input-ca").value) || 0) +
             (parseInt(r.querySelector(".input-exam").value) || 0);
         },
+        /* NEW CODE - Saves Scores + Attendance + Other Records */
         saveScores: async () => {
-          if (!confirm("Save scores?")) return;
           const rows = document.querySelectorAll(".score-grid");
           const upd = {};
-          let subs = [];
           const cls = app.state.currentStudent.class;
-          if (cls.startsWith("Playgroup")) subs = SUBJECTS.Playgroup;
-          else if (cls.startsWith("Nursery")) subs = SUBJECTS.Nursery;
-          else if (cls.startsWith("KG")) subs = SUBJECTS.KG;
-          else subs = SUBJECTS.Primary;
-          rows.forEach((r, i) => {
-            const ca = r.querySelector(".input-ca").value;
-            const ex = r.querySelector(".input-exam").value;
-            if (ca !== "" || ex !== "")
-              upd[subs[i]] = { ca: parseInt(ca) || 0, exam: parseInt(ex) || 0 };
-          });
+          let subs = SettingsService.getActiveSubjects(cls);
+
+          if (mode === "midterm") {
+            // Save mid-term scores
+            const mtInputs = document.querySelectorAll(".input-midterm");
+            mtInputs.forEach((input, i) => {
+              if (subs[i] && input.value !== "") {
+                upd[subs[i]] = {
+                  ca: 0,
+                  exam: 0,
+                  total: parseInt(input.value) || 0,
+                };
+              }
+            });
+          } else {
+            // Save exam scores
+            rows.forEach((r, i) => {
+              if (i >= subs.length) return;
+              const ca =
+                r.querySelector(".input-ca")?.value ||
+                r.querySelector("input")?.value;
+              const ex = r.querySelector(".input-exam")?.value;
+              if (ca !== "" || ex !== "") {
+                upd[subs[i]] = {
+                  ca: parseInt(ca) || 0,
+                  exam: parseInt(ex) || 0,
+                };
+              }
+            });
+          }
+
+          // Build complete payload with attendance and records
+          const payload = {
+            adminNo: app.state.currentStudent.id,
+            scores: upd,
+            // NEW: Attendance data
+            attendance: {
+              schoolOpened:
+                parseInt(document.getElementById("att-school-opened").value) ||
+                0,
+              present:
+                parseInt(document.getElementById("att-present").value) || 0,
+              punctual:
+                parseInt(document.getElementById("att-punctual").value) || 0,
+              absent:
+                parseInt(document.getElementById("att-absent").value) || 0,
+            },
+            // NEW: Other records
+            records: {
+              activities: document.getElementById("rec-activities").value,
+              club: document.getElementById("rec-club").value,
+              office: document.getElementById("rec-office").value,
+            },
+            mode: mode,
+          };
+
           app.toggleLoader(true);
-          await DataService.saveScores(app.state.currentStudent.id, upd);
+          const res = await DataService.saveFullStudentData(payload);
           app.toggleLoader(false);
-          app.showToast("Scores Saved", "success");
+
+          if (res.status === "success") {
+            app.showToast("All Data Saved Successfully", "success");
+          } else {
+            app.showToast("Error saving data", "error");
+          }
         },
         openAddStudentModal: () => {
           const g = document.getElementById("modal-class-group");
@@ -2708,54 +3126,208 @@
           app.closeModals();
           setTimeout(() => window.print(), 500);
         },
+        /* NEW CODE - No Grade/Remark, includes Attendance & Other Records */
         generateReportHTML: (sess, term, nt) => {
           const s = app.state.currentStudent;
-          let sub = [];
-          if (s.class.startsWith("Playgroup")) sub = SUBJECTS.Playgroup;
-          else if (s.class.startsWith("Nursery")) sub = SUBJECTS.Nursery;
-          else if (s.class.startsWith("KG")) sub = SUBJECTS.KG;
-          else sub = SUBJECTS.Primary;
+          let sub = SettingsService.getActiveSubjects(s.class);
+
           let rows = "",
             gt = 0,
             sc = 0;
+
+          // Generate score rows WITHOUT Grade and Remark columns
           sub.forEach((x) => {
             const scObj = s.scores[x] || { ca: 0, exam: 0 };
             const tot = (scObj.ca || 0) + (scObj.exam || 0);
-            const gr = app.getGrade(tot);
-            rows += `<tr><td style="text-align:left;font-weight:bold;">${x}</td><td>${scObj.ca}</td><td>${scObj.exam}</td><td>${tot}</td><td>${gr}</td><td>${app.getRemark(gr)}</td></tr>`;
+            rows += `<tr>
+      <td style="text-align:left;font-weight:bold;">${x}</td>
+      <td>${scObj.ca || "-"}</td>
+      <td>${scObj.exam || "-"}</td>
+      <td style="font-weight:bold;">${tot || "-"}</td>
+    </tr>`;
             if (scObj.ca || scObj.exam) {
               gt += tot;
               sc++;
             }
           });
+
           const avg = sc ? Math.round(gt / sc) : 0;
+
+          // Get Attendance data
+          const att = s.attendance || {};
+          const rec = s.records || {};
+
           const p = document.getElementById("printable-area");
           p.innerHTML = `
-              <div class="report-card" style="font-family: 'Times New Roman', serif; padding: 20px; color: #000;">
-                 <div class="rc-header" style="text-align: center; border-bottom: 3px double #000; margin-bottom: 20px; padding-bottom: 10px;">
-                    <div class="rc-header"><div class="rc-title" style="font-size: 24pt; font-weight: bold; text-transform: uppercase; margin: 0;">Nifty Steps Nursery & Primary School</div><div>5/9 Kunle Shobanjo Street, Igbo Oluwo Estate, Ikorodu, Lagos State</div></div>
-                    <div style="margin-top:5px;font-weight:bold;">${sess} - ${term.toUpperCase()} REPORT SHEET</div>
-                 </div>
-                 <div class="rc-info-row" style="display: flex; justify-content: space-between; border: 1px solid #000; padding: 10px; margin-bottom: 20px; font-size: 12pt;">
-                    <div><strong>Name:</strong> ${s.name.toUpperCase()}</div>
-                    <div><strong>Class:</strong> ${s.class}</div>
-                    <div><strong>Adm No:</strong> ${s.id}</div>
-                 </div>
-                 <table class="rc-table" style="width: 100%; border-collapse: collapse; margin-bottom: 20px; font-size: 11pt;">
-                    <thead><tr><th style="width:35%;">SUBJECTS</th><th>CA (40)</th><th>EXAM (60)</th><th>TOTAL (100)</th><th>GRADE</th><th>REMARK</th></tr></thead>
-                    <tbody>${rows}<tr style="background:#f0f0f0;font-weight:bold;"><td colspan="3" style="text-align:right;">GRAND TOTAL / AVERAGE:</td><td>${gt}</td><td>-</td><td>${avg}%</td></tr></tbody>
-                 </table>
-                 <div style="display:flex;justify-content:space-between;margin-top:30px;font-size:12pt;">
-                    <div style="width:48%;border:1px solid #000;padding:10px;"><strong>Teacher's Comment:</strong><br>${app.getTeacherComment(avg)}</div>
-                    <div style="width:48%;border:1px solid #000;padding:10px;"><strong>Head Teacher's Comment:</strong><br>Good performance. Keep it up.</div>
-                 </div>
-                 <div class="rc-footer" style="display: flex; justify-content: space-between; margin-top: 50px;">
-                    <div class="rc-signature" style="text-align: center; width: 30%;"><div class="signature-line" style="border-bottom: 1px solid #000; height: 50px; margin-bottom: 5px;"></div><div>Teacher's Signature</div></div>
-                    <div class="rc-signature" style="text-align: center; width: 30%;"><div class="signature-line" style="border-bottom: 1px solid #000; height: 50px; margin-bottom: 5px;"></div><div>Head Teacher's Signature</div></div>
-                 </div>
-                 <div style="margin-top:30px;text-align:center;border:1px dashed #000;padding:10px;"><strong>School Resumes:</strong> ${nt || "Pending"}</div>
-              </div>
-           `;
+    <div class="report-card" style="font-family: 'Times New Roman', serif; padding: 20px; color: #000;">
+       <div class="rc-header" style="text-align: center; border-bottom: 3px double #000; margin-bottom: 20px; padding-bottom: 10px;">
+          <div class="rc-title" style="font-size: 24pt; font-weight: bold; text-transform: uppercase; margin: 0;">Nifty Steps Nursery & Primary School</div>
+          <div>5/9 Kunle Shobanjo Street, Igbo Oluwo Estate, Ikorodu, Lagos State</div>
+          <div style="margin-top:5px;font-weight:bold;">${sess} - ${term.toUpperCase()} REPORT SHEET</div>
+       </div>
+       
+       <div class="rc-info-row" style="display: flex; justify-content: space-between; border: 1px solid #000; padding: 10px; margin-bottom: 20px; font-size: 12pt;">
+          <div><strong>Name:</strong> ${s.name.toUpperCase()}</div>
+          <div><strong>Class:</strong> ${s.class}</div>
+          <div><strong>Adm No:</strong> ${s.id}</div>
+       </div>
+
+       <!-- NEW: ATTENDANCE SECTION -->
+       <div style="margin-top:25px; border: 2px solid #000; padding: 15px;">
+         <h4 style="margin:0 0 10px 0; text-decoration:underline;">ATTENDANCE RECORD</h4>
+         <table style="width:100%; border-collapse:collapse; font-size:11pt;">
+           <tr>
+             <td style="border:1px solid #000; padding:8px; font-weight:bold;">Times School Opened</td>
+             <td style="border:1px solid #000; padding:8px; text-align:center;">${att.schoolOpened || "-"}</td>
+             <td style="border:1px solid #000; padding:8px; font-weight:bold;">Days Present</td>
+             <td style="border:1px solid #000; padding:8px; text-align:center;">${att.present || "-"}</td>
+           </tr>
+           <tr>
+             <td style="border:1px solid #000; padding:8px; font-weight:bold;">Times Punctual</td>
+             <td style="border:1px solid #000; padding:8px; text-align:center;">${att.punctual || "-"}</td>
+             <td style="border:1px solid #000; padding:8px; font-weight:bold;">Days Absent</td>
+             <td style="border:1px solid #000; padding:8px; text-align:center;">${att.absent || "-"}</td>
+           </tr>
+         </table>
+       </div>
+
+       <!-- NEW: OTHER RECORDS SECTION -->
+       <div style="margin-top:20px; border: 2px solid #000; padding: 15px;">
+         <h4 style="margin:0 0 10px 0; text-decoration:underline;">OTHER RECORDS</h4>
+         <table style="width:100%; border-collapse:collapse; font-size:11pt;">
+           <tr>
+             <td style="border:1px solid #000; padding:8px; font-weight:bold; width:30%;">Organized Activities</td>
+             <td style="border:1px solid #000; padding:8px;">${rec.activities || "-"}</td>
+           </tr>
+           <tr>
+             <td style="border:1px solid #000; padding:8px; font-weight:bold;">Club/Society</td>
+             <td style="border:1px solid #000; padding:8px;">${rec.club || "-"}</td>
+           </tr>
+           <tr>
+             <td style="border:1px solid #000; padding:8px; font-weight:bold;">Office Held</td>
+             <td style="border:1px solid #000; padding:8px;">${rec.office || "-"}</td>
+           </tr>
+         </table>
+       </div>
+       
+       <!-- SCORE TABLE - NO Grade/Remark Columns -->
+       <table class="rc-table" style="width: 100%; border-collapse: collapse; margin-top:20px; margin-bottom: 20px; font-size: 11pt;">
+          <thead>
+            <tr>
+              <th style="width:35%;">SUBJECTS</th>
+              <th>CA (40)</th>
+              <th>EXAM (60)</th>
+              <th>TOTAL (100)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+            <tr style="background:#f0f0f0;font-weight:bold;">
+              <td colspan="2" style="text-align:right;">GRAND TOTAL / AVERAGE:</td>
+              <td>${gt}</td>
+              <td>${avg}%</td>
+            </tr>
+          </tbody>
+       </table>
+       
+       <!-- Comments Section (Kept) -->
+       <div style="display:flex;justify-content:space-between;margin-top:30px;font-size:12pt;">
+          <div style="width:48%;border:1px solid #000;padding:10px;">
+            <strong>Teacher's Comment:</strong><br>${app.getTeacherComment(avg)}
+          </div>
+          <div style="width:48%;border:1px solid #000;padding:10px;">
+            <strong>Head Teacher's Comment:</strong><br>Good performance. Keep it up.
+          </div>
+       </div>
+       
+       <!-- Signatures -->
+       <div class="rc-footer" style="display: flex; justify-content: space-between; margin-top: 50px;">
+          <div class="rc-signature" style="text-align: center; width: 30%;">
+            <div class="signature-line" style="border-bottom: 1px solid #000; height: 50px; margin-bottom: 5px;"></div>
+            <div>Teacher's Signature</div>
+          </div>
+          <div class="rc-signature" style="text-align: center; width: 30%;">
+            <div class="signature-line" style="border-bottom: 1px solid #000; height: 50px; margin-bottom: 5px;"></div>
+            <div>Head Teacher's Signature</div>
+          </div>
+       </div>
+       
+       <div style="margin-top:30px;text-align:center;border:1px dashed #000;padding:10px;">
+         <strong>School Resumes:</strong> ${nt || "Pending"}
+       </div>
+    </div>
+ `;
+        },
+        executeMidPrint: () => {
+          const s = app.state.currentStudent;
+          const sess = document.getElementById("printMidSession").value;
+          const term = document.getElementById("printMidTerm").value;
+          app.generateMidtermReportHTML(sess, term);
+          app.closeModals();
+          setTimeout(() => window.print(), 500);
+        },
+        generateMidtermReportHTML: (sess, term) => {
+          const s = app.state.currentStudent;
+          let sub = SettingsService.getActiveSubjects(s.class);
+
+          let rows = "";
+          sub.forEach((x) => {
+            const scObj = s.midTermScores[x] || { total: 0 };
+            const tot = scObj.total || "-";
+            rows += `<tr>
+              <td style="text-align:left;font-weight:bold;">${x}</td>
+              <td style="font-weight:bold;">${tot}</td>
+            </tr>`;
+          });
+
+          const p = document.getElementById("printable-area");
+          p.innerHTML = `
+    <div class="report-card" style="font-family: 'Times New Roman', serif; padding: 20px; color: #000;">
+       <div class="rc-header" style="text-align: center; border-bottom: 3px double #000; margin-bottom: 20px; padding-bottom: 10px;">
+          <div class="rc-title" style="font-size: 24pt; font-weight: bold; text-transform: uppercase; margin: 0;">Nifty Steps Nursery & Primary School</div>
+          <div>5/9 Kunle Shobanjo Street, Igbo Oluwo Estate, Ikorodu, Lagos State</div>
+          <div style="margin-top:5px;font-weight:bold;">${sess} - ${term.toUpperCase()} MID-TERM REPORT SHEET</div>
+       </div>
+       
+       <div class="rc-info-row" style="display: flex; justify-content: space-between; border: 1px solid #000; padding: 10px; margin-bottom: 20px; font-size: 12pt;">
+          <div><strong>Name:</strong> ${s.name.toUpperCase()}</div>
+          <div><strong>Class:</strong> ${s.class}</div>
+          <div><strong>Adm No:</strong> ${s.id}</div>
+       </div>
+       
+       <table class="rc-table" style="width: 100%; border-collapse: collapse; margin-top:20px; margin-bottom: 20px; font-size: 11pt;">
+          <thead>
+            <tr>
+              <th style="width:70%;">SUBJECTS</th>
+              <th>TOTAL (100)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows}
+          </tbody>
+       </table>
+       
+       <div style="display:flex;justify-content:space-between;margin-top:30px;font-size:12pt;">
+          <div style="width:48%;border:1px solid #000;padding:10px;">
+            <strong>Teacher's Comment:</strong><br>Average performance so far.
+          </div>
+          <div style="width:48%;border:1px solid #000;padding:10px;">
+            <strong>Head Teacher's Comment:</strong><br>Keep working hard.
+          </div>
+       </div>
+       
+       <div class="rc-footer" style="display: flex; justify-content: space-between; margin-top: 50px;">
+          <div class="rc-signature" style="text-align: center; width: 30%;">
+            <div class="signature-line" style="border-bottom: 1px solid #000; height: 50px; margin-bottom: 5px;"></div>
+            <div>Teacher's Signature</div>
+          </div>
+          <div class="rc-signature" style="text-align: center; width: 30%;">
+            <div class="signature-line" style="border-bottom: 1px solid #000; height: 50px; margin-bottom: 5px;"></div>
+            <div>Head Teacher's Signature</div>
+          </div>
+       </div>
+    </div>
+ `;
         },
         getGrade: (s) => {
           if (s >= 80) return "A";
@@ -2785,6 +3357,174 @@
             .querySelectorAll("main section")
             .forEach((s) => s.classList.add("hidden"));
           document.getElementById(id).classList.remove("hidden");
+          if (id !== "section-scores")
+            document
+              .getElementById("floating-save-btn")
+              .classList.add("hidden");
+        },
+        openSettings: () => {
+          app.showSection("section-settings");
+          app.renderSettingsClasses();
+        },
+        switchSettingsTab: (tab, btn) => {
+          document
+            .querySelectorAll(".settings-sidebar button")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          ["classes", "subjects", "reports"].forEach((t) =>
+            document
+              .getElementById(`settings-tab-${t}`)
+              .classList.toggle("hidden", t !== tab),
+          );
+          if (tab === "subjects") {
+            app.renderSubjectsDropdown();
+            app.updateSubjectTags();
+          }
+          if (tab === "reports") {
+            app.renderReportsDropdown();
+            app.updateReportUI();
+          }
+        },
+        renderSettingsClasses: () => {
+          const classes = SettingsService.getActiveClasses();
+          document.getElementById("class-list-settings").innerHTML = classes
+            .map(
+              (c, i) => `
+            <div class="setting-row">
+              <span style="font-weight:600;">${c}</span>
+              <div class="flex gap-2">
+                <button class="btn btn-outline btn-sm" onclick="app.editClassPrompt(${i})">Edit</button>
+                <button class="btn btn-danger btn-sm" onclick="app.deleteClass(${i})">Delete</button>
+              </div>
+            </div>`,
+            )
+            .join("");
+        },
+        async addNewClass() {
+          const name = document.getElementById("new-class-input").value.trim();
+          if (!name) return;
+          let classes = SettingsService.getActiveClasses();
+          if (classes.includes(name)) return app.showToast("Exists", "error");
+          classes.push(name);
+          SettingsService.data.subjects[name] = ["English"];
+          SettingsService.data.config[name] = {
+            examStructure: "ca_exam",
+            enableMidTerm: true,
+          };
+          app.toggleLoader(true);
+          await DataService.saveSystemConfig(SettingsService.data);
+          app.toggleLoader(false);
+          document.getElementById("new-class-input").value = "";
+          app.renderSettingsClasses();
+          app.showToast("Added", "success");
+        },
+        async editClassPrompt(index) {
+          const classes = SettingsService.getActiveClasses();
+          const newName = prompt("Edit Name:", classes[index]);
+          if (newName && newName.trim()) {
+            const oldName = classes[index];
+            classes[index] = newName.trim();
+            if (SettingsService.data.subjects[oldName]) {
+              SettingsService.data.subjects[newName.trim()] =
+                SettingsService.data.subjects[oldName];
+              delete SettingsService.data.subjects[oldName];
+            }
+            if (SettingsService.data.config[oldName]) {
+              SettingsService.data.config[newName.trim()] =
+                SettingsService.data.config[oldName];
+              delete SettingsService.data.config[oldName];
+            }
+            app.toggleLoader(true);
+            await DataService.saveSystemConfig(SettingsService.data);
+            app.toggleLoader(false);
+            app.renderSettingsClasses();
+            app.showToast("Updated", "success");
+          }
+        },
+        async deleteClass(index) {
+          if (!confirm("Delete class?")) return;
+          let classes = SettingsService.getActiveClasses();
+          const del = classes[index];
+          classes.splice(index, 1);
+          delete SettingsService.data.subjects[del];
+          delete SettingsService.data.config[del];
+          app.toggleLoader(true);
+          await DataService.saveSystemConfig(SettingsService.data);
+          app.toggleLoader(false);
+          app.renderSettingsClasses();
+          app.showToast("Deleted", "success");
+        },
+        renderSubjectsDropdown: () => {
+          const sel = document.getElementById("subject-class-select");
+          sel.innerHTML = "";
+          SettingsService.getActiveClasses().forEach(
+            (c) => (sel.innerHTML += `<option value="${c}">${c}</option>`),
+          );
+        },
+        updateSubjectTags: () => {
+          const cls = document.getElementById("subject-class-select").value;
+          if (!cls) return;
+          const subs = SettingsService.getActiveSubjects(cls);
+          document.getElementById("subject-tags-container").innerHTML = subs
+            .map(
+              (s, i) =>
+                `<div class="tag">${s} <span class="tag-remove" onclick="app.removeSubject(${i})">&times;</span></div>`,
+            )
+            .join("");
+        },
+        async addSubjectToClass() {
+          const cls = document.getElementById("subject-class-select").value;
+          const sub = document.getElementById("new-subject-input").value.trim();
+          if (!cls || !sub) return;
+          if (!SettingsService.data.subjects[cls])
+            SettingsService.data.subjects[cls] = [];
+          if (SettingsService.data.subjects[cls].includes(sub))
+            return app.showToast("Exists", "warning");
+          SettingsService.data.subjects[cls].push(sub);
+          app.toggleLoader(true);
+          await DataService.saveSystemConfig(SettingsService.data);
+          app.toggleLoader(false);
+          document.getElementById("new-subject-input").value = "";
+          app.updateSubjectTags();
+          app.showToast("Added", "success");
+        },
+        async removeSubject(index) {
+          const cls = document.getElementById("subject-class-select").value;
+          SettingsService.data.subjects[cls].splice(index, 1);
+          app.toggleLoader(true);
+          await DataService.saveSystemConfig(SettingsService.data);
+          app.toggleLoader(false);
+          app.updateSubjectTags();
+        },
+        renderReportsDropdown: () => {
+          const sel = document.getElementById("report-class-select");
+          sel.innerHTML = "";
+          SettingsService.getActiveClasses().forEach(
+            (c) => (sel.innerHTML += `<option value="${c}">${c}</option>`),
+          );
+        },
+        updateReportUI: () => {
+          const cls = document.getElementById("report-class-select").value;
+          if (!cls) return;
+          const config = SettingsService.getReportConfig(cls);
+          document.getElementById("report-config-options").innerHTML = `
+            <div class="setting-row"><div><div style="font-weight:600;">Exam Structure</div></div>
+              <select id="cfg-exam-structure" class="form-control" style="max-width:200px;"><option value="ca_exam" ${config.examStructure === "ca_exam" ? "selected" : ""}>CA + Exam (40/60)</option><option value="exam_only" ${config.examStructure === "exam_only" ? "selected" : ""}>Exam Only (100)</option></select></div>
+            <div class="setting-row"><div><div style="font-weight:600;">Enable Mid-Term</div></div>
+              <label class="switch"><input type="checkbox" id="cfg-midterm-toggle" ${config.enableMidTerm ? "checked" : ""}><span class="slider"></span></label></div>
+            <button class="btn btn-primary btn-sm w-full" style="margin-top:15px;" onclick="app.saveReportConfig()">Save Class Config</button>`;
+        },
+        async saveReportConfig() {
+          const cls = document.getElementById("report-class-select").value;
+          SettingsService.data.config[cls] = {
+            examStructure: document.getElementById("cfg-exam-structure").value,
+            enableMidTerm:
+              document.getElementById("cfg-midterm-toggle").checked,
+          };
+          app.toggleLoader(true);
+          await DataService.saveSystemConfig(SettingsService.data);
+          app.toggleLoader(false);
+          app.showToast("Config Saved", "success");
         },
         goHome: () => app.showSection("section-landing"),
         backToClass: () => app.showSection("section-students"),
