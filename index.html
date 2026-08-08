@@ -790,6 +790,168 @@
           box-shadow: 0 8px 35px rgba(14, 165, 233, 0.8);
         }
       }
+      /* NEW: Attendance & Records Section Styles */
+      .student-card {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 16px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        border: 1px solid var(--border);
+        transition: border-color 0.2s;
+        animation: fadeSlideIn 0.3s ease-out both;
+      }
+      .student-card:hover {
+        border-color: var(--primary);
+      }
+      .student-card-header {
+        font-weight: 700;
+        font-size: 1.05rem;
+        color: var(--text);
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .student-card-header .student-id-badge {
+        font-size: 0.75rem;
+        color: var(--secondary);
+        font-weight: 500;
+        background: #f1f5f9;
+        padding: 2px 8px;
+        border-radius: 10px;
+      }
+      .student-inputs {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+      .student-inputs .form-group {
+        margin: 0;
+      }
+      .student-inputs .form-group label {
+        font-size: 0.8rem;
+        color: var(--secondary);
+        margin-bottom: 4px;
+        display: block;
+        font-weight: 600;
+      }
+      .student-inputs .form-control {
+        width: 100%;
+        padding: 12px;
+        font-size: 1rem;
+      }
+      .auto-calculated {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        border-radius: 8px;
+        padding: 10px 14px;
+        font-weight: 700;
+        color: #b91c1c;
+        font-size: 1.05rem;
+        text-align: center;
+      }
+      .section-top-bar {
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border);
+      }
+      .students-scroll-area {
+        max-height: 65vh;
+        overflow-y: auto;
+        padding-right: 5px;
+      }
+      .students-scroll-area::-webkit-scrollbar {
+        width: 6px;
+      }
+      .students-scroll-area::-webkit-scrollbar-thumb {
+        background: var(--border);
+        border-radius: 3px;
+      }
+      .mode-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+      .mode-badge.attendance {
+        background: #e0f2fe;
+        color: #0369a1;
+      }
+      .mode-badge.records {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      @keyframes fadeSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .student-card:nth-child(1) {
+        animation-delay: 0ms;
+      }
+      .student-card:nth-child(2) {
+        animation-delay: 30ms;
+      }
+      .student-card:nth-child(3) {
+        animation-delay: 60ms;
+      }
+      .student-card:nth-child(4) {
+        animation-delay: 90ms;
+      }
+      .student-card:nth-child(5) {
+        animation-delay: 120ms;
+      }
+      .student-card:nth-child(6) {
+        animation-delay: 150ms;
+      }
+      .student-card:nth-child(7) {
+        animation-delay: 180ms;
+      }
+      .student-card:nth-child(8) {
+        animation-delay: 210ms;
+      }
+      .student-card:nth-child(n + 9) {
+        animation-delay: 240ms;
+      }
+      .class-action-bar {
+        display: flex;
+        gap: 4px;
+        flex-wrap: wrap;
+      }
+      .class-action-bar .btn {
+        flex: 1;
+        min-width: 55px;
+        font-size: 0.7rem;
+        padding: 6px 4px;
+      }
+      @media (max-width: 600px) {
+        .student-inputs {
+          grid-template-columns: 1fr;
+        }
+        .student-card {
+          padding: 16px;
+        }
+        .section-top-bar {
+          padding: 15px;
+        }
+        .class-action-bar .btn {
+          font-size: 0.65rem;
+          min-width: 48px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -807,7 +969,7 @@
     <button
       id="floating-save-btn"
       class="btn btn-primary floating-save hidden"
-      onclick="app.saveScores()"
+      onclick="app.handleSave()"
     >
       💾 Save Scores
     </button>
@@ -1264,6 +1426,116 @@
                 <div id="midterm-rows-container"></div>
               </div>
             </form>
+          </div>
+        </section>
+        <!-- NEW: ATTENDANCE RECORD SECTION -->
+        <section id="section-attendance" class="hidden">
+          <div class="breadcrumbs">
+            <span onclick="app.goHome()">Home</span> >
+            <span class="font-bold">📋 Attendance Record</span>
+          </div>
+          <div class="section-top-bar">
+            <div
+              class="flex justify-between items-center"
+              style="flex-wrap: wrap; gap: 12px"
+            >
+              <div>
+                <h2 style="margin: 0">📋 Attendance Record</h2>
+                <p
+                  class="text-sm"
+                  style="color: var(--secondary); margin-top: 4px"
+                  id="att-subtitle"
+                >
+                  Select a class to begin
+                </p>
+              </div>
+              <div class="flex gap-2 items-center" style="flex-wrap: wrap">
+                <select
+                  id="att-class-select"
+                  class="form-control"
+                  style="max-width: 200px"
+                  onchange="app.onAttClassChange()"
+                >
+                  <option value="" disabled selected>Select Class</option>
+                </select>
+                <span class="mode-badge attendance" id="att-student-count"
+                  >0 Students</span
+                >
+              </div>
+            </div>
+            <!-- NEW: Times School Opened (shared for all students) -->
+            <div style="margin-top: 18px">
+              <div class="form-group" style="margin: 0; max-width: 320px">
+                <label
+                  style="
+                    font-size: 0.85rem;
+                    color: var(--secondary);
+                    font-weight: 600;
+                  "
+                  >📅 Times School Opened</label
+                >
+                <input
+                  type="number"
+                  id="att-school-opened-bulk"
+                  class="form-control"
+                  min="0"
+                  placeholder="Enter total days school opened"
+                  oninput="app.recalcAllAbsent()"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="students-scroll-area" id="att-student-list">
+            <div
+              style="text-align: center; padding: 40px; color: var(--secondary)"
+            >
+              Select a class above to begin
+            </div>
+          </div>
+        </section>
+
+        <!-- NEW: OTHER RECORDS SECTION -->
+        <section id="section-records-entry" class="hidden">
+          <div class="breadcrumbs">
+            <span onclick="app.goHome()">Home</span> >
+            <span class="font-bold">🏆 Other Records</span>
+          </div>
+          <div class="section-top-bar">
+            <div
+              class="flex justify-between items-center"
+              style="flex-wrap: wrap; gap: 12px"
+            >
+              <div>
+                <h2 style="margin: 0">🏆 Other Records</h2>
+                <p
+                  class="text-sm"
+                  style="color: var(--secondary); margin-top: 4px"
+                  id="rec-subtitle"
+                >
+                  Activities, Clubs & Offices
+                </p>
+              </div>
+              <div class="flex gap-2 items-center" style="flex-wrap: wrap">
+                <select
+                  id="rec-class-select"
+                  class="form-control"
+                  style="max-width: 200px"
+                  onchange="app.onRecClassChange()"
+                >
+                  <option value="" disabled selected>Select Class</option>
+                </select>
+                <span class="mode-badge records" id="rec-student-count"
+                  >0 Students</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="students-scroll-area" id="rec-student-list">
+            <div
+              style="text-align: center; padding: 40px; color: var(--secondary)"
+            >
+              Select a class above to begin
+            </div>
           </div>
         </section>
 
@@ -2007,6 +2279,13 @@
             mode: data.mode,
           });
         },
+        // NEW: Bulk save attendance/records for all students in a class
+        async saveBulkStudentData(studentsData) {
+          return await this._call({
+            action: "saveBulkStudentData",
+            students: studentsData,
+          });
+        },
       };
       const SettingsService = {
         data: null,
@@ -2044,6 +2323,7 @@
           currentStudent: null,
           displayedStudents: [],
           teachersList: [],
+          currentSection: null, // NEW: tracks active section for save dispatcher
         },
 
         init: function () {
@@ -2729,7 +3009,6 @@
             const mkCard = (t, i, s, o) =>
               `<div class="card" onclick="${o}"><div class="card-content"><div class="card-icon">${t}</div><div class="card-title">${i}</div><div class="card-meta">${s}</div></div><div class="card-footer"><button class="btn btn-primary btn-sm w-full">Open</button></div></div>`;
 
-            // Renamed: Manage Classes → Manage Exam Classes
             grid.innerHTML += mkCard(
               "📝",
               "Manage Exam Classes",
@@ -2737,12 +3016,27 @@
               "app.loadStudentList(null,'exam')",
             );
 
-            // NEW: Manage Mid-Term Classes (from teacher.html)
             grid.innerHTML += mkCard(
               "📊",
               "Manage Mid-Term Classes",
               "Enter Mid-Term Scores by Class",
               "app.loadStudentList(null,'midterm')",
+            );
+
+            // NEW: Attendance Record card
+            grid.innerHTML += mkCard(
+              "📋",
+              "Attendance Record",
+              "Enter attendance for all students in a class",
+              "app.loadAttendance()",
+            );
+
+            // NEW: Other Records card
+            grid.innerHTML += mkCard(
+              "🏆",
+              "Other Records",
+              "Activities, Clubs & Offices for students",
+              "app.loadOtherRecords()",
             );
 
             grid.innerHTML += mkCard(
@@ -2758,23 +3052,39 @@
               "app.loadPerformance()",
             );
 
-            // REMOVED: Fee Management card entirely
-
             grid.innerHTML += `<div style="grid-column:1/-1; margin-top:40px; margin-bottom:10px; border-bottom:2px dashed var(--border); padding-bottom:15px;"><span style="background:var(--bg); padding:0 10px; color:var(--secondary); font-weight:bold; font-size:1.1rem;">Class Directory</span></div>`;
 
-            // Admin sees all classes with Exam/Mid-Term options
+            // NEW: Class directory cards with multiple action buttons
             SettingsService.getActiveClasses().forEach((c) => {
-              grid.innerHTML += `<div class="card" onclick="app.loadStudentList('${c}','exam')"><div class="card-content"><div class="card-icon">🏫</div><div class="card-title">${c}</div><div class="card-meta">Exam Entry • Teacher: ${app.getClassTeacherName(c)}</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full">Exam</button></div></div>`;
+              grid.innerHTML += `
+        <div class="card" style="cursor:default;">
+          <div class="card-content">
+            <div class="card-icon">🏫</div>
+            <div class="card-title">${c}</div>
+            <div class="card-meta">Teacher: ${app.getClassTeacherName(c)}</div>
+          </div>
+          <div class="card-footer class-action-bar">
+            <button class="btn btn-outline btn-sm" onclick="app.loadStudentList('${c}','exam')">📝 Exam</button>
+            <button class="btn btn-outline btn-sm" onclick="app.loadStudentList('${c}','midterm')">📊 Mid</button>
+            <button class="btn btn-outline btn-sm" onclick="app.loadAttendance('${c}')">📋 Att</button>
+            <button class="btn btn-outline btn-sm" onclick="app.loadOtherRecords('${c}')">🏆 Rec</button>
+          </div>
+        </div>`;
             });
           } else if (role === "Class Teacher") {
-            // TEACHER VIEW ENHANCEMENT: Show BOTH Exam and Mid-Term cards for assigned class
             const assignedClass = app.state.currentUser.assignedClass;
 
             // Exam Card
             grid.innerHTML += `<div class="card" onclick="app.loadStudentList('${assignedClass}','exam')"><div class="card-content"><div class="card-icon">📝</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:var(--primary);">(Exam)</span></div><div class="card-meta">Enter Exam Scores (CA + Exam)</div></div><div class="card-footer"><button class="btn btn-primary btn-sm w-full">Open Exam</button></div></div>`;
 
-            // Mid-Term Card (NEW)
-            grid.innerHTML += `<div class="card" onclick="app.loadStudentList('${assignedClass}','midterm')"><div class="card-content"><div class="card-icon">📊</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:var(--success);">(Mid-Term)</span></div><div class="card-meta">Enter Mid-Term Scores</div></div><div class="card-footer"><button class="btn btn-success btn-sm w-full">Open Mid-Term</button></div></div>`;
+            // Mid-Term Card
+            grid.innerHTML += `<div class="card" onclick="app.loadStudentList('${assignedClass}','midterm')"><div class="card-content"><div class="card-icon">📊</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:var(--success);">(Mid-Term)</span></div><div class="card-meta">Enter Mid-Term Scores</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full" style="border-color:var(--success);color:var(--success);">Open Mid-Term</button></div></div>`;
+
+            // NEW: Attendance Card for Class Teacher
+            grid.innerHTML += `<div class="card" onclick="app.loadAttendance('${assignedClass}')"><div class="card-content"><div class="card-icon">📋</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:#0369a1;">(Attendance)</span></div><div class="card-meta">Enter attendance for all students</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full" style="border-color:#0369a1;color:#0369a1;">Open Attendance</button></div></div>`;
+
+            // NEW: Other Records Card for Class Teacher
+            grid.innerHTML += `<div class="card" onclick="app.loadOtherRecords('${assignedClass}')"><div class="card-content"><div class="card-icon">🏆</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:#92400e;">(Records)</span></div><div class="card-meta">Activities, Clubs & Offices</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full" style="border-color:#92400e;color:#92400e;">Open Records</button></div></div>`;
           }
         },
         getClassTeacherName: (cls) =>
@@ -2899,9 +3209,11 @@
           const recSection = document.getElementById("records-section");
           const printBtn = document.getElementById("print-btn");
 
+          // NEW: Always hide inline attendance/records — they now have dedicated sections
+          attSection.classList.add("hidden");
+          recSection.classList.add("hidden");
+
           if (mode === "midterm") {
-            attSection.classList.add("hidden");
-            recSection.classList.add("hidden");
             printBtn.textContent = "🖨️ Print Mid-Term";
             printBtn.onclick = () =>
               (document.getElementById("modal-print-midterm").style.display =
@@ -2916,8 +3228,7 @@
               mc.innerHTML += `<div class="score-grid"><div class="score-label">${subj}</div><input type="number" min="0" max="100" class="score-input input-midterm" placeholder="Score (100)" value="${mtVal}" style="grid-column: span 3;"></div></div>`;
             });
           } else {
-            attSection.classList.remove("hidden");
-            recSection.classList.remove("hidden");
+            // NEW: Inline sections stay hidden; attendance/records are in standalone sections
             printBtn.textContent = "🖨️ Print Result";
             printBtn.onclick = () => app.openPrintModal();
 
@@ -2946,10 +3257,6 @@
             recData.activities || "";
           document.getElementById("rec-club").value = recData.club || "";
           document.getElementById("rec-office").value = recData.office || "";
-
-          document
-            .getElementById("floating-save-btn")
-            .classList.remove("hidden");
         },
         calcRowTotal: (i) => {
           const r = i.closest(".score-grid");
@@ -2959,13 +3266,13 @@
         },
         /* NEW CODE - Saves Scores + Attendance + Other Records */
         saveScores: async () => {
+          const mode = app.state.entryMode || "exam"; // BUG FIX: was referencing undefined `mode`
           const rows = document.querySelectorAll(".score-grid");
           const upd = {};
           const cls = app.state.currentStudent.class;
           let subs = SettingsService.getActiveSubjects(cls);
 
           if (mode === "midterm") {
-            // Save mid-term scores
             const mtInputs = document.querySelectorAll(".input-midterm");
             mtInputs.forEach((input, i) => {
               if (subs[i] && input.value !== "") {
@@ -2977,7 +3284,6 @@
               }
             });
           } else {
-            // Save exam scores
             rows.forEach((r, i) => {
               if (i >= subs.length) return;
               const ca =
@@ -2993,28 +3299,10 @@
             });
           }
 
-          // Build complete payload with attendance and records
+          // NEW: Only save scores here. Attendance & Records are saved from their own sections.
           const payload = {
             adminNo: app.state.currentStudent.id,
             scores: upd,
-            // NEW: Attendance data
-            attendance: {
-              schoolOpened:
-                parseInt(document.getElementById("att-school-opened").value) ||
-                0,
-              present:
-                parseInt(document.getElementById("att-present").value) || 0,
-              punctual:
-                parseInt(document.getElementById("att-punctual").value) || 0,
-              absent:
-                parseInt(document.getElementById("att-absent").value) || 0,
-            },
-            // NEW: Other records
-            records: {
-              activities: document.getElementById("rec-activities").value,
-              club: document.getElementById("rec-club").value,
-              office: document.getElementById("rec-office").value,
-            },
             mode: mode,
           };
 
@@ -3023,7 +3311,7 @@
           app.toggleLoader(false);
 
           if (res.status === "success") {
-            app.showToast("All Data Saved Successfully", "success");
+            app.showToast("Scores Saved Successfully", "success");
           } else {
             app.showToast("Error saving data", "error");
           }
@@ -3357,10 +3645,31 @@
             .querySelectorAll("main section")
             .forEach((s) => s.classList.add("hidden"));
           document.getElementById(id).classList.remove("hidden");
-          if (id !== "section-scores")
-            document
-              .getElementById("floating-save-btn")
-              .classList.add("hidden");
+
+          // NEW: Track current section and manage floating save button
+          const saveSections = [
+            "section-scores",
+            "section-attendance",
+            "section-records-entry",
+          ];
+          const saveBtn = document.getElementById("floating-save-btn");
+
+          if (saveSections.includes(id)) {
+            saveBtn.classList.remove("hidden");
+            if (id === "section-scores") {
+              saveBtn.textContent = "💾 Save Scores";
+              app.state.currentSection = "scores";
+            } else if (id === "section-attendance") {
+              saveBtn.textContent = "💾 Save Attendance";
+              app.state.currentSection = "attendance";
+            } else if (id === "section-records-entry") {
+              saveBtn.textContent = "💾 Save Records";
+              app.state.currentSection = "records";
+            }
+          } else {
+            saveBtn.classList.add("hidden");
+            app.state.currentSection = null;
+          }
         },
         openSettings: () => {
           app.showSection("section-settings");
@@ -3525,6 +3834,354 @@
           await DataService.saveSystemConfig(SettingsService.data);
           app.toggleLoader(false);
           app.showToast("Config Saved", "success");
+        },
+        /* NEW: ============ ATTENDANCE RECORD FUNCTIONS ============ */
+
+        loadAttendance: async function (cls) {
+          app.showSection("section-attendance");
+
+          // Populate class selector
+          const sel = document.getElementById("att-class-select");
+          sel.innerHTML =
+            '<option value="" disabled selected>Select Class</option>';
+          SettingsService.getActiveClasses().forEach((c) => {
+            sel.innerHTML += `<option value="${c}">${c}</option>`;
+          });
+
+          // Auto-select class for teachers or if a specific class was passed
+          const targetClass =
+            cls ||
+            (app.state.currentUser.role === "Class Teacher"
+              ? app.state.currentUser.assignedClass
+              : null);
+          if (targetClass) {
+            sel.value = targetClass;
+            await app.onAttClassChange();
+          } else {
+            document.getElementById("att-student-list").innerHTML =
+              '<div style="text-align:center; padding:40px; color:var(--secondary);">Select a class above to begin</div>';
+            document.getElementById("att-school-opened-bulk").value = "";
+          }
+        },
+
+        // NEW: Handler for class dropdown change in attendance section
+        onAttClassChange: async function () {
+          const cls = document.getElementById("att-class-select").value;
+          if (!cls) return;
+
+          app.state.currentClass = cls;
+          app.toggleLoader(true);
+          const students = await DataService.getStudents(cls);
+          app.toggleLoader(false);
+
+          document.getElementById("att-student-count").textContent =
+            `${students.length} Students`;
+          document.getElementById("att-subtitle").textContent =
+            `Attendance for ${cls}`;
+
+          app.renderAttendanceForm(students, cls);
+        },
+
+        // NEW: Render attendance cards for all students
+        renderAttendanceForm: function (students, cls) {
+          const container = document.getElementById("att-student-list");
+          container.innerHTML = "";
+
+          // Pre-fill "Times School Opened" from first student's saved data
+          if (
+            students.length > 0 &&
+            students[0].attendance &&
+            students[0].attendance.schoolOpened
+          ) {
+            document.getElementById("att-school-opened-bulk").value =
+              students[0].attendance.schoolOpened;
+          } else {
+            document.getElementById("att-school-opened-bulk").value = "";
+          }
+
+          const schoolOpened =
+            parseInt(document.getElementById("att-school-opened-bulk").value) ||
+            0;
+
+          students.forEach((s, index) => {
+            const att = s.attendance || {};
+            const absent = Math.max(
+              0,
+              schoolOpened - (parseInt(att.present) || 0),
+            );
+
+            const card = document.createElement("div");
+            card.className = "student-card";
+            card.style.animationDelay = `${index * 30}ms`;
+            card.dataset.studentId = s.id;
+
+            card.innerHTML = `
+      <div class="student-card-header">
+        <span>👤</span>
+        <span>${s.name}</span>
+        <span class="student-id-badge">${s.id}</span>
+      </div>
+      <div class="student-inputs">
+        <div class="form-group">
+          <label>Days Present</label>
+          <input type="number" class="form-control att-present" min="0" placeholder="0" value="${att.present || ""}" oninput="app.recalcStudentAbsent(this)">
+        </div>
+        <div class="form-group">
+          <label>Times Punctual</label>
+          <input type="number" class="form-control att-punctual" min="0" placeholder="0" value="${att.punctual || ""}">
+        </div>
+        <div class="form-group">
+          <label>Days Absent <small style="color:var(--primary);">(auto)</small></label>
+          <div class="auto-calculated att-absent">${absent}</div>
+        </div>
+      </div>
+    `;
+
+            container.appendChild(card);
+          });
+
+          // Recalculate all absent values after rendering
+          app.recalcAllAbsent();
+        },
+
+        // NEW: Auto-calculate Days Absent for ALL students
+        recalcAllAbsent: function () {
+          const opened =
+            parseInt(document.getElementById("att-school-opened-bulk").value) ||
+            0;
+          document
+            .querySelectorAll("#att-student-list .student-card")
+            .forEach((card) => {
+              const present =
+                parseInt(card.querySelector(".att-present")?.value) || 0;
+              const absent = Math.max(0, opened - present);
+              const absentEl = card.querySelector(".att-absent");
+              if (absentEl) absentEl.textContent = absent;
+            });
+        },
+
+        // NEW: Auto-calculate Days Absent for a single student card
+        recalcStudentAbsent: function (input) {
+          const card = input.closest(".student-card");
+          if (!card) return;
+          const opened =
+            parseInt(document.getElementById("att-school-opened-bulk").value) ||
+            0;
+          const present = parseInt(input.value) || 0;
+          const absent = Math.max(0, opened - present);
+          const absentEl = card.querySelector(".att-absent");
+          if (absentEl) absentEl.textContent = absent;
+        },
+
+        // NEW: Save attendance for ALL students in the class
+        saveAttendance: async function () {
+          const cls = document.getElementById("att-class-select").value;
+          if (!cls) return app.showToast("Select a class first", "warning");
+
+          const schoolOpened =
+            parseInt(document.getElementById("att-school-opened-bulk").value) ||
+            0;
+          const cards = document.querySelectorAll(
+            "#att-student-list .student-card",
+          );
+          if (cards.length === 0)
+            return app.showToast("No students to save", "warning");
+
+          const studentsData = [];
+          cards.forEach((card) => {
+            const studentId = card.dataset.studentId;
+            const present =
+              parseInt(card.querySelector(".att-present")?.value) || 0;
+            const punctual =
+              parseInt(card.querySelector(".att-punctual")?.value) || 0;
+            const absent = Math.max(0, schoolOpened - present);
+
+            studentsData.push({
+              adminNo: studentId,
+              attendance: {
+                schoolOpened: schoolOpened,
+                present: present,
+                punctual: punctual,
+                absent: absent,
+              },
+            });
+          });
+
+          app.toggleLoader(true);
+          try {
+            const res = await DataService.saveBulkStudentData(studentsData);
+            app.toggleLoader(false);
+            if (res.status === "success") {
+              app.showToast("Attendance Saved Successfully", "success");
+            } else {
+              app.showToast(res.message || "Error saving attendance", "error");
+            }
+          } catch (err) {
+            app.toggleLoader(false);
+            app.showToast("Failed to save attendance", "error");
+          }
+        },
+
+        /* NEW: ============ OTHER RECORDS FUNCTIONS ============ */
+
+        loadOtherRecords: async function (cls) {
+          app.showSection("section-records-entry");
+
+          // Populate class selector
+          const sel = document.getElementById("rec-class-select");
+          sel.innerHTML =
+            '<option value="" disabled selected>Select Class</option>';
+          SettingsService.getActiveClasses().forEach((c) => {
+            sel.innerHTML += `<option value="${c}">${c}</option>`;
+          });
+
+          // Auto-select class for teachers or if a specific class was passed
+          const targetClass =
+            cls ||
+            (app.state.currentUser.role === "Class Teacher"
+              ? app.state.currentUser.assignedClass
+              : null);
+          if (targetClass) {
+            sel.value = targetClass;
+            await app.onRecClassChange();
+          } else {
+            document.getElementById("rec-student-list").innerHTML =
+              '<div style="text-align:center; padding:40px; color:var(--secondary);">Select a class above to begin</div>';
+          }
+        },
+
+        // NEW: Handler for class dropdown change in records section
+        onRecClassChange: async function () {
+          const cls = document.getElementById("rec-class-select").value;
+          if (!cls) return;
+
+          app.state.currentClass = cls;
+          app.toggleLoader(true);
+          const students = await DataService.getStudents(cls);
+          app.toggleLoader(false);
+
+          document.getElementById("rec-student-count").textContent =
+            `${students.length} Students`;
+          document.getElementById("rec-subtitle").textContent =
+            `Records for ${cls}`;
+
+          app.renderRecordsForm(students, cls);
+        },
+
+        // NEW: Render other records cards for all students
+        renderRecordsForm: function (students, cls) {
+          const container = document.getElementById("rec-student-list");
+          container.innerHTML = "";
+
+          const clubOptions = [
+            "Drama Club",
+            "Press Club",
+            "Debate Club",
+            "Sports Club",
+          ];
+          const officeOptions = [
+            "Class Prefect",
+            "Assistant Prefect",
+            "Time Keeper",
+            "None",
+          ];
+
+          students.forEach((s, index) => {
+            const rec = s.records || {};
+
+            const card = document.createElement("div");
+            card.className = "student-card";
+            card.style.animationDelay = `${index * 30}ms`;
+            card.dataset.studentId = s.id;
+
+            card.innerHTML = `
+      <div class="student-card-header">
+        <span>🏅</span>
+        <span>${s.name}</span>
+        <span class="student-id-badge">${s.id}</span>
+      </div>
+      <div class="student-inputs">
+        <div class="form-group">
+          <label>Organized Activities</label>
+          <input type="text" class="form-control rec-activities" placeholder="e.g. Sports Day, Debate" value="${rec.activities || ""}">
+        </div>
+        <div class="form-group">
+          <label>Club / Society</label>
+          <select class="form-control rec-club">
+            <option value="">-- Select --</option>
+            ${clubOptions.map((o) => `<option value="${o}" ${rec.club === o ? "selected" : ""}>${o}</option>`).join("")}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Office Held</label>
+          <select class="form-control rec-office">
+            <option value="">-- Select --</option>
+            ${officeOptions.map((o) => `<option value="${o}" ${rec.office === o ? "selected" : ""}>${o}</option>`).join("")}
+          </select>
+        </div>
+      </div>
+    `;
+
+            container.appendChild(card);
+          });
+        },
+
+        // NEW: Save other records for ALL students in the class
+        saveRecords: async function () {
+          const cls = document.getElementById("rec-class-select").value;
+          if (!cls) return app.showToast("Select a class first", "warning");
+
+          const cards = document.querySelectorAll(
+            "#rec-student-list .student-card",
+          );
+          if (cards.length === 0)
+            return app.showToast("No students to save", "warning");
+
+          const studentsData = [];
+          cards.forEach((card) => {
+            const studentId = card.dataset.studentId;
+            const activities =
+              card.querySelector(".rec-activities")?.value || "";
+            const club = card.querySelector(".rec-club")?.value || "";
+            const office = card.querySelector(".rec-office")?.value || "";
+
+            studentsData.push({
+              adminNo: studentId,
+              records: {
+                activities: activities,
+                club: club,
+                office: office,
+              },
+            });
+          });
+
+          app.toggleLoader(true);
+          try {
+            const res = await DataService.saveBulkStudentData(studentsData);
+            app.toggleLoader(false);
+            if (res.status === "success") {
+              app.showToast("Records Saved Successfully", "success");
+            } else {
+              app.showToast(res.message || "Error saving records", "error");
+            }
+          } catch (err) {
+            app.toggleLoader(false);
+            app.showToast("Failed to save records", "error");
+          }
+        },
+
+        /* NEW: ============ SAVE DISPATCHER ============ */
+
+        // NEW: Dispatches save to the correct function based on current section
+        handleSave: function () {
+          const section = app.state.currentSection;
+          if (section === "attendance") {
+            app.saveAttendance();
+          } else if (section === "records") {
+            app.saveRecords();
+          } else {
+            app.saveScores();
+          }
         },
         goHome: () => app.showSection("section-landing"),
         backToClass: () => app.showSection("section-students"),
