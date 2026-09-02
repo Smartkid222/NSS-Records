@@ -12,6 +12,7 @@
         --secondary: #64748b;
         --bg: #f0f9ff;
         --surface: #ffffff;
+        --surface-hover: #f8fafc;
         --text: #0f172a;
         --border: #cbd5e1;
         --success: #22c55e;
@@ -19,6 +20,27 @@
         --warning: #f59e0b;
         --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
         --radius: 12px;
+        --table-header-bg: #f1f5f9;
+        --card-border: #ffffff;
+        --loader-bg: rgba(255, 255, 255, 0.85);
+      }
+
+      [data-theme="dark"] {
+        --primary: #38bdf8;
+        --primary-dark: #0284c7;
+        --secondary: #94a3b8;
+        --bg: #0f172a;
+        --surface: #1e293b;
+        --surface-hover: #334155;
+        --text: #f8fafc;
+        --border: #334155;
+        --success: #4ade80;
+        --danger: #f87171;
+        --warning: #fbbf24;
+        --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.5);
+        --table-header-bg: #0f172a;
+        --card-border: #334155;
+        --loader-bg: rgba(15, 23, 42, 0.85);
       }
       * {
         box-sizing: border-box;
@@ -120,7 +142,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(255, 255, 255, 0.8);
+        background: var(--loader-bg);
         backdrop-filter: blur(5px);
         display: none;
         flex-direction: column;
@@ -154,11 +176,11 @@
         padding: 20px;
       }
       .auth-container {
-        background: white;
+        background: var(--surface);
         width: 100%;
         max-width: 450px;
         border-radius: 16px;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        box-shadow: var(--shadow);
         overflow: hidden;
         animation: slideUp 0.4s ease;
       }
@@ -175,17 +197,17 @@
       .auth-header {
         text-align: center;
         padding: 30px 20px 10px;
-        background: #fff;
+        background: var(--surface);
       }
       .app-title {
         font-size: 1.8rem;
         font-weight: 800;
-        color: var(--primary-dark);
+        color: var(--primary);
         margin-bottom: 5px;
       }
       .tabs {
         display: flex;
-        border-bottom: 2px solid #e2e8f0;
+        border-bottom: 2px solid var(--border);
       }
       .tab-btn {
         flex: 1;
@@ -210,20 +232,22 @@
         display: block;
         margin-bottom: 8px;
         font-size: 0.9rem;
-        color: #475569;
+        color: var(--secondary);
         font-weight: 600;
       }
       .form-control {
         width: 100%;
         padding: 12px;
-        border: 2px solid #e2e8f0;
+        border: 2px solid var(--border);
         border-radius: var(--radius);
         font-size: 1rem;
+        background-color: var(--surface);
+        color: var(--text);
         transition: border 0.3s;
       }
       .form-control:focus {
         border-color: var(--primary);
-        background-color: #f8fafc;
+        background-color: var(--surface-hover);
       }
       .pwd-wrapper {
         position: relative;
@@ -281,7 +305,7 @@
         border-radius: 16px;
         padding: 25px;
         box-shadow: var(--shadow);
-        border: 1px solid white;
+        border: 1px solid var(--card-border);
         transition:
           transform 0.2s,
           box-shadow 0.2s;
@@ -347,13 +371,15 @@
         align-items: center;
         flex-wrap: wrap;
         gap: 10px;
-        background: #f8fafc;
+        background: var(--surface);
       }
       .search-input {
         padding: 10px 15px;
         border: 1px solid var(--border);
         border-radius: 20px;
         width: 250px;
+        background-color: var(--surface);
+        color: var(--text);
       }
       table {
         width: 100%;
@@ -366,7 +392,7 @@
         border-bottom: 1px solid var(--border);
       }
       th {
-        background: #f1f5f9;
+        background: var(--table-header-bg);
         font-weight: 600;
         color: var(--secondary);
         text-transform: uppercase;
@@ -374,7 +400,7 @@
         letter-spacing: 0.05em;
       }
       tr:hover {
-        background-color: #f8fafc;
+        background-color: var(--surface-hover);
       }
       /* Score Entry */
       .score-grid {
@@ -513,7 +539,7 @@
         margin-bottom: 25px;
       }
       .fee-stat-card {
-        background: white;
+        background: var(--surface);
         padding: 20px;
         border-radius: 12px;
         box-shadow: var(--shadow);
@@ -567,7 +593,7 @@
         padding: 10px 20px;
         border-radius: 20px;
         border: 1px solid var(--border);
-        background: white;
+        background: var(--surface);
         cursor: pointer;
         font-weight: 600;
         color: var(--secondary);
@@ -586,7 +612,8 @@
         padding: 8px 16px;
         border-radius: 20px;
         border: 1px solid var(--border);
-        background: white;
+        background: var(--surface);
+        color: var(--text);
         cursor: pointer;
         font-weight: 600;
         font-size: 0.9rem;
@@ -952,6 +979,254 @@
           min-width: 48px;
         }
       }
+      /* Broadsheet / Performance Styles */
+      #broadsheet-container {
+        overflow-y: scroll !important;
+        overflow-x: auto !important;
+        max-height: 65vh;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+      }
+      #broadsheet-container::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+      #broadsheet-container::-webkit-scrollbar-track {
+        background: #f1f5f9;
+        border-radius: 10px;
+      }
+      #broadsheet-container::-webkit-scrollbar-thumb {
+        background: #94a3b8;
+        border-radius: 10px;
+        border: 2px solid #f1f5f9;
+      }
+      #broadsheet-container::-webkit-scrollbar-thumb:hover {
+        background: #64748b;
+      }
+      #broadsheet-container {
+        scrollbar-width: thin;
+        scrollbar-color: #94a3b8 #f1f5f9;
+      }
+      .broadsheet-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+      }
+      .broadsheet-table th,
+      .broadsheet-table td {
+        padding: 8px 10px;
+        text-align: center;
+        border-bottom: 1px solid var(--border);
+      }
+      .broadsheet-table th {
+        background: var(--table-header-bg);
+        font-weight: 600;
+        color: var(--secondary);
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+      .broadsheet-table tr:hover {
+        background: var(--surface-hover);
+      }
+      .perf-stats-box {
+        padding: 1rem;
+        background: #eff6ff;
+        border-radius: 8px;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+      }
+      .perf-stats-box ul {
+        margin: 5px 0 0 20px;
+      }
+      .perf-switch-btn {
+        padding: 8px 16px;
+        border-radius: 20px;
+        border: 2px solid var(--primary);
+        background: white;
+        color: var(--primary);
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: all 0.2s;
+      }
+      .perf-switch-btn:hover {
+        background: var(--primary);
+        color: white;
+      }
+      /* ===== ANALYTICS DASHBOARD ===== */
+      .an-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+        margin-bottom: 20px;
+      }
+      .an-stat-card {
+        border-radius: 14px;
+        padding: 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: #e0f2fe;
+      }
+      .an-stat-card.purple {
+        background: #ede9fe;
+      }
+      .an-stat-card.blue {
+        background: #e0f2fe;
+      }
+      .an-stat-card.amber {
+        background: #fef3c7;
+      }
+      .an-stat-card.green {
+        background: #dcfce7;
+      }
+      .an-stat-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #475569;
+      }
+      .an-stat-value {
+        font-size: 1.6rem;
+        font-weight: 800;
+      }
+      .an-stat-icon {
+        font-size: 1.8rem;
+      }
+      .an-panels {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+        margin-bottom: 20px;
+      }
+      .an-2col {
+        display: grid;
+        grid-template-columns: 3fr 2fr;
+        gap: 20px;
+      }
+      @media (max-width: 800px) {
+        .an-panels,
+        .an-2col {
+          grid-template-columns: 1fr;
+        }
+      }
+      .an-panel {
+        background: var(--surface);
+        border: 1px solid var(--card-border);
+        border-radius: 14px;
+        padding: 20px;
+        box-shadow: var(--shadow);
+      }
+      .an-panel h3 {
+        margin-bottom: 4px;
+      }
+      .an-sub {
+        font-size: 0.8rem;
+        color: var(--secondary);
+        margin-bottom: 15px;
+      }
+      .an-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 10px;
+        height: 220px;
+        padding-top: 10px;
+      }
+      .an-bar-wrap {
+        flex: 1;
+        min-width: 0;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+      }
+      .an-bar-val {
+        font-size: 0.65rem;
+        color: var(--secondary);
+        margin-bottom: 3px;
+      }
+      .an-bar {
+        width: 100%;
+        max-width: 34px;
+        min-height: 3px;
+        background: linear-gradient(180deg, var(--primary), #7dd3fc);
+        border-radius: 6px 6px 2px 2px;
+      }
+      .an-bar-label {
+        font-size: 0.62rem;
+        color: var(--secondary);
+        margin-top: 6px;
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .an-donut-wrap {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        padding: 10px 0;
+      }
+      .an-donut {
+        width: 170px;
+        height: 170px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .an-donut-hole {
+        width: 105px;
+        height: 105px;
+        border-radius: 50%;
+        background: var(--surface);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .an-donut-hole b {
+        font-size: 1.5rem;
+      }
+      .an-legend {
+        display: flex;
+        gap: 20px;
+        font-size: 0.85rem;
+      }
+      .an-dot {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 6px;
+      }
+      .an-avatar {
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        background: #e0f2fe;
+        color: var(--primary-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+        font-size: 0.8rem;
+      }
+      .an-list-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .an-list-item:last-child {
+        border-bottom: none;
+      }
     </style>
   </head>
   <body>
@@ -1149,6 +1424,14 @@
             </div>
           </div>
           <button
+            id="theme-toggle-btn"
+            class="btn btn-outline btn-sm"
+            onclick="app.toggleTheme()"
+            title="Toggle Light/Dark Theme"
+          >
+            🌙 Dark
+          </button>
+          <button
             id="btn-open-settings"
             class="hidden"
             style="
@@ -1171,10 +1454,61 @@
       <main class="container">
         <!-- LANDING -->
         <section id="section-landing">
-          <h2 style="margin-bottom: 20px; color: var(--text)">
-            Welcome Back! 👋
-          </h2>
+          <div
+            class="flex justify-between items-center"
+            style="margin-bottom: 20px; flex-wrap: wrap; gap: 10px"
+          >
+            <h2 style="color: var(--text); margin: 0">Welcome Back! 👋</h2>
+            <button class="btn btn-primary" onclick="app.loadAnalytics()">
+              📊 Analytics Dashboard
+            </button>
+          </div>
           <div class="dashboard-grid" id="class-grid"></div>
+        </section>
+
+        <!-- ANALYTICS DASHBOARD -->
+        <section id="section-analytics" class="hidden">
+          <div class="breadcrumbs">
+            <span onclick="app.goHome()">Home</span> >
+            <span class="font-bold">Analytics Dashboard</span>
+          </div>
+          <div class="an-stats" id="an-stats"></div>
+          <div class="an-panels">
+            <div class="an-panel">
+              <h3 id="an-chart-title">Performance Overview</h3>
+              <div class="an-sub" id="an-chart-sub"></div>
+              <div class="an-bars" id="an-bars"></div>
+            </div>
+            <div class="an-panel">
+              <h3>Students</h3>
+              <div class="an-sub">Gender distribution</div>
+              <div class="an-donut-wrap" id="an-gender"></div>
+            </div>
+          </div>
+          <div class="an-2col">
+            <div class="an-panel">
+              <h3>⭐ Star Students</h3>
+              <div class="an-sub">Top performers by average score</div>
+              <div style="overflow-x: auto">
+                <table style="width: 100%">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Adm No</th>
+                      <th>Average</th>
+                      <th>Class</th>
+                    </tr>
+                  </thead>
+                  <tbody id="an-star-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="an-panel" id="an-recent-panel">
+              <h3>💳 Recent Payments</h3>
+              <div class="an-sub">Latest fee transactions</div>
+              <div id="an-recent"></div>
+            </div>
+          </div>
         </section>
 
         <!-- STUDENT LIST -->
@@ -1652,23 +1986,216 @@
           <div class="list-container">
             <div class="list-header">
               <div>
-                <h2>🏆 Top Performers</h2>
-                <p class="text-sm text-secondary">
-                  Calculated based on average subject scores
-                </p>
+                <h2>🏆 Student Performance</h2>
+                <p class="text-sm text-secondary">Based on average scores</p>
+              </div>
+              <div class="flex gap-2 items-center" style="flex-wrap: wrap">
+                <select
+                  id="perfSessionSelect"
+                  class="form-control"
+                  style="width: 150px"
+                >
+                  <option value="2025/2026">2025/2026</option>
+                  <option value="2024/2025">2024/2025</option>
+                  <option value="2023/2024">2023/2024</option>
+                </select>
+                <select
+                  id="perfTermSelect"
+                  class="form-control"
+                  style="width: 120px"
+                >
+                  <option value="1st">1st Term</option>
+                  <option value="2nd">2nd Term</option>
+                  <option value="3rd">3rd Term</option>
+                </select>
+                <button
+                  class="btn btn-outline btn-sm"
+                  onclick="app.printBroadsheet()"
+                >
+                  🖨️ Print
+                </button>
+              </div>
+            </div>
+            <div id="perf-container"></div>
+          </div>
+        </section>
+        <!-- QUESTION NOTEBOOK -->
+        <section id="section-teacher-notebook" class="hidden">
+          <div class="breadcrumbs">
+            <span onclick="app.goHome()">Home</span> >
+            <span class="font-bold">Question Notebook</span>
+          </div>
+          <div class="list-container" style="padding: 25px">
+            <div
+              class="flex justify-between items-center"
+              style="margin-bottom: 20px"
+            >
+              <div>
+                <h2>📝 Teacher Question Notebook</h2>
+                <span id="t-notebook-badge" class="badge"></span>
+              </div>
+              <button
+                id="nb-add-note-btn"
+                class="btn btn-primary"
+                onclick="app.openNotebookModal()"
+              >
+                + New Question / Note
+              </button>
+            </div>
+            <div class="fee-sub-tabs">
+              <button
+                id="nb-tab-notes-btn"
+                class="fee-sub-tab-btn active"
+                onclick="app.switchNotebookTab('notes')"
+              >
+                📝 Questions & Notes
+              </button>
+              <button
+                id="nb-tab-timetable-btn"
+                class="fee-sub-tab-btn"
+                onclick="app.switchNotebookTab('timetable')"
+              >
+                🕐 Class Timetable
+              </button>
+            </div>
+            <div
+              id="nb-filters-row"
+              class="flex gap-2"
+              style="margin-bottom: 20px; flex-wrap: wrap"
+            >
+              <input
+                type="text"
+                id="nb-search"
+                class="search-input"
+                placeholder="Search questions..."
+                onkeyup="app.renderTeacherNotes()"
+              />
+              <select
+                id="nb-filter-subject"
+                class="form-control"
+                style="width: 180px"
+                onchange="app.renderTeacherNotes()"
+              >
+                <option value="">All Subjects</option>
+              </select>
+              <select
+                id="nb-filter-type"
+                class="form-control"
+                style="width: 160px"
+                onchange="app.renderTeacherNotes()"
+              >
+                <option value="">All Types</option>
+                <option value="Exam">Exam</option>
+                <option value="Mid-Term">Mid-Term</option>
+                <option value="Test">Test</option>
+                <option value="Assignment">Assignment</option>
+                <option value="General Note">General Note</option>
+              </select>
+            </div>
+            <div
+              id="notebook-cards-container"
+              style="display: grid; gap: 15px"
+            ></div>
+            <div id="nb-timetable-panel" class="hidden">
+              <div
+                class="flex justify-between items-center"
+                style="margin-bottom: 15px"
+              >
+                <div>
+                  <h3 style="margin: 0">🕐 Class Timetable</h3>
+                  <p
+                    class="text-sm"
+                    style="color: var(--secondary); margin: 4px 0 0"
+                    id="nb-tt-subtitle"
+                  ></p>
+                </div>
+                <button class="btn btn-primary" onclick="app.saveTimetable()">
+                  💾 Save Timetable
+                </button>
+              </div>
+              <div id="nb-tt-days" style="display: grid; gap: 15px"></div>
+            </div>
+          </div>
+        </section>
+        <!-- TEACHER SUBJECT MANAGEMENT -->
+        <section id="section-teacher-subjects" class="hidden">
+          <div class="breadcrumbs">
+            <span onclick="app.goHome()">Home</span> >
+            <span class="font-bold">Manage Subjects</span>
+          </div>
+          <div class="list-container" style="padding: 25px">
+            <div
+              class="flex justify-between items-center"
+              style="margin-bottom: 20px"
+            >
+              <div>
+                <h2>📚 Manage Class Subjects</h2>
+                <span id="t-subject-badge" class="badge"></span>
+              </div>
+            </div>
+            <div class="settings-input-group">
+              <input
+                type="text"
+                id="t-new-subject-input"
+                class="form-control"
+                placeholder="Enter subject name"
+              />
+              <button
+                class="btn btn-primary btn-sm"
+                onclick="app.addTeacherSubject()"
+              >
+                Add Subject
+              </button>
+            </div>
+            <div id="t-subject-list-container" style="margin-top: 20px"></div>
+          </div>
+        </section>
+        <!-- TEACHER STUDENT MANAGEMENT -->
+        <section id="section-teacher-students" class="hidden">
+          <div class="breadcrumbs">
+            <span onclick="app.goHome()">Home</span> >
+            <span class="font-bold">Student Management</span>
+          </div>
+          <div class="list-container">
+            <div class="list-header">
+              <div>
+                <h2>👨‍🎓 Student Management</h2>
+                <span id="t-student-badge" class="badge"></span>
+              </div>
+              <div class="flex gap-2" style="flex-wrap: wrap">
+                <input
+                  type="text"
+                  id="t-searchStudent"
+                  class="search-input"
+                  placeholder="Search name or ID..."
+                  onkeyup="app.renderTeacherStudents()"
+                />
+                <button
+                  class="btn btn-primary btn-sm"
+                  onclick="app.openAddStudentModal()"
+                >
+                  + Add Student
+                </button>
+                <button
+                  class="btn btn-outline btn-sm"
+                  onclick="app.openBulkUploadModal()"
+                >
+                  📤 Upload CSV
+                </button>
               </div>
             </div>
             <div style="overflow-x: auto">
               <table>
                 <thead>
                   <tr>
-                    <th>Rank</th>
+                    <th>Adm No</th>
                     <th>Student Name</th>
+                    <th>Gender</th>
                     <th>Class</th>
-                    <th>Average %</th>
+                    <th style="text-align: right">Actions</th>
                   </tr>
                 </thead>
-                <tbody id="perf-tbody"></tbody>
+                <tbody id="t-students-tbody"></tbody>
               </table>
             </div>
           </div>
@@ -1677,6 +2204,151 @@
     </div>
 
     <!-- MODALS -->
+    <!-- MOVE STUDENT MODAL -->
+    <div id="modal-move-student" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Move / Reallocate Student</h3>
+        <p
+          id="move-student-info"
+          style="margin-bottom: 15px; color: var(--secondary)"
+        ></p>
+        <input type="hidden" id="move-student-id" />
+        <input type="hidden" id="move-student-name" />
+        <input type="hidden" id="move-student-gender" />
+        <div class="form-group">
+          <label>Target Class</label>
+          <select id="move-student-class" class="form-control"></select>
+        </div>
+        <div class="flex justify-between" style="margin-top: 20px">
+          <button class="btn btn-outline" onclick="app.closeModals()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="app.confirmMoveStudent()">
+            Confirm Move
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BULK UPLOAD MODAL -->
+    <div id="modal-bulk-upload" class="modal-overlay">
+      <div class="modal-content">
+        <h3>Upload Students (CSV)</h3>
+        <p
+          style="
+            font-size: 0.85rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+          "
+        >
+          Expected columns: <b>AdmissionNumber,Name,Gender</b><br />Class will
+          be set automatically.
+        </p>
+        <div class="form-group">
+          <input
+            type="file"
+            id="csv-file-input"
+            accept=".csv"
+            class="form-control"
+            onchange="app.handleCsvSelect(event)"
+          />
+        </div>
+        <div
+          id="csv-preview-area"
+          class="hidden"
+          style="margin-top: 15px; max-height: 200px; overflow-y: auto"
+        >
+          <div
+            id="csv-summary"
+            class="text-sm font-bold"
+            style="margin-bottom: 8px"
+          ></div>
+          <table style="font-size: 0.85rem; width: 100%">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Gender</th>
+              </tr>
+            </thead>
+            <tbody id="csv-preview-tbody"></tbody>
+          </table>
+        </div>
+        <div class="flex justify-between" style="margin-top: 20px">
+          <button class="btn btn-outline" onclick="app.closeModals()">
+            Cancel
+          </button>
+          <button
+            id="btn-submit-csv"
+            class="btn btn-primary"
+            onclick="app.submitBulkStudents()"
+            disabled
+          >
+            Upload Data
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- NOTEBOOK EDIT/CREATE MODAL -->
+    <div id="modal-notebook-editor" class="modal-overlay">
+      <div class="modal-content" style="max-width: 650px">
+        <h3 id="nb-modal-title">New Question / Note</h3>
+        <input type="hidden" id="nb-note-id" />
+        <div class="grid-2" style="margin-top: 15px">
+          <div class="form-group">
+            <label>Subject</label>
+            <select id="nb-note-subject" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <label>Type</label>
+            <select id="nb-note-type" class="form-control">
+              <option value="Exam">Exam</option>
+              <option value="Mid-Term">Mid-Term</option>
+              <option value="Test">Test</option>
+              <option value="Assignment">Assignment</option>
+              <option value="General Note">General Note</option>
+            </select>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Session (Optional)</label>
+            <input
+              type="text"
+              id="nb-note-session"
+              class="form-control"
+              placeholder="e.g. 2025/2026"
+            />
+          </div>
+          <div class="form-group">
+            <label>Term (Optional)</label>
+            <select id="nb-note-term" class="form-control">
+              <option value="">-- Select Term --</option>
+              <option value="1st">1st Term</option>
+              <option value="2nd">2nd Term</option>
+              <option value="3rd">3rd Term</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Question / Note Content</label>
+          <textarea
+            id="nb-note-question"
+            class="form-control"
+            rows="6"
+            placeholder="Type your examination question or note here..."
+          ></textarea>
+        </div>
+        <div class="flex justify-between" style="margin-top: 20px">
+          <button class="btn btn-outline" onclick="app.closeModals()">
+            Cancel
+          </button>
+          <button class="btn btn-primary" onclick="app.saveTeacherNote()">
+            Save Note
+          </button>
+        </div>
+      </div>
+    </div>
     <div id="modal-add-student" class="modal-overlay">
       <div class="modal-content">
         <h3>Register New Student</h3>
@@ -2004,7 +2676,6 @@
 
     <div id="printable-area"></div>
 
-    <div id="printable-area"></div>
     <div id="printable-debtors"></div>
 
     <script>
@@ -2200,10 +2871,15 @@
       const DataService = {
         async _call(payload) {
           try {
-            const response = await fetch(SCRIPT_URL, {
-              method: "POST",
-              body: JSON.stringify(payload),
-            });
+            const response = await fetch(
+              SCRIPT_URL +
+                "?payload=" +
+                encodeURIComponent(JSON.stringify(payload)),
+              {
+                method: "POST",
+                body: JSON.stringify(payload),
+              },
+            );
             return await response.json();
           } catch (e) {
             console.error("API Error", e);
@@ -2268,6 +2944,73 @@
         async saveSystemConfig(data) {
           return await this._call({ action: "saveSystemConfig", ...data });
         },
+        async deleteStudent(id) {
+          return await this._call({ action: "deleteStudent", id });
+        },
+        async bulkAddStudents(className, students) {
+          return await this._call({
+            action: "bulkAddStudents",
+            className,
+            students,
+          });
+        },
+        async getClassSubjects(className) {
+          const res = await this._call({
+            action: "getClassSubjects",
+            className,
+          });
+          return res.status === "success" ? res.subjects : [];
+        },
+        async addClassSubject(className, subject) {
+          return await this._call({
+            action: "addClassSubject",
+            className,
+            subject,
+          });
+        },
+        async deleteClassSubject(className, subject) {
+          return await this._call({
+            action: "deleteClassSubject",
+            className,
+            subject,
+          });
+        },
+        async renameClassSubject(className, oldSubject, newSubject) {
+          return await this._call({
+            action: "renameClassSubject",
+            className,
+            oldSubject,
+            newSubject,
+          });
+        },
+        async getTeacherNotes(email) {
+          const res = await this._call({ action: "getTeacherNotes", email });
+          return res.status === "success" ? res.notes : [];
+        },
+        async saveTeacherNote(note) {
+          return await this._call({ action: "saveTeacherNote", note });
+        },
+        async deleteTeacherNote(noteId, teacherEmail) {
+          return await this._call({
+            action: "deleteTeacherNote",
+            id: noteId,
+            teacherEmail,
+          });
+        },
+        async updateTeacherNote(note) {
+          return await this._call({ action: "updateTeacherNote", note });
+        },
+        async getTimetable(className) {
+          const res = await this._call({ action: "getTimetable", className });
+          return res.status === "success" ? res.timetable : null;
+        },
+        async saveTimetable(className, timetable) {
+          return await this._call({
+            action: "saveTimetable",
+            className,
+            timetable,
+          });
+        },
         /* ADD TO DataService object */
         async saveFullStudentData(data) {
           return await this._call({
@@ -2286,6 +3029,18 @@
             students: studentsData,
           });
         },
+        getClassScores: async function (className, mode, session, term) {
+          const res = await this._call({
+            action: "getClassScores",
+            className: className,
+            mode: mode || "exam",
+            session: session || "",
+            term: term || "",
+          });
+          return res.status === "success"
+            ? res
+            : { students: [], subjects: [], subjectAverages: {} };
+        },
       };
       const SettingsService = {
         data: null,
@@ -2301,7 +3056,7 @@
         },
         getActiveSubjects(cls) {
           if (!this.data?.subjects) return SUBJECTS.Primary; // fallback
-          return this.data.subjects[cls] || SUBJECTS.Primary;
+          return this.data.subjects[cls] || [];
         },
         getReportConfig(cls) {
           return (
@@ -2313,21 +3068,131 @@
         },
       };
 
+      /* ==========================================
+   PART 1: SESSION & TERM HELPER UTILITIES
+   ========================================== */
+      const SessionTermHelper = {
+        // Available academic sessions (can be extended dynamically)
+        getSessions: function () {
+          const currentYear = new Date().getFullYear();
+          const sessions = [];
+          for (let i = -2; i <= 3; i++) {
+            const start = currentYear + i;
+            sessions.push(`${start}/${start + 1}`);
+          }
+          return sessions;
+        },
+
+        // Standard terms format compatible with existing backend
+        getTerms: function () {
+          return [
+            { value: "1st", label: "1st Term" },
+            { value: "2nd", label: "2nd Term" },
+            { value: "3rd", label: "3rd Term" },
+          ];
+        },
+
+        // Helper to build dropdown HTML options for Session
+        getSessionOptionsHTML: function (selectedSession = "") {
+          const sessions = this.getSessions();
+          const currentYear = new Date().getFullYear();
+          const defaultSession = `${currentYear}/${currentYear + 1}`;
+          const activeSession = selectedSession || defaultSession;
+
+          return (
+            `<option value="">-- Select Session --</option>` +
+            sessions
+              .map(
+                (s) =>
+                  `<option value="${s}" ${s === activeSession ? "selected" : ""}>${s}</option>`,
+              )
+              .join("")
+          );
+        },
+
+        // Helper to build dropdown HTML options for Term
+        getTermOptionsHTML: function (selectedTerm = "") {
+          const terms = this.getTerms();
+          const activeTerm = selectedTerm || "1st";
+
+          return (
+            `<option value="">-- Select Term --</option>` +
+            terms
+              .map(
+                (t) =>
+                  `<option value="${t.value}" ${t.value === activeTerm ? "selected" : ""}>${t.label}</option>`,
+              )
+              .join("")
+          );
+        },
+
+        // Utility to render standard Session and Term controls inside any container element
+        renderControls: function (containerId, prefix = "") {
+          const container = document.getElementById(containerId);
+          if (!container) return;
+
+          const sessionSelectId = `${prefix}SessionSelect`;
+          const termSelectId = `${prefix}TermSelect`;
+
+          container.innerHTML = `
+      <div class="flex gap-2 items-center flex-wrap">
+        <div class="form-group" style="margin:0; min-width: 140px;">
+          <label style="font-size: 0.75rem; margin-bottom: 2px;">Session</label>
+          <select id="${sessionSelectId}" class="form-control" style="padding: 6px 10px; font-size: 0.85rem;">
+            ${this.getSessionOptionsHTML()}
+          </select>
+        </div>
+        <div class="form-group" style="margin:0; min-width: 120px;">
+          <label style="font-size: 0.75rem; margin-bottom: 2px;">Term</label>
+          <select id="${termSelectId}" class="form-control" style="padding: 6px 10px; font-size: 0.85rem;">
+            ${this.getTermOptionsHTML()}
+          </select>
+        </div>
+      </div>
+    `;
+        },
+
+        // Retrieve current selection from UI components safely
+        getValues: function (prefix = "") {
+          const sessionEl = document.getElementById(`${prefix}SessionSelect`);
+          const termEl = document.getElementById(`${prefix}TermSelect`);
+          return {
+            session: sessionEl ? sessionEl.value.trim() : "",
+            term: termEl ? termEl.value.trim() : "",
+          };
+        },
+
+        // Validate if both session and term are selected
+        validate: function (prefix = "") {
+          const { session, term } = this.getValues(prefix);
+          if (!session || !term) {
+            return {
+              valid: false,
+              message: "Please select Academic Session and Term before saving.",
+            };
+          }
+          return { valid: true, session, term };
+        },
+      };
+
       const SCRIPT_URL =
-        "https://script.google.com/macros/s/AKfycbyoLN0o6qPU7waz6J9-KpNILcXXJtyFMjt_b44l7MoFUFVAaVRYOyLTEoUSWWCnycFW/exec";
+        "https://script.google.com/macros/s/AKfycbwDkmzoYoRZPHrzhog3och96cJ1I-p7Ptg1H48uRytl3wxeuK6WcZYiwm79F2Y2ma7ndA/exec";
 
       const app = {
         state: {
           currentUser: null,
+          theme: "light",
           currentClass: null,
           currentStudent: null,
           displayedStudents: [],
           teachersList: [],
           currentSection: null, // NEW: tracks active section for save dispatcher
+          broadsheetMode: "exam", // <-- ADD THIS LINE
         },
 
         init: function () {
           AssetService.init();
+          this.initTheme();
           SettingsService.load(); // Load settings in background
 
           const populateSel = (id) => {
@@ -2344,11 +3209,16 @@
           populateSel("editStdClass");
           populateSel("feeClassFilter");
           populateSel("bookClassFilter");
-          const u = sessionStorage.getItem("ps_user");
-          if (u) {
-            this.state.currentUser = JSON.parse(u);
-            this.showDashboard();
-          }
+          // Re-fill the dropdowns once real classes arrive from the sheet
+          SettingsService.load().then(() => {
+            populateSel("signupClass");
+            populateSel("newStdClass");
+            populateSel("editStdClass");
+            populateSel("feeClassFilter");
+            populateSel("bookClassFilter");
+          });
+
+          // Restore session: remember-me (30 days), else this tab's session
           const remembered = localStorage.getItem("ps_remember_user");
           if (remembered) {
             try {
@@ -2366,6 +3236,36 @@
             localStorage.removeItem("ps_remember_user");
             localStorage.removeItem("ps_remember_time");
           }
+          const u = sessionStorage.getItem("ps_user");
+          if (u) {
+            this.state.currentUser = JSON.parse(u);
+            this.showDashboard();
+          }
+        },
+
+        initTheme: function () {
+          const savedTheme = localStorage.getItem("app_theme");
+          if (savedTheme) {
+            this.setTheme(savedTheme);
+          } else {
+            const prefersDark =
+              window.matchMedia &&
+              window.matchMedia("(prefers-color-scheme: dark)").matches;
+            this.setTheme(prefersDark ? "dark" : "light");
+          }
+        },
+        setTheme: function (theme) {
+          this.state.theme = theme;
+          document.documentElement.setAttribute("data-theme", theme);
+          localStorage.setItem("app_theme", theme);
+          const btn = document.getElementById("theme-toggle-btn");
+          if (btn) {
+            btn.innerHTML = theme === "dark" ? "☀️ Light" : "🌙 Dark";
+          }
+        },
+        toggleTheme: function () {
+          const nextTheme = this.state.theme === "dark" ? "light" : "dark";
+          this.setTheme(nextTheme);
         },
 
         /* AUTH */
@@ -2979,6 +3879,8 @@
         },
         logout: () => {
           sessionStorage.removeItem("ps_user");
+          localStorage.removeItem("ps_remember_user");
+          localStorage.removeItem("ps_remember_time");
           window.location.reload();
         },
         showDashboard: async () => {
@@ -3084,7 +3986,19 @@
             grid.innerHTML += `<div class="card" onclick="app.loadAttendance('${assignedClass}')"><div class="card-content"><div class="card-icon">📋</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:#0369a1;">(Attendance)</span></div><div class="card-meta">Enter attendance for all students</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full" style="border-color:#0369a1;color:#0369a1;">Open Attendance</button></div></div>`;
 
             // NEW: Other Records Card for Class Teacher
-            grid.innerHTML += `<div class="card" onclick="app.loadOtherRecords('${assignedClass}')"><div class="card-content"><div class="card-icon">🏆</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:#92400e;">(Records)</span></div><div class="card-meta">Activities, Clubs & Offices</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full" style="border-color:#92400e;color:#92400e;">Open Records</button></div></div>`;
+            grid.innerHTML += `<div class="card" onclick="app.loadOtherRecords('${assignedClass}')"><div class="card-content"><div class="card-icon">🏆</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:#92400e;">(Other Records)</span></div><div class="card-meta">Activities, Clubs & Offices</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full" style="border-color:#92400e;color:#92400e;">Open Records</button></div></div>`;
+
+            // NEW: Performance Card for Class Teacher (restricted to their class only)
+            grid.innerHTML += `<div class="card" onclick="app.loadPerformance()"><div class="card-content"><div class="card-icon">📊</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:#7c3aed;">(Performance)</span></div><div class="card-meta">View student rankings & broadsheet</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full" style="border-color:#7c3aed;color:#7c3aed;">View Performance</button></div></div>`;
+
+            // NEW: Student Management Card for Class Teacher
+            grid.innerHTML += `<div class="card" onclick="app.loadTeacherStudentManagement('${assignedClass}')"><div class="card-content"><div class="card-icon">👨‍🎓</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:#808000;">(Student Management)</span></div><div class="card-meta">Manage student information and records</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full" style="border-color:#808000;color:#808000;">Manage Students</button></div></div>`;
+
+            // NEW: Subject Management Card for Class Teacher
+            grid.innerHTML += `<div class="card" onclick="app.loadTeacherSubjectManagement('${assignedClass}')"><div class="card-content"><div class="card-icon">📚</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:#008000;">(Subject Management)</span></div><div class="card-meta">Manage subject information and records</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full" style="border-color:#008000;color:#008000;">Manage Subjects</button></div></div>`;
+
+            // NEW: Teacher's Notebook Card for Class Teacher (restricted to their class only)
+            grid.innerHTML += `<div class="card" onclick="app.loadTeacherNotebook()"><div class="card-content"><div class="card-icon">📓</div><div class="card-title">${assignedClass} <span style="font-size:0.8rem;color:#008080;">(Teacher's Notebook & Timetable)</span></div><div class="card-meta">View and manage teacher notes</div></div><div class="card-footer"><button class="btn btn-outline btn-sm w-full" style="border-color:#008080;color:#008080;">View Notebook</button></div></div>`;
           }
         },
         getClassTeacherName: (cls) =>
@@ -3105,30 +4019,366 @@
             )
             .join("");
         },
-        loadPerformance: async () => {
-          app.showSection("section-performance");
-          app.toggleLoader(true);
-          const s = await DataService.getStudents("");
-          app.toggleLoader(false);
-          const stats = s
-            .map((x) => ({
-              ...x,
-              avg: Math.round(
-                (Object.values(x.scores).reduce(
-                  (a, b) => a + ((b?.ca || 0) + (b?.exam || 0)),
-                  0,
-                ) /
-                  (Object.keys(x.scores).length || 1)) *
-                  100,
-              ),
-            }))
-            .sort((a, b) => b.avg - a.avg);
-          document.getElementById("perf-tbody").innerHTML = stats
-            .map(
-              (x, i) =>
-                `<tr><td style="font-weight:bold;color:${i === 0 ? "#f59e0b" : "inherit"}">#${i + 1}</td><td>${x.name}</td><td>${x.class}</td><td>${x.avg}%</td></tr>`,
-            )
-            .join("");
+        loadPerformance: async function () {
+          this.showSection("section-performance");
+          this.state.broadsheetMode = "exam";
+
+          const role = this.state.currentUser.role;
+          const assignedClass = this.state.currentUser.assignedClass;
+          const activeClasses = SettingsService.getActiveClasses();
+
+          // Role-based class access: teachers see ONLY their class, admin sees all
+          let availableClasses = activeClasses;
+          let lockedClass = "";
+
+          if (role === "Class Teacher") {
+            availableClasses = assignedClass ? [assignedClass] : [];
+            lockedClass = assignedClass || "";
+          }
+
+          const container = document.getElementById("perf-container");
+          container.innerHTML = `
+    <div style="margin-bottom: 15px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <select id="perf-class-select" class="form-control" style="width: 200px; ${role === "Class Teacher" ? "display:none;" : ""}">
+        <option value="">Select Class</option>
+        ${availableClasses.map((c) => `<option value="${c}" ${c === lockedClass ? "selected" : ""}>${c}</option>`).join("")}
+      </select>
+      ${role === "Class Teacher" ? `<span class="badge" style="font-size:1rem; padding:8px 16px; background:#ede9fe; color:#7c3aed;">${assignedClass}</span>` : ""}
+      <button class="perf-switch-btn" id="perf-switch-type">Switch to Mid-Term</button>
+    </div>
+    <div id="broadsheet-container" style="overflow-x: auto; margin-top: 1rem;"></div>
+    <div id="perf-stats" style="margin-top: 1rem;"></div>
+  `;
+
+          const select = document.getElementById("perf-class-select");
+          const switchBtn = document.getElementById("perf-switch-type");
+          const sessionSel = document.getElementById("perfSessionSelect");
+          const termSel = document.getElementById("perfTermSelect");
+
+          // Helper: resolve which class to use based on role
+          const getActiveClass = () => {
+            return role === "Class Teacher" ? lockedClass : select.value;
+          };
+
+          const loadData = () => {
+            const cls = getActiveClass();
+            if (cls) app.renderBroadsheet(cls, this.state.broadsheetMode);
+          };
+
+          select.onchange = loadData;
+          sessionSel.onchange = loadData;
+          termSel.onchange = loadData;
+
+          switchBtn.onclick = (e) => {
+            const cls = getActiveClass();
+            if (!cls) return;
+            if (this.state.broadsheetMode === "exam") {
+              this.state.broadsheetMode = "midterm";
+              e.target.textContent = "Switch to Exam";
+            } else {
+              this.state.broadsheetMode = "exam";
+              e.target.textContent = "Switch to Mid-Term";
+            }
+            loadData();
+          };
+
+          // Auto-load broadsheet immediately for Class Teacher (their class is locked)
+          if (lockedClass) {
+            loadData();
+          }
+        },
+        renderBroadsheet: async function (className, type) {
+          const container = document.getElementById("broadsheet-container");
+          const statsContainer = document.getElementById("perf-stats");
+          container.innerHTML =
+            '<div class="text-center" style="padding:4rem;"><div class="spinner" style="margin:0 auto;"></div><p>Loading...</p></div>';
+
+          const session = document.getElementById("perfSessionSelect").value;
+          const term = document.getElementById("perfTermSelect").value;
+          const isMidTerm = type === "midterm";
+
+          const data = await DataService.getClassScores(
+            className,
+            type,
+            session,
+            term,
+          );
+
+          if (!data.students || data.students.length === 0) {
+            container.innerHTML = `<div class="text-center" style="padding:3rem;">
+      <p style="color:var(--secondary);">No scores found for <strong>${className}</strong> — ${isMidTerm ? "Mid-Term" : "Exam"}</p>
+      <p style="font-size:0.85rem;color:var(--secondary);margin-top:5px;">Session: ${session} • Term: ${term}</p>
+    </div>`;
+            statsContainer.innerHTML = "";
+            return;
+          }
+
+          const subjects = data.subjects || [];
+
+          // 1. Calculate Totals and Percentages
+          const processedStudents = data.students.map((student) => {
+            let rowTotal = 0;
+            let subjectCount = 0;
+            subjects.forEach((sub) => {
+              const sc = student.scores[sub] || {};
+              const val = isMidTerm
+                ? sc.total || 0
+                : (sc.ca || 0) + (sc.exam || 0);
+              if (val > 0) {
+                rowTotal += val;
+                subjectCount++;
+              }
+            });
+            const percentage =
+              subjectCount > 0 ? (rowTotal / subjectCount).toFixed(1) : 0;
+            return {
+              ...student,
+              totalScore: rowTotal,
+              avgPerc: parseFloat(percentage),
+              subjectCount,
+            };
+          });
+
+          // 2. Sort by Average (descending)
+          processedStudents.sort((a, b) => b.avgPerc - a.avgPerc);
+
+          // 3. Generate Table
+          let thead = "<tr><th>Pos</th><th>Adm No</th><th>Name</th>";
+          subjects.forEach((sub) => {
+            thead += `<th title="${sub}">${sub}</th>`;
+          });
+          thead += "<th>Total</th><th>%</th></tr>";
+
+          let rowsHtml = "";
+          const subjectBest = {};
+          const lowPerformers = [];
+          subjects.forEach(
+            (sub) => (subjectBest[sub] = { max: 0, students: [] }),
+          );
+
+          let lastPerc = null,
+            rank = 0;
+
+          processedStudents.forEach((student, index) => {
+            if (
+              index > 0 &&
+              student.avgPerc === processedStudents[index - 1].avgPerc
+            ) {
+              // same rank
+            } else {
+              rank = index + 1;
+            }
+            const positionStr = app.getOrdinal(rank);
+
+            let cells = `<td style="font-weight:bold;background:#f8fafc;">${positionStr}</td>`;
+            cells += `<td>${student.id}</td><td><strong>${student.name}</strong></td>`;
+
+            subjects.forEach((sub) => {
+              const sc = student.scores[sub] || {};
+              const val = isMidTerm
+                ? sc.total || 0
+                : (sc.ca || 0) + (sc.exam || 0);
+              if (val > 0) {
+                if (val > subjectBest[sub].max) {
+                  subjectBest[sub].max = val;
+                  subjectBest[sub].students = [student.name];
+                } else if (val === subjectBest[sub].max) {
+                  subjectBest[sub].students.push(student.name);
+                }
+              }
+              const display = val > 0 ? val : "-";
+              const grade = val > 0 ? app.getGrade(val) : "-";
+              cells += `<td style="text-align:center;">${display}<br><small>${grade}</small></td>`;
+            });
+
+            cells += `<td style="font-weight:bold;text-align:center;">${student.totalScore}</td>`;
+            cells += `<td style="font-weight:bold;color:var(--primary);text-align:center;">${student.avgPerc}%</td>`;
+            rowsHtml += `<tr>${cells}</tr>`;
+
+            if (student.avgPerc < 50 && student.subjectCount > 0) {
+              lowPerformers.push({ name: student.name, perc: student.avgPerc });
+            }
+          });
+
+          // Class Average Row
+          let avgRow =
+            '<tr style="background:#f1f5f9;font-weight:600;"><td colspan="3">Class Average</td>';
+          subjects.forEach((sub) => {
+            const avg = data.subjectAverages[sub] || 0;
+            avgRow += `<td style="text-align:center;">${avg.toFixed(1)}</td>`;
+          });
+          const overallAvg =
+            Object.values(data.subjectAverages).reduce((s, v) => s + v, 0) /
+              (subjects.length || 1) || 0;
+          avgRow +=
+            '<td>-</td><td style="color:var(--primary);">' +
+            overallAvg.toFixed(1) +
+            "%</td></tr>";
+
+          // 4. Stats HTML
+          let statsHtml = '<div class="perf-stats-box">';
+          statsHtml +=
+            "<strong>Overall Class Average:</strong> " +
+            overallAvg.toFixed(1) +
+            "%<br>";
+          statsHtml += "<strong>Best Student per Subject:</strong><ul>";
+          for (let sub in subjectBest) {
+            const best = subjectBest[sub];
+            if (best.max > 0)
+              statsHtml += `<li>${sub}: ${best.students.join(", ")} (${best.max})</li>`;
+          }
+          statsHtml += "</ul>";
+          if (lowPerformers.length > 0) {
+            lowPerformers.sort((a, b) => a.perc - b.perc);
+            statsHtml += "<strong>Students Needing Help (<50%):</strong><ul>";
+            lowPerformers.forEach((lp) => {
+              statsHtml += `<li>${lp.name} (${lp.perc}%)</li>`;
+            });
+            statsHtml += "</ul>";
+          } else {
+            statsHtml += "<strong>No students below 50% threshold.</strong>";
+          }
+          statsHtml += "</div>";
+
+          // 5. Render
+          container.innerHTML = `
+    <div style="margin-bottom:1.5rem;">
+      <h3 style="margin:0;">${className} – ${isMidTerm ? "Mid-Term" : "Exam"} Broadsheet</h3>
+      <small style="color:var(--secondary);">Session: ${session} • Term: ${term} • Students: ${processedStudents.length} • Subjects: ${subjects.length}</small>
+    </div>
+    <table class="broadsheet-table">
+      <thead>${thead}</thead>
+      <tbody>${rowsHtml}${avgRow}</tbody>
+    </table>
+  `;
+          statsContainer.innerHTML = statsHtml;
+        },
+
+        printBroadsheet: async function () {
+          const cls = document.getElementById("perf-class-select").value;
+          if (!cls) return this.showToast("Select a class first", "warning");
+
+          const type = this.state.broadsheetMode || "exam";
+          const isMidTerm = type === "midterm";
+          const session = document.getElementById("perfSessionSelect").value;
+          const term = document.getElementById("perfTermSelect").value;
+
+          this.toggleLoader(true);
+          const data = await DataService.getClassScores(
+            cls,
+            type,
+            session,
+            term,
+          );
+
+          if (!data.students || data.students.length === 0) {
+            this.toggleLoader(false);
+            return this.showToast("No data available to print", "error");
+          }
+
+          const subjects = data.subjects || [];
+          const termLabel = isMidTerm ? "Mid-Term" : "Examination";
+
+          const processedStudents = data.students.map((student) => {
+            let rowTotal = 0,
+              subjectCount = 0;
+            subjects.forEach((sub) => {
+              const sc = student.scores[sub] || {};
+              const val = isMidTerm
+                ? sc.total || 0
+                : (sc.ca || 0) + (sc.exam || 0);
+              if (val > 0) {
+                rowTotal += val;
+                subjectCount++;
+              }
+            });
+            const percentage =
+              subjectCount > 0 ? (rowTotal / subjectCount).toFixed(1) : 0;
+            return {
+              ...student,
+              totalScore: rowTotal,
+              avgPerc: parseFloat(percentage),
+              subjectCount,
+            };
+          });
+          processedStudents.sort((a, b) => b.avgPerc - a.avgPerc);
+
+          let headerHtml =
+            '<tr><th>S/N</th><th style="text-align:left;">NAME</th>';
+          subjects.forEach((sub) => {
+            const shortSub = sub.length > 10 ? sub.substring(0, 10) + "." : sub;
+            headerHtml += `<th style="writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);height:120px;width:25px;padding:5px 2px;font-size:0.7rem;">${shortSub}</th>`;
+          });
+          headerHtml += "<th>TT</th><th>%</th><th>POS</th></tr>";
+
+          let bodyHtml = "";
+          let rank = 0;
+          processedStudents.forEach((student, index) => {
+            if (
+              index > 0 &&
+              student.avgPerc === processedStudents[index - 1].avgPerc
+            ) {
+              /* same rank */
+            } else {
+              rank = index + 1;
+            }
+
+            bodyHtml += `<tr><td>${index + 1}</td><td style="text-align:left;font-weight:500;white-space:nowrap;">${student.name}</td>`;
+            subjects.forEach((sub) => {
+              const sc = student.scores[sub] || {};
+              const val = isMidTerm
+                ? sc.total || 0
+                : (sc.ca || 0) + (sc.exam || 0);
+              bodyHtml += `<td style="font-size:0.75rem;">${val || "-"}</td>`;
+            });
+            bodyHtml += `<td style="font-weight:bold;">${student.totalScore}</td><td style="font-weight:bold;">${student.avgPerc}%</td><td style="font-weight:bold;">${app.getOrdinal(rank)}</td></tr>`;
+          });
+
+          // Class Average Row
+          let avgRowHtml =
+            '<tr style="background:#f1f5f9;font-weight:bold;"><td colspan="2">CLASS AVERAGE</td>';
+          subjects.forEach((sub) => {
+            const avg = data.subjectAverages[sub] || 0;
+            avgRowHtml += `<td style="font-size:0.75rem;">${avg.toFixed(1)}</td>`;
+          });
+          const overallAvg =
+            Object.values(data.subjectAverages).reduce((a, b) => a + b, 0) /
+            (subjects.length || 1);
+          avgRowHtml += `<td>-</td><td>${overallAvg.toFixed(1)}%</td><td>-</td></tr>`;
+
+          const area = document.getElementById("printable-area");
+          area.innerHTML = `
+    <style>
+      @media print {
+        @page { size: A4 landscape; margin: 8mm; }
+        body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+        .bp-table { width:100%; border-collapse:collapse; font-size:0.8rem; }
+        .bp-table th, .bp-table td { border:1px solid #000; padding:4px; text-align:center; }
+        .bp-table th { background-color:#e2e8f0; }
+      }
+    </style>
+    <div style="font-family:'Times New Roman',serif;color:#000;">
+      <div style="text-align:center;margin-bottom:15px;border-bottom:2px solid #000;padding-bottom:10px;">
+        <div style="font-size:20px;font-weight:bold;text-transform:uppercase;">Nifty Steps Nursery & Primary School</div>
+        <div style="font-size:14px;font-style:italic;">Broadsheet / Class Performance Analysis</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:10px;font-size:14px;">
+        <div><strong>Class:</strong> ${cls}</div>
+        <div><strong>Term:</strong> ${termLabel} Term</div>
+        <div><strong>Session:</strong> ${session}</div>
+        <div><strong>Total Students:</strong> ${processedStudents.length}</div>
+      </div>
+      <table class="bp-table"><thead>${headerHtml}</thead><tbody>${bodyHtml}${avgRowHtml}</tbody></table>
+    </div>
+  `;
+          this.toggleLoader(false);
+          setTimeout(() => window.print(), 500);
+        },
+
+        getOrdinal: function (n) {
+          const s = ["th", "st", "nd", "rd"];
+          const v = n % 100;
+          return n + (s[(v - 20) % 10] || s[v] || s[0]);
         },
         /* NEW CODE - Updated to handle mode parameter */
         loadStudentList: async (cn, mode = "exam") => {
@@ -3835,38 +5085,316 @@
           app.toggleLoader(false);
           app.showToast("Config Saved", "success");
         },
+
+        /* ===== ANALYTICS DASHBOARD ===== */
+        loadAnalytics: async function () {
+          app.showSection("section-analytics");
+          const user = app.state.currentUser;
+          const isTeacher = user.role === "Class Teacher";
+          const cls = isTeacher ? user.assignedClass || "" : "";
+
+          // Recent Payments panel is admin-only
+          document
+            .getElementById("an-recent-panel")
+            .classList.toggle("hidden", isTeacher);
+
+          app.toggleLoader(true);
+          const [students, teachers, txs] = await Promise.all([
+            DataService.getStudents(cls),
+            DataService.getTeachers(),
+            // Fee data is admin-only: teachers never fetch it
+            isTeacher ? Promise.resolve([]) : DataService.getFeeTransactions(),
+          ]);
+          app.toggleLoader(false);
+
+          // ----- helpers -----
+          const avgOf = (list) =>
+            list.length
+              ? Math.round(list.reduce((a, b) => a + b, 0) / list.length)
+              : 0;
+          const studentAvg = (s) => {
+            const totals = Object.values(s.scores || {})
+              .map((sc) => Number(sc.total) || 0)
+              .filter((v) => v > 0);
+            return totals.length
+              ? Math.round(totals.reduce((a, b) => a + b, 0) / totals.length)
+              : null;
+          };
+
+          const male = students.filter((s) =>
+            String(s.gender || "")
+              .toLowerCase()
+              .startsWith("m"),
+          ).length;
+          const female = students.filter((s) =>
+            String(s.gender || "")
+              .toLowerCase()
+              .startsWith("f"),
+          ).length;
+          const scopeIds = new Set(students.map((s) => String(s.id)));
+          const earned = txs
+            .filter((t) => scopeIds.has(String(t.studentId)))
+            .reduce((sum, t) => sum + (Number(t.amount) || 0), 0);
+
+          // ----- bar chart: per subject (teacher) / per class (admin) -----
+          let barData = [];
+          if (isTeacher) {
+            const bySub = {};
+            students.forEach((s) => {
+              Object.keys(s.scores || {}).forEach((sub) => {
+                const total = Number(s.scores[sub].total) || 0;
+                if (total > 0) (bySub[sub] = bySub[sub] || []).push(total);
+              });
+            });
+            barData = Object.keys(bySub).map((sub) => ({
+              label: sub,
+              avg: avgOf(bySub[sub]),
+            }));
+          } else {
+            const byCls = {};
+            students.forEach((s) => {
+              const c = s.class || "Unassigned";
+              Object.values(s.scores || {}).forEach((sc) => {
+                const total = Number(sc.total) || 0;
+                if (total > 0) (byCls[c] = byCls[c] || []).push(total);
+              });
+            });
+            barData = Object.keys(byCls).map((c) => ({
+              label: c,
+              avg: avgOf(byCls[c]),
+            }));
+          }
+          const overallAvg = avgOf(
+            students.map(studentAvg).filter((v) => v !== null),
+          );
+
+          // ----- stat cards -----
+          const teacherCount = teachers.filter((t) =>
+            String(t.role || "")
+              .toLowerCase()
+              .includes("teacher"),
+          ).length;
+          const cards = isTeacher
+            ? [
+                { t: "Students", v: students.length, i: "🎓", c: "purple" },
+                {
+                  t: "My Subjects",
+                  v: (
+                    SettingsService.getActiveSubjects(user.assignedClass) || []
+                  ).length,
+                  i: "📚",
+                  c: "blue",
+                },
+                {
+                  t: "Class Average",
+                  v: overallAvg + "%",
+                  i: "📈",
+                  c: "green",
+                },
+              ]
+            : [
+                { t: "Students", v: students.length, i: "🎓", c: "purple" },
+                { t: "Teachers", v: teacherCount, i: "👩‍🏫", c: "blue" },
+                {
+                  t: "Fees Collected",
+                  v: app.formatMoney(earned),
+                  i: "💰",
+                  c: "amber",
+                },
+                {
+                  t: "School Average",
+                  v: overallAvg + "%",
+                  i: "📈",
+                  c: "green",
+                },
+              ];
+          document.getElementById("an-stats").innerHTML = cards
+            .map(
+              (c) => `
+          <div class="an-stat-card ${c.c}">
+            <div>
+              <div class="an-stat-title">${c.t}</div>
+              <div class="an-stat-value">${c.v}</div>
+            </div>
+            <div class="an-stat-icon">${c.i}</div>
+          </div>`,
+            )
+            .join("");
+
+          // ----- bar chart -----
+          document.getElementById("an-chart-title").innerText = isTeacher
+            ? "Subject Performance"
+            : "Class Performance";
+          document.getElementById("an-chart-sub").innerText = isTeacher
+            ? `Average score per subject — ${user.assignedClass}`
+            : "Average score per class";
+          document.getElementById("an-bars").innerHTML =
+            barData.length === 0
+              ? `<p style="color: var(--secondary); width: 100%; text-align: center; align-self: center;">No exam scores recorded yet.</p>`
+              : barData
+                  .map(
+                    (b) => `
+          <div class="an-bar-wrap" title="${app.escapeHtml(b.label)}: ${b.avg}%">
+            <div class="an-bar-val">${b.avg}</div>
+            <div class="an-bar" style="height: ${Math.max(2, b.avg)}%"></div>
+            <div class="an-bar-label">${app.escapeHtml(b.label)}</div>
+          </div>`,
+                  )
+                  .join("");
+
+          // ----- gender donut -----
+          const total = male + female;
+          const malePct = total ? Math.round((male / total) * 100) : 0;
+          document.getElementById("an-gender").innerHTML =
+            total === 0
+              ? `<p style="color: var(--secondary);">No students found.</p>`
+              : `
+          <div class="an-donut" style="background: conic-gradient(var(--primary) 0 ${malePct}%, #f97316 ${malePct}% 100%);">
+            <div class="an-donut-hole">
+              <b>${total}</b>
+              <span class="text-sm" style="color: var(--secondary)">Total</span>
+            </div>
+          </div>
+          <div class="an-legend">
+            <span><span class="an-dot" style="background: var(--primary)"></span>Male (${male})</span>
+            <span><span class="an-dot" style="background: #f97316"></span>Female (${female})</span>
+          </div>`;
+
+          // ----- star students -----
+          const stars = students
+            .map((s) => ({
+              name: s.name,
+              id: s.id,
+              cls: s.class || "-",
+              avg: studentAvg(s),
+            }))
+            .filter((s) => s.avg !== null)
+            .sort((a, b) => b.avg - a.avg)
+            .slice(0, 5);
+          document.getElementById("an-star-tbody").innerHTML =
+            stars.length === 0
+              ? `<tr><td colspan="4" class="text-center" style="color: var(--secondary)">No results yet.</td></tr>`
+              : stars
+                  .map(
+                    (s) => `
+          <tr>
+            <td>
+              <div class="flex items-center gap-2">
+                <div class="an-avatar">${app.escapeHtml(
+                  String(s.name || "?")
+                    .trim()
+                    .split(/\s+/)
+                    .map((w) => w[0])
+                    .slice(0, 2)
+                    .join("")
+                    .toUpperCase(),
+                )}</div>
+                <b>${app.escapeHtml(s.name)}</b>
+              </div>
+            </td>
+            <td>${app.escapeHtml(String(s.id))}</td>
+            <td><span class="badge">${s.avg}%</span></td>
+            <td>${app.escapeHtml(s.cls)}</td>
+          </tr>`,
+                  )
+                  .join("");
+
+          // ----- recent payments -----
+          const recent = txs
+            .filter((t) => scopeIds.has(String(t.studentId)))
+            .sort((a, b) =>
+              String(b.date || "").localeCompare(String(a.date || "")),
+            )
+            .slice(0, 5);
+          document.getElementById("an-recent").innerHTML =
+            recent.length === 0
+              ? `<p style="color: var(--secondary);">No fee transactions yet.</p>`
+              : recent
+                  .map(
+                    (t) => `
+          <div class="an-list-item">
+            <div class="an-avatar" style="background: #dcfce7; color: #15803d;">💰</div>
+            <div style="flex: 1; min-width: 0;">
+              <div class="font-bold" style="font-size: 0.9rem;">${app.escapeHtml(t.name || "Unknown")} — ${app.formatMoney(Number(t.amount) || 0)}</div>
+              <div class="text-sm" style="color: var(--secondary); font-size: 0.78rem;">${app.escapeHtml(t.type || "")}${t.date ? " • " + t.date : ""}</div>
+            </div>
+          </div>`,
+                  )
+                  .join("");
+        },
+
         /* NEW: ============ ATTENDANCE RECORD FUNCTIONS ============ */
 
         loadAttendance: async function (cls) {
           app.showSection("section-attendance");
 
+          const role = app.state.currentUser.role;
+          const assignedClass = app.state.currentUser.assignedClass;
+          const activeClasses = SettingsService.getActiveClasses();
+
+          // Role-based: teacher sees only their class, admin sees all
+          let showDropdown = role !== "Class Teacher";
+          let lockedClass = "";
+
+          if (role === "Class Teacher") {
+            lockedClass = assignedClass || "";
+          }
+
           // Populate class selector
           const sel = document.getElementById("att-class-select");
           sel.innerHTML =
             '<option value="" disabled selected>Select Class</option>';
-          SettingsService.getActiveClasses().forEach((c) => {
+          activeClasses.forEach((c) => {
             sel.innerHTML += `<option value="${c}">${c}</option>`;
           });
 
-          // Auto-select class for teachers or if a specific class was passed
-          const targetClass =
-            cls ||
-            (app.state.currentUser.role === "Class Teacher"
-              ? app.state.currentUser.assignedClass
-              : null);
-          if (targetClass) {
-            sel.value = targetClass;
-            await app.onAttClassChange();
+          // Hide dropdown for teachers, show badge instead
+          sel.style.display = showDropdown ? "" : "none";
+
+          // Update subtitle to show class badge for teachers
+          const subtitleEl = document.getElementById("att-subtitle");
+
+          if (!showDropdown && lockedClass) {
+            // Remove old badge if exists, then add new one
+            const existingBadge =
+              sel.parentElement.querySelector(".att-class-badge");
+            if (existingBadge) existingBadge.remove();
+            const badge = document.createElement("span");
+            badge.className = "badge att-class-badge";
+            badge.style.cssText =
+              "font-size:1rem; padding:8px 16px; background:#e0f2fe; color:#0369a1;";
+            badge.textContent = lockedClass;
+            sel.parentElement.insertBefore(badge, sel.nextSibling);
+            subtitleEl.textContent = `Attendance for ${lockedClass}`;
+            await app.onAttClassChangeWithClass(lockedClass);
           } else {
-            document.getElementById("att-student-list").innerHTML =
-              '<div style="text-align:center; padding:40px; color:var(--secondary);">Select a class above to begin</div>';
-            document.getElementById("att-school-opened-bulk").value = "";
+            // Remove badge if switching back to admin view
+            const existingBadge =
+              sel.parentElement.querySelector(".att-class-badge");
+            if (existingBadge) existingBadge.remove();
+            const targetClass = cls || null;
+            if (targetClass) {
+              sel.value = targetClass;
+              await app.onAttClassChange();
+            } else {
+              subtitleEl.textContent = "Select a class to begin";
+              document.getElementById("att-student-list").innerHTML =
+                '<div style="text-align:center; padding:40px; color:var(--secondary);">Select a class above to begin</div>';
+              document.getElementById("att-school-opened-bulk").value = "";
+            }
           }
         },
 
         // NEW: Handler for class dropdown change in attendance section
+        // Handler for class dropdown change in attendance section
         onAttClassChange: async function () {
           const cls = document.getElementById("att-class-select").value;
+          if (!cls) return;
+          await app.onAttClassChangeWithClass(cls);
+        },
+
+        // Shared logic: loads attendance students for a given class
+        onAttClassChangeWithClass: async function (cls) {
           if (!cls) return;
 
           app.state.currentClass = cls;
@@ -3975,7 +5503,10 @@
 
         // NEW: Save attendance for ALL students in the class
         saveAttendance: async function () {
-          const cls = document.getElementById("att-class-select").value;
+          const cls =
+            document.getElementById("att-class-select").value ||
+            app.state.currentUser.assignedClass ||
+            app.state.currentClass;
           if (!cls) return app.showToast("Select a class first", "warning");
 
           const schoolOpened =
@@ -4027,32 +5558,70 @@
         loadOtherRecords: async function (cls) {
           app.showSection("section-records-entry");
 
+          const role = app.state.currentUser.role;
+          const assignedClass = app.state.currentUser.assignedClass;
+          const activeClasses = SettingsService.getActiveClasses();
+
+          // Role-based: teacher sees only their class, admin sees all
+          let showDropdown = role !== "Class Teacher";
+          let lockedClass = "";
+
+          if (role === "Class Teacher") {
+            lockedClass = assignedClass || "";
+          }
+
           // Populate class selector
           const sel = document.getElementById("rec-class-select");
           sel.innerHTML =
             '<option value="" disabled selected>Select Class</option>';
-          SettingsService.getActiveClasses().forEach((c) => {
+          activeClasses.forEach((c) => {
             sel.innerHTML += `<option value="${c}">${c}</option>`;
           });
 
-          // Auto-select class for teachers or if a specific class was passed
-          const targetClass =
-            cls ||
-            (app.state.currentUser.role === "Class Teacher"
-              ? app.state.currentUser.assignedClass
-              : null);
-          if (targetClass) {
-            sel.value = targetClass;
-            await app.onRecClassChange();
+          // Hide dropdown for teachers, show badge instead
+          sel.style.display = showDropdown ? "" : "none";
+
+          // Update subtitle
+          const subtitleEl = document.getElementById("rec-subtitle");
+
+          if (!showDropdown && lockedClass) {
+            const existingBadge =
+              sel.parentElement.querySelector(".rec-class-badge");
+            if (existingBadge) existingBadge.remove();
+            const badge = document.createElement("span");
+            badge.className = "badge rec-class-badge";
+            badge.style.cssText =
+              "font-size:1rem; padding:8px 16px; background:#fef3c7; color:#92400e;";
+            badge.textContent = lockedClass;
+            sel.parentElement.insertBefore(badge, sel.nextSibling);
+            subtitleEl.textContent = `Records for ${lockedClass}`;
+            await app.onRecClassChangeWithClass(lockedClass);
           } else {
-            document.getElementById("rec-student-list").innerHTML =
-              '<div style="text-align:center; padding:40px; color:var(--secondary);">Select a class above to begin</div>';
+            const existingBadge =
+              sel.parentElement.querySelector(".rec-class-badge");
+            if (existingBadge) existingBadge.remove();
+            const targetClass = cls || null;
+            if (targetClass) {
+              sel.value = targetClass;
+              await app.onRecClassChange();
+            } else {
+              subtitleEl.textContent = "Activities, Clubs & Offices";
+              document.getElementById("rec-student-list").innerHTML =
+                '<div style="text-align:center; padding:40px; color:var(--secondary);">Select a class above to begin</div>';
+            }
           }
         },
 
         // NEW: Handler for class dropdown change in records section
+        // Handler for class dropdown change in records section
         onRecClassChange: async function () {
           const cls = document.getElementById("rec-class-select").value;
+          if (!cls) return;
+          await app.onRecClassChangeWithClass(cls);
+        },
+
+        // Shared logic: loads records students for a given class
+        onRecClassChangeWithClass: async function (cls) {
           if (!cls) return;
 
           app.state.currentClass = cls;
@@ -4128,7 +5697,10 @@
 
         // NEW: Save other records for ALL students in the class
         saveRecords: async function () {
-          const cls = document.getElementById("rec-class-select").value;
+          const cls =
+            document.getElementById("rec-class-select").value ||
+            app.state.currentUser.assignedClass ||
+            app.state.currentClass;
           if (!cls) return app.showToast("Select a class first", "warning");
 
           const cards = document.querySelectorAll(
@@ -4168,6 +5740,706 @@
             app.toggleLoader(false);
             app.showToast("Failed to save records", "error");
           }
+        },
+
+        teacherNotes: [],
+
+        loadTeacherNotebook: function () {
+          app.showSection("section-teacher-notebook");
+          const user = app.state.currentUser;
+          document.getElementById("t-notebook-badge").innerText =
+            `${user.assignedClass} (${user.name})`;
+
+          // Populate subject dropdown filter & editor
+          const subjects = SettingsService.getActiveSubjects(
+            user.assignedClass,
+          );
+          const filterSub = document.getElementById("nb-filter-subject");
+          filterSub.innerHTML =
+            `<option value="">All Subjects</option>` +
+            subjects.map((s) => `<option value="${s}">${s}</option>`).join("");
+
+          const modalSub = document.getElementById("nb-note-subject");
+          modalSub.innerHTML = subjects
+            .map((s) => `<option value="${s}">${s}</option>`)
+            .join("");
+
+          app.refreshTeacherNotes();
+        },
+
+        /* ===== CLASS TIMETABLE (inside Question Notebook) ===== */
+        timetableData: null,
+
+        switchNotebookTab: function (tab) {
+          const isTT = tab === "timetable";
+          document
+            .getElementById("nb-tab-notes-btn")
+            .classList.toggle("active", !isTT);
+          document
+            .getElementById("nb-tab-timetable-btn")
+            .classList.toggle("active", isTT);
+          document
+            .getElementById("nb-filters-row")
+            .classList.toggle("hidden", isTT);
+          document
+            .getElementById("notebook-cards-container")
+            .classList.toggle("hidden", isTT);
+          document
+            .getElementById("nb-add-note-btn")
+            .classList.toggle("hidden", isTT);
+          document
+            .getElementById("nb-timetable-panel")
+            .classList.toggle("hidden", !isTT);
+          if (isTT) app.loadTimetable();
+        },
+
+        emptyWeek: function () {
+          return {
+            Monday: [],
+            Tuesday: [],
+            Wednesday: [],
+            Thursday: [],
+            Friday: [],
+          };
+        },
+
+        loadTimetable: async function () {
+          const cls = app.state.currentUser.assignedClass;
+          const subtitle = document.getElementById("nb-tt-subtitle");
+          if (!cls) {
+            subtitle.textContent = "No class assigned to your account";
+            document.getElementById("nb-tt-days").innerHTML = "";
+            return;
+          }
+          subtitle.textContent = `Timetable for ${cls}`;
+          app.toggleLoader(true);
+          const tt = await DataService.getTimetable(cls);
+          app.toggleLoader(false);
+          app.timetableData = tt || app.emptyWeek();
+          ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].forEach(
+            (d) => {
+              if (!app.timetableData[d]) app.timetableData[d] = [];
+            },
+          );
+          app.renderTimetable();
+        },
+
+        renderTimetable: function () {
+          const subjects = SettingsService.getActiveSubjects(
+            app.state.currentUser.assignedClass,
+          );
+          const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+          document.getElementById("nb-tt-days").innerHTML = days
+            .map(
+              (day) => `
+          <div class="student-card" style="overflow-x: auto;">
+            <div class="student-card-header">
+              <span>📅</span><span>${day}</span>
+              <button class="btn btn-outline btn-sm" style="margin-left:auto" onclick="app.ttAddRow('${day}')">+ Add</button>
+            </div>
+            ${
+              (app.timetableData[day] || [])
+                .map(
+                  (row, i) => `
+            <div style="display:grid; grid-template-columns: 105px 65px 130px 130px 1.3fr 1.3fr 40px; gap:8px; margin-bottom:8px; align-items:center; min-width:560px;">
+              <select class="form-control" style="padding:8px" onchange="app.ttUpdate('${day}', ${i}, 'type', this.value)">
+                ${["period", "break", "assembly"].map((t) => `<option value="${t}" ${row.type === t ? "selected" : ""}>${t.charAt(0).toUpperCase() + t.slice(1)}</option>`).join("")}
+              </select>
+              <input type="number" class="form-control" style="padding:8px" min="1" placeholder="No." value="${row.period || ""}" oninput="app.ttUpdate('${day}', ${i}, 'period', this.value)">
+              <input type="time" class="form-control" style="padding:8px" value="${row.startTime || ""}" oninput="app.ttUpdate('${day}', ${i}, 'startTime', this.value)">
+              <input type="time" class="form-control" style="padding:8px" value="${row.endTime || ""}" oninput="app.ttUpdate('${day}', ${i}, 'endTime', this.value)">
+              <select class="form-control" style="padding:8px" onchange="app.ttUpdate('${day}', ${i}, 'subject', this.value)">
+                <option value="">-- Subject --</option>
+                ${subjects.map((s) => `<option value="${s}" ${row.subject === s ? "selected" : ""}>${app.escapeHtml(s)}</option>`).join("")}
+              </select>
+              <input type="text" class="form-control" style="padding:8px" placeholder="Label e.g. Short Break" value="${app.escapeHtml(row.label || "")}" oninput="app.ttUpdate('${day}', ${i}, 'label', this.value)">
+              <button class="btn btn-danger btn-sm" style="padding:6px" onclick="app.ttRemoveRow('${day}', ${i})">✕</button>
+            </div>`,
+                )
+                .join("") ||
+              `<p style="color: var(--secondary); font-size: 0.9rem;">No entries yet — click "+ Add".</p>`
+            }
+          </div>`,
+            )
+            .join("");
+        },
+
+        ttUpdate: function (day, index, field, value) {
+          if (!app.timetableData[day]) app.timetableData[day] = [];
+          if (field === "period") value = value ? Number(value) : "";
+          app.timetableData[day][index][field] = value;
+        },
+
+        ttAddRow: function (day) {
+          if (!app.timetableData[day]) app.timetableData[day] = [];
+          app.timetableData[day].push({
+            type: "period",
+            period: app.timetableData[day].length + 1,
+            startTime: "",
+            endTime: "",
+            subject: "",
+            label: "",
+          });
+          app.renderTimetable();
+        },
+
+        ttRemoveRow: function (day, index) {
+          app.timetableData[day].splice(index, 1);
+          app.renderTimetable();
+        },
+
+        saveTimetable: async function () {
+          const cls = app.state.currentUser.assignedClass;
+          if (!cls)
+            return app.showToast("No class assigned to your account", "error");
+          app.toggleLoader(true);
+          try {
+            const res = await DataService.saveTimetable(
+              cls,
+              app.timetableData || app.emptyWeek(),
+            );
+            app.toggleLoader(false);
+            if (res.status === "success")
+              app.showToast("Timetable saved successfully", "success");
+            else app.showToast(res.message || "Save failed", "error");
+          } catch (err) {
+            app.toggleLoader(false);
+            app.showToast("Error: " + err.message, "error");
+          }
+        },
+
+        refreshTeacherNotes: function () {
+          app.toggleLoader(true);
+          const user = app.state.currentUser;
+          // NOTE: DataService.getTeacherNotes resolves to the notes array directly
+          DataService.getTeacherNotes(user.email)
+            .then((notes) => {
+              app.toggleLoader(false);
+              app.teacherNotes = Array.isArray(notes) ? notes : [];
+              app.renderTeacherNotes();
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error loading notes: " + err.message, "error");
+            });
+        },
+
+        escapeHtml: function (str) {
+          return (str || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        },
+
+        renderTeacherNotes: function () {
+          const search = (document.getElementById("nb-search").value || "")
+            .toLowerCase()
+            .trim();
+          const subjectFilter =
+            document.getElementById("nb-filter-subject").value;
+          const typeFilter = document.getElementById("nb-filter-type").value;
+
+          const filtered = (app.teacherNotes || []).filter((n) => {
+            const matchSearch = (n.question || "")
+              .toLowerCase()
+              .includes(search);
+            const matchSub = !subjectFilter || n.subject === subjectFilter;
+            const matchType = !typeFilter || n.type === typeFilter;
+            return matchSearch && matchSub && matchType;
+          });
+
+          const container = document.getElementById("notebook-cards-container");
+          if (filtered.length === 0) {
+            container.innerHTML = `<p style="color: var(--secondary);">No notebook questions or notes found.</p>`;
+            return;
+          }
+
+          container.innerHTML = filtered
+            .map(
+              (n) => `
+          <div class="card" style="cursor: default;">
+            <div class="flex justify-between items-center" style="margin-bottom: 10px;">
+              <div>
+                <span class="badge">${n.subject}</span>
+                <span class="badge" style="background:#fef3c7; color:#92400e; margin-left: 5px;">${n.type}</span>
+              </div>
+              <span class="text-sm text-secondary">${n.updatedAt ? new Date(n.updatedAt).toLocaleDateString() : ""}</span>
+            </div>
+            <p style="white-space: pre-wrap; font-size:0.95rem; margin:10px 0; color:var(--text);">${app.escapeHtml(n.question)}</p>
+            <div class="flex justify-between items-center" style="margin-top: 10px; font-size:0.8rem; color:var(--secondary);">
+              <span>${n.session ? n.session + " " : ""}${n.term ? n.term + " Term" : ""}</span>
+              <div class="flex gap-2">
+                <button class="btn btn-outline btn-sm" onclick="app.openNotebookModal('${n.id}')">Edit</button>
+                <button class="btn btn-danger btn-sm" onclick="app.deleteTeacherNote('${n.id}')">Delete</button>
+              </div>
+            </div>
+          </div>
+        `,
+            )
+            .join("");
+        },
+
+        openNotebookModal: function (id) {
+          document.getElementById("nb-note-id").value = id || "";
+          if (id) {
+            const note = app.teacherNotes.find(
+              (n) => String(n.id) === String(id),
+            );
+            if (!note) return;
+            document.getElementById("nb-modal-title").innerText =
+              "Edit Question / Note";
+            document.getElementById("nb-note-subject").value =
+              note.subject || "";
+            document.getElementById("nb-note-type").value = note.type || "Exam";
+            document.getElementById("nb-note-session").value =
+              note.session || "";
+            document.getElementById("nb-note-term").value = note.term || "";
+            document.getElementById("nb-note-question").value =
+              note.question || "";
+          } else {
+            document.getElementById("nb-modal-title").innerText =
+              "New Question / Note";
+            document.getElementById("nb-note-type").value = "Exam";
+            document.getElementById("nb-note-session").value = "";
+            document.getElementById("nb-note-term").value = "";
+            document.getElementById("nb-note-question").value = "";
+          }
+          document.getElementById("modal-notebook-editor").style.display =
+            "flex";
+        },
+
+        saveTeacherNote: function () {
+          const id = document.getElementById("nb-note-id").value;
+          const subject = document.getElementById("nb-note-subject").value;
+          const type = document.getElementById("nb-note-type").value;
+          const session = document
+            .getElementById("nb-note-session")
+            .value.trim();
+          const term = document.getElementById("nb-note-term").value;
+          const question = document
+            .getElementById("nb-note-question")
+            .value.trim();
+
+          if (!question) {
+            app.showToast("Please enter question content", "error");
+            return;
+          }
+
+          const user = app.state.currentUser;
+          const payload = {
+            id: id,
+            teacherEmail: user.email,
+            teacherName: user.name,
+            class: user.assignedClass,
+            subject: subject,
+            type: type,
+            session: session,
+            term: term,
+            question: question,
+          };
+
+          app.toggleLoader(true);
+          const method = id
+            ? DataService.updateTeacherNote(payload)
+            : DataService.saveTeacherNote(payload);
+          method
+            .then((res) => {
+              app.toggleLoader(false);
+              app.closeModals();
+              if (res.status === "success") {
+                app.showToast("Note saved successfully!", "success");
+                app.refreshTeacherNotes();
+              } else {
+                app.showToast(res.message || "Save failed", "error");
+              }
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error: " + err.message, "error");
+            });
+        },
+
+        deleteTeacherNote: function (id) {
+          if (!confirm("Are you sure you want to delete this note?")) return;
+          const user = app.state.currentUser;
+          app.toggleLoader(true);
+          DataService.deleteTeacherNote(id, user.email)
+            .then((res) => {
+              app.toggleLoader(false);
+              if (res.status === "success") {
+                app.showToast("Note deleted", "success");
+                app.refreshTeacherNotes();
+              } else {
+                app.showToast(res.message || "Delete failed", "error");
+              }
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error: " + err.message, "error");
+            });
+        },
+
+        loadTeacherSubjectManagement: function () {
+          app.showSection("section-teacher-subjects");
+          const assignedClass = app.state.currentUser.assignedClass;
+          document.getElementById("t-subject-badge").innerText = assignedClass;
+          app.refreshTeacherSubjects();
+        },
+
+        refreshTeacherSubjects: function () {
+          app.toggleLoader(true);
+          const assignedClass = app.state.currentUser.assignedClass;
+          // NOTE: DataService.getClassSubjects resolves to the subjects array directly
+          DataService.getClassSubjects(assignedClass)
+            .then((subjects) => {
+              app.toggleLoader(false);
+              const list = Array.isArray(subjects) ? subjects : [];
+              if (SettingsService.data)
+                SettingsService.data.subjects[assignedClass] = list;
+              app.renderTeacherSubjects(list);
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error loading subjects: " + err.message, "error");
+            });
+        },
+
+        renderTeacherSubjects: function (subjects) {
+          const container = document.getElementById("t-subject-list-container");
+          if (!subjects || subjects.length === 0) {
+            container.innerHTML = `<p style="color: var(--secondary);">No subjects configured for this class.</p>`;
+            return;
+          }
+
+          container.innerHTML = subjects
+            .map(
+              (sub) => `
+          <div class="setting-row">
+            <span style="font-weight: 600;">${sub}</span>
+            <div class="flex gap-2">
+              <button class="btn btn-outline btn-sm" onclick="app.renameTeacherSubject('${sub.replace(/'/g, "\\'")}')">Rename</button>
+              <button class="btn btn-danger btn-sm" onclick="app.deleteTeacherSubject('${sub.replace(/'/g, "\\'")}')">Remove</button>
+            </div>
+          </div>
+        `,
+            )
+            .join("");
+        },
+
+        addTeacherSubject: function () {
+          const input = document.getElementById("t-new-subject-input");
+          const subject = (input.value || "").trim();
+          if (!subject) return;
+
+          const assignedClass = app.state.currentUser.assignedClass;
+          const currentSubjects =
+            SettingsService.getActiveSubjects(assignedClass);
+
+          if (
+            currentSubjects.some(
+              (s) => s.toLowerCase().trim() === subject.toLowerCase(),
+            )
+          ) {
+            app.showToast("Subject already exists in this class", "error");
+            return;
+          }
+
+          app.toggleLoader(true);
+          DataService.addClassSubject(assignedClass, subject)
+            .then((res) => {
+              app.toggleLoader(false);
+              if (res.status === "success") {
+                input.value = "";
+                app.showToast("Subject added", "success");
+                app.refreshTeacherSubjects();
+              } else {
+                app.showToast(res.message || "Failed to add subject", "error");
+              }
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error: " + err.message, "error");
+            });
+        },
+
+        renameTeacherSubject: function (oldSubject) {
+          const newSubject = prompt("Enter new subject name:", oldSubject);
+          if (
+            !newSubject ||
+            newSubject.trim() === "" ||
+            newSubject.trim().toLowerCase() === oldSubject.toLowerCase()
+          )
+            return;
+
+          const assignedClass = app.state.currentUser.assignedClass;
+          app.toggleLoader(true);
+          DataService.renameClassSubject(
+            assignedClass,
+            oldSubject,
+            newSubject.trim(),
+          )
+            .then((res) => {
+              app.toggleLoader(false);
+              if (res.status === "success") {
+                app.showToast("Subject renamed", "success");
+                app.refreshTeacherSubjects();
+              } else {
+                app.showToast(res.message || "Rename failed", "error");
+              }
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error: " + err.message, "error");
+            });
+        },
+
+        deleteTeacherSubject: function (subject) {
+          if (
+            !confirm(
+              `Are you sure you want to remove '${subject}' from your class?`,
+            )
+          )
+            return;
+          const assignedClass = app.state.currentUser.assignedClass;
+          app.toggleLoader(true);
+          DataService.deleteClassSubject(assignedClass, subject)
+            .then((res) => {
+              app.toggleLoader(false);
+              if (res.status === "success") {
+                app.showToast("Subject removed", "success");
+                app.refreshTeacherSubjects();
+              } else {
+                app.showToast(res.message || "Remove failed", "error");
+              }
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error: " + err.message, "error");
+            });
+        },
+
+        parsedBulkStudents: [],
+
+        loadTeacherStudentManagement: function () {
+          app.showSection("section-teacher-students");
+          const assignedClass = app.state.currentUser.assignedClass;
+          document.getElementById("t-student-badge").innerText = assignedClass;
+          app.refreshTeacherStudents();
+        },
+
+        refreshTeacherStudents: function () {
+          app.toggleLoader(true);
+          const assignedClass = app.state.currentUser.assignedClass;
+          // NOTE: DataService.getStudents resolves to the students array directly
+          DataService.getStudents(assignedClass)
+            .then((students) => {
+              app.toggleLoader(false);
+              app.state.teacherStudents = students || [];
+              app.renderTeacherStudents();
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error loading students: " + err.message, "error");
+            });
+        },
+
+        renderTeacherStudents: function () {
+          const query = (document.getElementById("t-searchStudent").value || "")
+            .toLowerCase()
+            .trim();
+          let list = (app.state.teacherStudents || []).filter((s) => {
+            return (
+              (s.name || "").toLowerCase().includes(query) ||
+              (s.id || "").toLowerCase().includes(query)
+            );
+          });
+
+          // Numeric-aware natural sort preserving leading zeros display
+          list.sort((a, b) => {
+            return String(a.id).localeCompare(String(b.id), undefined, {
+              numeric: true,
+              sensitivity: "base",
+            });
+          });
+
+          const tbody = document.getElementById("t-students-tbody");
+          if (list.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="text-center">No students found.</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = list
+            .map(
+              (s) => `
+          <tr>
+            <td><b>${s.id}</b></td>
+            <td>${s.name}</td>
+            <td>${s.gender}</td>
+            <td><span class="badge">${s.class}</span></td>
+            <td style="text-align: right">
+              <button class="btn btn-outline btn-sm" onclick="app.openEditStudentModal('${s.id}')">Edit</button>
+              <button class="btn btn-outline btn-sm" onclick="app.openMoveStudentModal('${s.id}')">Move</button>
+              <button class="btn btn-danger btn-sm" onclick="app.deleteStudent('${s.id}', '${s.name.replace(/'/g, "\\'")}')">Delete</button>
+            </td>
+          </tr>
+        `,
+            )
+            .join("");
+        },
+
+        deleteStudent: function (id, name) {
+          if (!confirm(`Are you sure you want to remove ${name}?`)) return;
+          app.toggleLoader(true);
+          DataService.deleteStudent(id)
+            .then((res) => {
+              app.toggleLoader(false);
+              if (res.status === "success") {
+                app.showToast("Student deleted successfully", "success");
+                app.refreshTeacherStudents();
+              } else {
+                app.showToast(res.message || "Delete failed", "error");
+              }
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error: " + err.message, "error");
+            });
+        },
+
+        openMoveStudentModal: function (id) {
+          const std = (app.state.teacherStudents || []).find(
+            (s) => String(s.id) === String(id),
+          );
+          if (!std) return;
+          document.getElementById("move-student-id").value = std.id;
+          document.getElementById("move-student-name").value = std.name;
+          document.getElementById("move-student-gender").value = std.gender;
+          document.getElementById("move-student-info").innerText =
+            `Move ${std.name} from ${std.class} to:`;
+
+          const select = document.getElementById("move-student-class");
+          const activeClasses = SettingsService.getActiveClasses();
+          select.innerHTML = activeClasses
+            .map((c) => `<option value="${c}">${c}</option>`)
+            .join("");
+          document.getElementById("modal-move-student").style.display = "flex";
+        },
+
+        confirmMoveStudent: function () {
+          const id = document.getElementById("move-student-id").value;
+          const name = document.getElementById("move-student-name").value;
+          const gender = document.getElementById("move-student-gender").value;
+          const newClass = document.getElementById("move-student-class").value;
+          const currentClass = app.state.currentUser.assignedClass;
+
+          if (!confirm(`Move ${name} from ${currentClass} to ${newClass}?`))
+            return;
+
+          app.toggleLoader(true);
+          DataService.updateStudent({
+            id: id,
+            name: name,
+            gender: gender,
+            class: newClass,
+          })
+            .then((res) => {
+              app.toggleLoader(false);
+              app.closeModals();
+              if (res.status === "success") {
+                app.showToast(`Student moved to ${newClass}`, "success");
+                app.refreshTeacherStudents();
+              } else {
+                app.showToast(res.message || "Move failed", "error");
+              }
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error: " + err.message, "error");
+            });
+        },
+
+        openBulkUploadModal: function () {
+          document.getElementById("csv-file-input").value = "";
+          document.getElementById("csv-preview-area").classList.add("hidden");
+          document.getElementById("btn-submit-csv").disabled = true;
+          app.parsedBulkStudents = [];
+          document.getElementById("modal-bulk-upload").style.display = "flex";
+        },
+
+        handleCsvSelect: function (e) {
+          const file = e.target.files[0];
+          if (!file) return;
+          const reader = new FileReader();
+          reader.onload = function (evt) {
+            const text = evt.target.result;
+            const lines = text
+              .split(/\r\n|\n/)
+              .map((l) => l.trim())
+              .filter((l) => l.length > 0);
+            if (lines.length < 2) {
+              app.showToast("CSV file is empty or missing data rows", "error");
+              return;
+            }
+
+            const parsed = [];
+            for (let i = 1; i < lines.length; i++) {
+              const cols = lines[i].split(",").map((c) => c.trim());
+              if (cols.length >= 3 && cols[0] && cols[1]) {
+                parsed.push({
+                  id: cols[0],
+                  name: cols[1],
+                  gender: cols[2] || "Male",
+                });
+              }
+            }
+
+            app.parsedBulkStudents = parsed;
+            document.getElementById("csv-summary").innerText =
+              `Found ${parsed.length} valid student record(s).`;
+            const previewTbody = document.getElementById("csv-preview-tbody");
+            previewTbody.innerHTML = parsed
+              .slice(0, 5)
+              .map(
+                (s) => `
+            <tr><td>${s.id}</td><td>${s.name}</td><td>${s.gender}</td></tr>
+          `,
+              )
+              .join("");
+
+            document
+              .getElementById("csv-preview-area")
+              .classList.remove("hidden");
+            document.getElementById("btn-submit-csv").disabled =
+              parsed.length === 0;
+          };
+          reader.readAsText(file);
+        },
+
+        submitBulkStudents: function () {
+          if (!app.parsedBulkStudents || app.parsedBulkStudents.length === 0)
+            return;
+          const assignedClass = app.state.currentUser.assignedClass;
+          app.toggleLoader(true);
+          DataService.bulkAddStudents(assignedClass, app.parsedBulkStudents)
+            .then((res) => {
+              app.toggleLoader(false);
+              app.closeModals();
+              if (res.status === "success") {
+                app.showToast(
+                  `Bulk upload complete! Added: ${res.added}, Skipped: ${res.skipped}`,
+                  "success",
+                );
+                app.refreshTeacherStudents();
+              } else {
+                app.showToast(res.message || "Bulk add failed", "error");
+              }
+            })
+            .catch((err) => {
+              app.toggleLoader(false);
+              app.showToast("Error: " + err.message, "error");
+            });
         },
 
         /* NEW: ============ SAVE DISPATCHER ============ */
