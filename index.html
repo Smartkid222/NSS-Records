@@ -289,6 +289,38 @@
         align-items: center;
         gap: 10px;
       }
+      /* --- MOBILE NAV (hamburger) --- */
+      .nav-toggle-checkbox {
+        display: none;
+      }
+      .nav-hamburger {
+        display: none;
+        cursor: pointer;
+        user-select: none;
+      }
+      .header-user {
+        margin-left: auto;
+        margin-right: 16px;
+        min-width: 0;
+      }
+      /* --- REUSABLE ACTION-BUTTON MENU (collapses on mobile only) ---
+         Desktop: the panel is display:contents so the buttons render
+         inline exactly as before. Mobile: the group becomes one ☰ button
+         that reveals the buttons stacked (or as a .act-drop dropdown). */
+      .act-menu {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+      .act-check,
+      .act-btn {
+        display: none;
+      }
+      .act-panel {
+        display: contents;
+      }
       .container {
         max-width: 1200px;
         margin: 30px auto;
@@ -916,6 +948,111 @@
         background: #fef3c7;
         color: #92400e;
       }
+
+      /* ===== WEEKLY ATTENDANCE ===== */
+      .wa-day-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 15px;
+        box-shadow: var(--shadow);
+      }
+      .wa-day-head {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 10px;
+      }
+      .wa-day-title {
+        font-weight: 700;
+        color: var(--text);
+        white-space: nowrap;
+      }
+      .wa-date-input {
+        max-width: 165px;
+        padding: 8px 10px;
+      }
+      .wa-students {
+        display: grid;
+        gap: 10px;
+        margin-top: 12px;
+      }
+      .wa-student-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 12px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface);
+      }
+      .wa-student-name {
+        font-weight: 600;
+        flex: 1 1 150px;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        flex-wrap: wrap;
+      }
+      .wa-seg {
+        display: inline-flex;
+        gap: 6px;
+      }
+      .wa-btn {
+        padding: 6px 12px;
+        border-radius: 16px;
+        border: 1.5px solid var(--border);
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-weight: 600;
+        user-select: none;
+        transition: all 0.15s;
+      }
+      .wa-btn:active {
+        transform: scale(0.97);
+      }
+      .wa-btn.active-present,
+      .wa-btn.active-open {
+        background: var(--success);
+        border-color: var(--success);
+        color: #fff;
+      }
+      .wa-btn.active-absent {
+        background: var(--danger);
+        border-color: var(--danger);
+        color: #fff;
+      }
+      .wa-btn.active-early {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+      }
+      .wa-btn.active-late {
+        background: var(--warning);
+        border-color: var(--warning);
+        color: #fff;
+      }
+      .wa-btn:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+
+      /* ===== CLASS DIRECTORY MOBILE ACTIONS MENU ===== */
+      /* Desktop: .act-panel is display:contents so the four buttons render
+         inline exactly as before. The menu labels swap on mobile. */
+      .class-action-bar .act-menu {
+        width: 100%;
+        gap: 4px;
+      }
+      .class-action-bar .lbl-full {
+        display: none;
+      }
       @keyframes fadeSlideIn {
         from {
           opacity: 0;
@@ -1227,13 +1364,298 @@
       .an-list-item:last-child {
         border-bottom: none;
       }
+
+      /* ===== MOBILE RESPONSIVE FIXES ===== */
+      @media (max-width: 768px) {
+        /* --- NAVBAR: PS logo + teacher/admin name + hamburger --- */
+        header {
+          padding: 0.7rem 1rem;
+        }
+        .logo {
+          flex-shrink: 0;
+        }
+        .logo > div:last-child {
+          display: none; /* hide school name text, keep PS badge */
+        }
+        .nav-hamburger {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 42px;
+          height: 42px;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          background: var(--surface);
+          color: var(--text);
+          font-size: 1.35rem;
+          line-height: 1;
+          flex-shrink: 0;
+        }
+        .nav-hamburger::before {
+          content: "☰";
+        }
+        #nav-toggle:checked ~ .nav-hamburger::before {
+          content: "✕";
+        }
+        .header-user {
+          margin-right: 12px;
+          text-align: right;
+        }
+        #user-name {
+          max-width: 38vw;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          font-size: 1rem;
+        }
+        #user-role {
+          display: none;
+        }
+        /* Theme / Logout dropdown — opens when hamburger is checked */
+        header .nav-actions {
+          display: none;
+          position: absolute;
+          top: calc(100% + 6px);
+          right: 12px;
+          left: auto;
+          flex-direction: column;
+          align-items: stretch;
+          gap: 8px;
+          min-width: 190px;
+          padding: 12px;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          box-shadow: var(--shadow);
+          z-index: 300;
+        }
+        #nav-toggle:checked ~ .nav-actions {
+          display: flex;
+        }
+        .nav-actions .btn {
+          width: 100%;
+        }
+
+        /* --- LIST SECTIONS: class name, count, search + Add button --- */
+        .list-header {
+          flex-direction: column;
+          align-items: stretch;
+        }
+        .list-header .flex {
+          flex-wrap: wrap;
+        }
+        .list-header .search-input {
+          flex: 1 1 100%;
+          width: 100%;
+        }
+        .list-header .btn {
+          flex: 1 1 auto;
+          white-space: nowrap;
+        }
+        #nb-filters-row .search-input {
+          width: 100%;
+        }
+
+        /* --- GENERAL TIGHTENING --- */
+        .container {
+          margin: 15px auto;
+          padding: 0 12px;
+        }
+        .btn {
+          padding: 0.65rem 1rem;
+          font-size: 0.9rem;
+        }
+        th,
+        td {
+          padding: 10px 8px;
+          font-size: 0.85rem;
+        }
+        .breadcrumbs {
+          flex-wrap: wrap;
+        }
+        .fee-sub-tabs {
+          flex-wrap: wrap;
+        }
+        .settings-wrapper {
+          grid-template-columns: 1fr;
+        }
+        .modal-content {
+          padding: 1.25rem;
+        }
+        .forms-wrapper {
+          padding: 20px;
+        }
+        .app-title {
+          font-size: 1.5rem;
+        }
+        .toast {
+          right: 16px;
+          max-width: calc(100vw - 32px);
+          flex-wrap: wrap;
+        }
+        .floating-save {
+          left: 50%; /* was 90% — pushed the button off-screen on phones */
+          max-width: calc(100vw - 32px);
+        }
+
+        /* --- SCORE ENTRY SECTION --- */
+        #section-scores .flex.justify-between {
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+        #section-scores .flex.gap-2 {
+          flex-wrap: wrap;
+        }
+        #section-scores .flex.gap-2 .btn {
+          flex: 1 1 auto;
+        }
+        .score-grid {
+          gap: 6px;
+          padding: 12px 6px;
+        }
+        .score-input {
+          padding: 8px 2px;
+          font-size: 0.9rem;
+        }
+        .score-grid-head {
+          gap: 6px !important;
+          padding: 8px 6px !important;
+          font-size: 0.7rem;
+        }
+        .att-grid {
+          grid-template-columns: repeat(2, 1fr) !important;
+        }
+        .records-grid {
+          grid-template-columns: 1fr !important;
+        }
+
+        /* --- ACTION BUTTON GROUPS COLLAPSE INTO HAMBURGER MENUS --- */
+        .act-panel {
+          display: none;
+        }
+        .act-btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 42px;
+          height: 38px;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          background: var(--surface);
+          color: var(--text);
+          cursor: pointer;
+          user-select: none;
+        }
+        .act-btn::before {
+          content: "☰";
+          font-size: 1.15rem;
+          line-height: 1;
+        }
+        .act-check:checked ~ .act-btn::before {
+          content: "✕";
+        }
+        /* default: buttons expand in place, stacked neatly */
+        .act-check:checked ~ .act-panel {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          align-items: stretch;
+          margin-top: 8px;
+        }
+        .act-check:checked ~ .act-panel .btn {
+          width: 100%;
+          justify-content: center;
+        }
+        /* .act-drop variant: floating dropdown (section headers) */
+        .act-panel.act-drop {
+          position: absolute;
+          top: calc(100% + 8px);
+          right: 0;
+          z-index: 300;
+          min-width: 210px;
+          padding: 12px;
+          background: var(--surface);
+          border: 1px solid var(--border);
+          border-radius: 12px;
+          box-shadow: var(--shadow);
+        }
+        .act-check:checked ~ .act-panel.act-drop {
+          margin-top: 0;
+        }
+        /* --- CLASS DIRECTORY CARDS: real Actions dropdown on mobile --- */
+        /* Allow the dropdown to escape the card (cards use overflow:hidden) */
+        .dir-card {
+          overflow: visible;
+        }
+        .class-action-bar .lbl-short {
+          display: none;
+        }
+        .class-action-bar .lbl-full {
+          display: inline;
+        }
+        /* Open the menu upward from the card footer */
+        .class-action-bar .act-panel.act-drop {
+          top: auto;
+          bottom: calc(100% + 8px);
+        }
+      }
+
+      @media (max-width: 480px) {
+        .grid-2 {
+          grid-template-columns: 1fr;
+        }
+        .flex.gap-4 {
+          flex-wrap: wrap;
+        }
+      }
+      /* Angel Attendance Preloader */
+      .angel-loader-content {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .angel-emoji {
+        font-size: 64px;
+        line-height: 1;
+        animation: angelFloat 1.8s ease-in-out infinite;
+      }
+
+      .angel-loader-content p {
+        margin: 15px 0 0;
+        font-weight: 600;
+        color: var(--primary-dark);
+        font-size: 1rem;
+      }
+
+      @keyframes angelFloat {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+
+        50% {
+          transform: translateY(-8px);
+        }
+      }
     </style>
   </head>
   <body>
     <!-- GLOBAL LOADER -->
     <div id="loader" class="loader-overlay">
-      <div class="spinner"></div>
-      <p style="margin-top: 15px; font-weight: 600; color: var(--primary-dark)">
+      <div class="spinner" id="loader-spinner"></div>
+
+      <div id="angel-loader" class="angel-loader-content">
+        <div class="angel-emoji">👼</div>
+        <p>Pls be patience at the angel 😊</p>
+      </div>
+
+      <p
+        id="default-loader-text"
+        style="margin-top: 15px; font-weight: 600; color: var(--primary-dark)"
+      >
         Processing...
       </p>
     </div>
@@ -1412,17 +1834,20 @@
             </div>
           </div>
         </div>
-        <div class="flex items-center gap-4">
-          <div class="text-right hidden-mobile">
-            <div id="user-name" class="font-bold">User Name</div>
-            <div
-              id="user-role"
-              class="text-sm text-secondary"
-              style="font-size: 0.8rem"
-            >
-              Role
-            </div>
+        <!-- Mobile nav toggle: checkbox hack, no JS needed -->
+        <input type="checkbox" id="nav-toggle" class="nav-toggle-checkbox" />
+        <div class="header-user text-right">
+          <div id="user-name" class="font-bold">User Name</div>
+          <div
+            id="user-role"
+            class="text-sm text-secondary"
+            style="font-size: 0.8rem"
+          >
+            Role
           </div>
+        </div>
+        <label for="nav-toggle" class="nav-hamburger" title="Menu">☰</label>
+        <div class="nav-actions flex items-center gap-4">
           <button
             id="theme-toggle-btn"
             class="btn btn-outline btn-sm"
@@ -1573,17 +1998,21 @@
                   Subject Assessment
                 </p>
               </div>
-              <div class="flex gap-2">
-                <button
-                  id="print-btn"
-                  class="btn btn-outline"
-                  onclick="app.openPrintModal()"
-                >
-                  🖨️ Print Result
-                </button>
-                <button class="btn btn-primary" onclick="app.saveScores()">
-                  💾 Save Scores
-                </button>
+              <div class="act-menu">
+                <input type="checkbox" id="act-scores" class="act-check" />
+                <label for="act-scores" class="act-btn" title="Actions"></label>
+                <div class="act-panel act-drop">
+                  <button
+                    id="print-btn"
+                    class="btn btn-outline"
+                    onclick="app.openPrintModal()"
+                  >
+                    🖨️ Print Result
+                  </button>
+                  <button class="btn btn-primary" onclick="app.saveScores()">
+                    💾 Save Scores
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -1608,6 +2037,7 @@
                 📋 Attendance Record
               </h4>
               <div
+                class="att-grid"
                 style="
                   display: grid;
                   grid-template-columns: repeat(4, 1fr);
@@ -1680,6 +2110,7 @@
                 🏆 Other Records
               </h4>
               <div
+                class="records-grid"
                 style="
                   display: grid;
                   grid-template-columns: repeat(3, 1fr);
@@ -1725,6 +2156,7 @@
             <!-- SCORES FORM (MODIFIED - No Grade/Remark) -->
             <form id="score-form">
               <div
+                class="score-grid-head"
                 style="
                   background: #f1f5f9;
                   padding: 10px;
@@ -1792,38 +2224,142 @@
                 >
                   <option value="" disabled selected>Select Class</option>
                 </select>
+                <select
+                  id="att-session-select"
+                  class="form-control"
+                  style="max-width: 150px"
+                  onchange="app.onAttContextChange()"
+                ></select>
+                <select
+                  id="att-term-select"
+                  class="form-control"
+                  style="max-width: 130px"
+                  onchange="app.onAttContextChange()"
+                ></select>
                 <span class="mode-badge attendance" id="att-student-count"
                   >0 Students</span
                 >
               </div>
             </div>
-            <!-- NEW: Times School Opened (shared for all students) -->
-            <div style="margin-top: 18px">
-              <div class="form-group" style="margin: 0; max-width: 320px">
-                <label
-                  style="
-                    font-size: 0.85rem;
-                    color: var(--secondary);
-                    font-weight: 600;
-                  "
-                  >📅 Times School Opened</label
-                >
-                <input
-                  type="number"
-                  id="att-school-opened-bulk"
-                  class="form-control"
-                  min="0"
-                  placeholder="Enter total days school opened"
-                  oninput="app.recalcAllAbsent()"
-                />
+            <!-- Attendance Entry Method: Weekly vs End-of-Term -->
+            <div class="fee-main-tabs" style="margin: 18px 0 0 0">
+              <button
+                id="att-tab-manual"
+                class="fee-main-tab-btn active"
+                onclick="app.switchAttMode('manual')"
+              >
+                📝 End-of-Term Attendance
+              </button>
+              <button
+                id="att-tab-weekly"
+                class="fee-main-tab-btn"
+                onclick="app.switchAttMode('weekly')"
+              >
+                📅 Weekly Attendance
+              </button>
+            </div>
+          </div>
+
+          <!-- ENTRY MODE: END-OF-TERM (existing manual interface) -->
+          <div id="att-eot-panel">
+            <div class="section-top-bar">
+              <!-- Times School Opened (shared for all students) -->
+              <div>
+                <div class="form-group" style="margin: 0; max-width: 320px">
+                  <label
+                    style="
+                      font-size: 0.85rem;
+                      color: var(--secondary);
+                      font-weight: 600;
+                    "
+                    >📅 Times School Opened</label
+                  >
+                  <input
+                    type="number"
+                    id="att-school-opened-bulk"
+                    class="form-control"
+                    min="0"
+                    placeholder="Enter total days school opened"
+                    oninput="app.recalcAllAbsent()"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="students-scroll-area" id="att-student-list">
+              <div
+                style="
+                  text-align: center;
+                  padding: 40px;
+                  color: var(--secondary);
+                "
+              >
+                Select a class above to begin
               </div>
             </div>
           </div>
-          <div class="students-scroll-area" id="att-student-list">
-            <div
-              style="text-align: center; padding: 40px; color: var(--secondary)"
-            >
-              Select a class above to begin
+
+          <!-- ENTRY MODE: WEEKLY ATTENDANCE -->
+          <div id="att-weekly-panel" class="hidden">
+            <div class="section-top-bar">
+              <div
+                class="flex justify-between items-center"
+                style="flex-wrap: wrap; gap: 12px"
+              >
+                <div class="flex gap-2 items-center" style="flex-wrap: wrap">
+                  <div class="form-group" style="margin: 0; max-width: 130px">
+                    <label style="font-size: 0.8rem; color: var(--secondary)"
+                      >Week</label
+                    >
+                    <select
+                      id="wa-week-select"
+                      class="form-control"
+                      onchange="app.onWeekChange()"
+                    ></select>
+                  </div>
+                  <div class="form-group" style="margin: 0; max-width: 200px">
+                    <label style="font-size: 0.8rem; color: var(--secondary)"
+                      >Week Start Date</label
+                    >
+                    <input
+                      type="date"
+                      id="wa-week-start"
+                      class="form-control"
+                      onchange="app.onWeekStartChange()"
+                    />
+                  </div>
+                  <button
+                    class="btn btn-outline btn-sm"
+                    style="margin-top: 18px"
+                    onclick="app.waAddDay()"
+                  >
+                    ➕ Add Day
+                  </button>
+                </div>
+                <span class="mode-badge attendance" id="wa-week-status"
+                  >🆕 Not saved yet</span
+                >
+              </div>
+              <p
+                class="text-sm"
+                style="color: var(--secondary); margin: 10px 0 0"
+              >
+                Pick the week start date, mark each day
+                <b>Open/Closed</b>, then mark students
+                <b>Present/Absent</b> (and Early/Late). "Times School Opened"
+                for the term is calculated automatically from the open days —
+                saving a week again never double-counts.
+              </p>
+            </div>
+            <div id="wa-days-container">
+              <div
+                style="
+                  text-align: center;
+                  padding: 40px;
+                  color: var(--secondary);
+                "
+              >
+                Select a class above to begin
+              </div>
             </div>
           </div>
         </section>
@@ -2170,18 +2706,28 @@
                   placeholder="Search name or ID..."
                   onkeyup="app.renderTeacherStudents()"
                 />
-                <button
-                  class="btn btn-primary btn-sm"
-                  onclick="app.openAddStudentModal()"
-                >
-                  + Add Student
-                </button>
-                <button
-                  class="btn btn-outline btn-sm"
-                  onclick="app.openBulkUploadModal()"
-                >
-                  📤 Upload CSV
-                </button>
+                <div class="act-menu">
+                  <input type="checkbox" id="act-tstudents" class="act-check" />
+                  <label
+                    for="act-tstudents"
+                    class="act-btn"
+                    title="Actions"
+                  ></label>
+                  <div class="act-panel act-drop">
+                    <button
+                      class="btn btn-primary btn-sm"
+                      onclick="app.openAddStudentModal()"
+                    >
+                      + Add Student
+                    </button>
+                    <button
+                      class="btn btn-outline btn-sm"
+                      onclick="app.openBulkUploadModal()"
+                    >
+                      📤 Upload CSV
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
             <div style="overflow-x: auto">
@@ -3041,6 +3587,32 @@
             ? res
             : { students: [], subjects: [], subjectAverages: {} };
         },
+        /* NEW: Weekly attendance (session/term aware) */
+        async getWeeklyAttendance(session, term, className, week) {
+          const res = await this._call({
+            action: "getWeeklyAttendance",
+            session: session,
+            term: term,
+            className: className,
+            week: week,
+          });
+          return res.status === "success" ? res.records || [] : [];
+        },
+        async saveWeeklyAttendance(payload) {
+          return await this._call({
+            action: "saveWeeklyAttendance",
+            ...payload,
+          });
+        },
+        async getTermAttendanceSummary(session, term, className) {
+          const res = await this._call({
+            action: "getTermAttendanceSummary",
+            session: session,
+            term: term,
+            className: className,
+          });
+          return res.status === "success" ? res.summary : null;
+        },
       };
       const SettingsService = {
         data: null,
@@ -3188,10 +3760,20 @@
           teachersList: [],
           currentSection: null, // NEW: tracks active section for save dispatcher
           broadsheetMode: "exam", // <-- ADD THIS LINE
+          attMode: "manual", // Attendance entry method: "manual" (End-of-Term) or "weekly"
+          attSession: "",
+          attTerm: "",
+          attStudents: [],
+          waWeek: 1,
+          waDays: [],
+          waActiveDay: 0,
+          waHasSavedData: false,
+          waSaving: false,
         },
 
         init: function () {
           AssetService.init();
+          this.initClassActionMenus();
           this.initTheme();
           SettingsService.load(); // Load settings in background
 
@@ -3956,20 +4538,29 @@
 
             grid.innerHTML += `<div style="grid-column:1/-1; margin-top:40px; margin-bottom:10px; border-bottom:2px dashed var(--border); padding-bottom:15px;"><span style="background:var(--bg); padding:0 10px; color:var(--secondary); font-weight:bold; font-size:1.1rem;">Class Directory</span></div>`;
 
-            // NEW: Class directory cards with multiple action buttons
-            SettingsService.getActiveClasses().forEach((c) => {
+            // NEW: Class directory cards with multiple action buttons.
+            // Desktop: the four buttons render inline (act-panel is
+            // display:contents). Mobile: they collapse into ONE ☰ Actions
+            // dropdown (see .dir-card rules in the media query).
+            SettingsService.getActiveClasses().forEach((c, i) => {
               grid.innerHTML += `
-        <div class="card" style="cursor:default;">
+        <div class="card dir-card" style="cursor:default;">
           <div class="card-content">
             <div class="card-icon">🏫</div>
             <div class="card-title">${c}</div>
             <div class="card-meta">Teacher: ${app.getClassTeacherName(c)}</div>
           </div>
           <div class="card-footer class-action-bar">
-            <button class="btn btn-outline btn-sm" onclick="app.loadStudentList('${c}','exam')">📝 Exam</button>
-            <button class="btn btn-outline btn-sm" onclick="app.loadStudentList('${c}','midterm')">📊 Mid</button>
-            <button class="btn btn-outline btn-sm" onclick="app.loadAttendance('${c}')">📋 Att</button>
-            <button class="btn btn-outline btn-sm" onclick="app.loadOtherRecords('${c}')">🏆 Rec</button>
+            <div class="act-menu dir-menu">
+              <input type="checkbox" id="act-dir-${i}" class="act-check" />
+              <label for="act-dir-${i}" class="act-btn dir-toggle" title="Actions" aria-haspopup="true" aria-expanded="false" aria-controls="act-dir-panel-${i}" tabindex="0"></label>
+              <div class="act-panel act-drop" id="act-dir-panel-${i}" role="menu">
+                <button class="btn btn-outline btn-sm" role="menuitem" onclick="event.stopPropagation();app.dirMenuAction('exam','${c}')">📝 Exam</button>
+                <button class="btn btn-outline btn-sm" role="menuitem" onclick="event.stopPropagation();app.dirMenuAction('midterm','${c}')">📊 <span class="lbl-short">Mid</span><span class="lbl-full">Mid-Term</span></button>
+                <button class="btn btn-outline btn-sm" role="menuitem" onclick="event.stopPropagation();app.dirMenuAction('attendance','${c}')">📋 <span class="lbl-short">Att</span><span class="lbl-full">Attendance</span></button>
+                <button class="btn btn-outline btn-sm" role="menuitem" onclick="event.stopPropagation();app.dirMenuAction('records','${c}')">🏆 <span class="lbl-short">Rec</span><span class="lbl-full">Other Records</span></button>
+              </div>
+            </div>
           </div>
         </div>`;
             });
@@ -4413,7 +5004,7 @@
           document.getElementById("students-tbody").innerHTML = s
             .map(
               (std) =>
-                `<tr><td><b>${std.id}</b></td><td>${std.name}</td><td><span class="badge" style="background:${std.gender === "Male" ? "#e0f2fe" : "#fce7f3"}; color:${std.gender === "Male" ? "#0369a1" : "#be185d"}">${std.gender}</span></td><td style="text-align:right;"><div class="flex gap-2 justify-end"><button class="btn btn-outline btn-sm" onclick="app.openEditStudentModal('${std.id}')">Edit</button><button class="btn btn-primary btn-sm" onclick="app.loadScoreEntry('${std.id}')">${btnText}</button></div></td></tr>`,
+                `<tr><td><b>${std.id}</b></td><td>${std.name}</td><td><span class="badge" style="background:${std.gender === "Male" ? "#e0f2fe" : "#fce7f3"}; color:${std.gender === "Male" ? "#0369a1" : "#be185d"}">${std.gender}</span></td><td style="text-align:right;"><div class="act-menu"><input type="checkbox" id="act-std-${std.id.replace(/[^a-zA-Z0-9_-]/g, "")}" class="act-check" /><label for="act-std-${std.id.replace(/[^a-zA-Z0-9_-]/g, "")}" class="act-btn" title="Actions"></label><div class="act-panel"><button class="btn btn-outline btn-sm" onclick="app.openEditStudentModal('${std.id}')">Edit</button><button class="btn btn-primary btn-sm" onclick="app.loadScoreEntry('${std.id}')">${btnText}</button></div></div></td></tr>`,
             )
             .join("");
         },
@@ -4910,7 +5501,10 @@
               saveBtn.textContent = "💾 Save Scores";
               app.state.currentSection = "scores";
             } else if (id === "section-attendance") {
-              saveBtn.textContent = "💾 Save Attendance";
+              saveBtn.textContent =
+                app.state.attMode === "weekly"
+                  ? "💾 Save Weekly Attendance"
+                  : "💾 Save Attendance";
               app.state.currentSection = "attendance";
             } else if (id === "section-records-entry") {
               saveBtn.textContent = "💾 Save Records";
@@ -5328,6 +5922,32 @@
         loadAttendance: async function (cls) {
           app.showSection("section-attendance");
 
+          // NEW: Populate Session / Term context (used by Weekly Attendance
+          // and by the manual-save override warning)
+          const sessSel = document.getElementById("att-session-select");
+          const termSel = document.getElementById("att-term-select");
+          if (sessSel)
+            sessSel.innerHTML = SessionTermHelper.getSessionOptionsHTML(
+              app.state.attSession,
+            );
+          if (termSel)
+            termSel.innerHTML = SessionTermHelper.getTermOptionsHTML(
+              app.state.attTerm,
+            );
+          app.state.attSession = sessSel ? sessSel.value : "";
+          app.state.attTerm = termSel ? termSel.value : "";
+
+          // NEW: Populate Week selector for Weekly Attendance mode
+          const weekSel = document.getElementById("wa-week-select");
+          if (weekSel) {
+            const curWeek = app.state.waWeek || 1;
+            weekSel.innerHTML = Array.from(
+              { length: 15 },
+              (_, i) =>
+                `<option value="${i + 1}" ${i + 1 === curWeek ? "selected" : ""}>Week ${i + 1}</option>`,
+            ).join("");
+          }
+
           const role = app.state.currentUser.role;
           const assignedClass = app.state.currentUser.assignedClass;
           const activeClasses = SettingsService.getActiveClasses();
@@ -5407,7 +6027,15 @@
           document.getElementById("att-subtitle").textContent =
             `Attendance for ${cls}`;
 
-          app.renderAttendanceForm(students, cls);
+          // Keep the roster for both entry modes
+          app.state.attStudents = students;
+
+          // Render according to the active entry method
+          if (app.state.attMode === "weekly") {
+            await app.loadWeeklyWeek();
+          } else {
+            app.renderAttendanceForm(students, cls);
+          }
         },
 
         // NEW: Render attendance cards for all students
@@ -5518,6 +6146,50 @@
           if (cards.length === 0)
             return app.showToast("No students to save", "warning");
 
+          // NEW: Validate manual values (no impossible attendance)
+          for (const card of cards) {
+            const present =
+              parseInt(card.querySelector(".att-present")?.value) || 0;
+            const punctual =
+              parseInt(card.querySelector(".att-punctual")?.value) || 0;
+            const nameEl = card.querySelector(
+              ".student-card-header span:nth-child(2)",
+            );
+            const nm = nameEl ? nameEl.textContent : "This student";
+            if (present > schoolOpened)
+              return app.showToast(
+                `${nm}: Days Present cannot exceed Times School Opened`,
+                "error",
+              );
+            if (punctual > present)
+              return app.showToast(
+                `${nm}: Times Punctual cannot exceed Days Present`,
+                "error",
+              );
+          }
+
+          // NEW: Warn if weekly attendance records already exist for this term
+          if (app.state.attSession && app.state.attTerm) {
+            app.toggleLoader(true);
+            let weeklySummary = null;
+            try {
+              weeklySummary = await DataService.getTermAttendanceSummary(
+                app.state.attSession,
+                app.state.attTerm,
+                cls,
+              );
+            } catch (e) {
+              weeklySummary = null;
+            }
+            app.toggleLoader(false);
+            if (weeklySummary && weeklySummary.hasWeeklyData) {
+              const ok = confirm(
+                "Weekly attendance records already exist for this term. Saving manual End-of-Term Attendance will override the calculated final totals, but it will not delete the weekly attendance history. Continue?",
+              );
+              if (!ok) return;
+            }
+          }
+
           const studentsData = [];
           cards.forEach((card) => {
             const studentId = card.dataset.studentId;
@@ -5550,6 +6222,553 @@
           } catch (err) {
             app.toggleLoader(false);
             app.showToast("Failed to save attendance", "error");
+          }
+        },
+
+        /* NEW: ============ WEEKLY ATTENDANCE FUNCTIONS ============ */
+
+        attCurrentClass: function () {
+          const sel = document.getElementById("att-class-select");
+          return (
+            (sel && sel.value) ||
+            app.state.currentUser.assignedClass ||
+            app.state.currentClass ||
+            ""
+          );
+        },
+
+        // Switch between Weekly Attendance and the existing End-of-Term interface
+        switchAttMode: async function (mode) {
+          app.state.attMode = mode === "weekly" ? "weekly" : "manual";
+          const manualTab = document.getElementById("att-tab-manual");
+          const weeklyTab = document.getElementById("att-tab-weekly");
+          if (manualTab)
+            manualTab.classList.toggle(
+              "active",
+              app.state.attMode === "manual",
+            );
+          if (weeklyTab)
+            weeklyTab.classList.toggle(
+              "active",
+              app.state.attMode === "weekly",
+            );
+          const eotPanel = document.getElementById("att-eot-panel");
+          const weeklyPanel = document.getElementById("att-weekly-panel");
+          if (eotPanel)
+            eotPanel.classList.toggle("hidden", app.state.attMode !== "manual");
+          if (weeklyPanel)
+            weeklyPanel.classList.toggle(
+              "hidden",
+              app.state.attMode !== "weekly",
+            );
+          const saveBtn = document.getElementById("floating-save-btn");
+          if (saveBtn && app.state.currentSection === "attendance")
+            saveBtn.textContent =
+              app.state.attMode === "weekly"
+                ? "💾 Save Weekly Attendance"
+                : "💾 Save Attendance";
+
+          if (app.state.attMode === "manual") {
+            // Restore the existing End-of-Term interface with current data
+            if ((app.state.attStudents || []).length > 0)
+              app.renderAttendanceForm(
+                app.state.attStudents,
+                app.attCurrentClass(),
+              );
+          } else if ((app.state.attStudents || []).length > 0) {
+            await app.loadWeeklyWeek();
+          } else {
+            app.renderWeeklyAttendance();
+          }
+        },
+
+        // Called when Session or Term changes (context applies to both modes)
+        onAttContextChange: async function () {
+          const sessSel = document.getElementById("att-session-select");
+          const termSel = document.getElementById("att-term-select");
+          app.state.attSession = sessSel ? sessSel.value : "";
+          app.state.attTerm = termSel ? termSel.value : "";
+          if (app.state.attMode === "weekly") await app.loadWeeklyWeek();
+        },
+
+        onWeekChange: async function () {
+          const sel = document.getElementById("wa-week-select");
+          app.state.waWeek = parseInt(sel && sel.value) || 1;
+          await app.loadWeeklyWeek();
+        },
+
+        onWeekStartChange: function () {
+          const startVal = document.getElementById("wa-week-start").value;
+          const days = app.state.waDays || [];
+          if (!startVal) {
+            days.forEach((d) => (d.date = ""));
+          } else {
+            days.forEach((d, i) => {
+              const dt = app.waParseDate(startVal);
+              if (dt) {
+                dt.setDate(dt.getDate() + i);
+                d.date = app.waToISO(dt);
+              }
+            });
+          }
+          app.renderWeeklyAttendance();
+        },
+
+        // Default week: Mon-Fri day slots. Any day can be marked Closed and
+        // days can be added/removed, so nothing is hard-coded to Mon-Fri.
+        waDefaultDays: function () {
+          const startVal =
+            (document.getElementById("wa-week-start") || {}).value || "";
+          const roster = app.state.attStudents || [];
+          return ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"].map(
+            (label, i) => {
+              let date = "";
+              if (startVal) {
+                const dt = app.waParseDate(startVal);
+                if (dt) {
+                  dt.setDate(dt.getDate() + i);
+                  date = app.waToISO(dt);
+                }
+              }
+              const marks = {};
+              roster.forEach((s) => {
+                marks[s.id] = { status: "Absent", punctuality: "" };
+              });
+              return { date: date, isOpen: true, marks: marks };
+            },
+          );
+        },
+
+        // Load a saved week (session + term + class + week) from the backend
+        loadWeeklyWeek: async function () {
+          const container = document.getElementById("wa-days-container");
+          if (!container) return;
+          const cls = app.attCurrentClass();
+          if (!cls) {
+            container.innerHTML =
+              '<div style="text-align:center; padding:40px; color:var(--secondary);">Select a class above to begin</div>';
+            return;
+          }
+          if (!app.state.attSession || !app.state.attTerm) {
+            container.innerHTML =
+              '<div style="text-align:center; padding:40px; color:var(--secondary);">Select Academic Session and Term to begin</div>';
+            return;
+          }
+
+          app.toggleLoader(true);
+          let records = [];
+          try {
+            records = await DataService.getWeeklyAttendance(
+              app.state.attSession,
+              app.state.attTerm,
+              cls,
+              String(app.state.waWeek),
+            );
+          } catch (e) {
+            records = [];
+          }
+          app.toggleLoader(false);
+
+          const roster = app.state.attStudents || [];
+          if (records.length > 0) {
+            // Rebuild the saved days from stored records (__DAY__ rows carry
+            // the Open/Closed state of each unique date)
+            const dayMap = {};
+            records.forEach((r) => {
+              if (!r.date) return;
+              if (!dayMap[r.date])
+                dayMap[r.date] = { date: r.date, isOpen: true, marks: {} };
+              if (r.adminNo === "__DAY__") {
+                dayMap[r.date].isOpen = r.status === "Open";
+              } else if (r.adminNo) {
+                dayMap[r.date].marks[r.adminNo] = {
+                  status: r.status === "Present" ? "Present" : "Absent",
+                  punctuality:
+                    r.status === "Present" && r.punctuality === "Late"
+                      ? "Late"
+                      : "Early",
+                };
+              }
+            });
+            const days = Object.keys(dayMap)
+              .sort()
+              .map((d) => dayMap[d]);
+            days.forEach((day) => {
+              roster.forEach((s) => {
+                if (!day.marks[s.id])
+                  day.marks[s.id] = { status: "Absent", punctuality: "" };
+              });
+            });
+            app.state.waDays = days;
+            app.state.waHasSavedData = true;
+            app.state.waActiveDay = 0;
+            const startInput = document.getElementById("wa-week-start");
+            if (startInput && days[0]) startInput.value = days[0].date;
+          } else {
+            app.state.waDays = app.waDefaultDays();
+            app.state.waHasSavedData = false;
+            app.state.waActiveDay = 0;
+          }
+          app.renderWeeklyAttendance();
+        },
+
+        // Date helpers (local-timezone safe)
+        waParseDate: function (s) {
+          const m = /^(\d{4})-(\d{1,2})-(\d{1,2})$/.exec(String(s || ""));
+          return m ? new Date(+m[1], +m[2] - 1, +m[3]) : null;
+        },
+        waToISO: function (d) {
+          if (!d) return "";
+          return (
+            d.getFullYear() +
+            "-" +
+            String(d.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(d.getDate()).padStart(2, "0")
+          );
+        },
+        waFormatDate: function (iso) {
+          const d = app.waParseDate(iso);
+          if (!d) return iso || "";
+          return (
+            String(d.getDate()).padStart(2, "0") +
+            "/" +
+            String(d.getMonth() + 1).padStart(2, "0") +
+            "/" +
+            d.getFullYear()
+          );
+        },
+        waDayLabel: function (iso, idx) {
+          const d = app.waParseDate(iso);
+          const names = [
+            "Sunday",
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday",
+          ];
+          return d ? names[d.getDay()] : "Day " + (idx + 1);
+        },
+
+        waSelectDay: function (i) {
+          app.state.waActiveDay = i;
+          app.renderWeeklyAttendance();
+        },
+        waSetDayOpen: function (i, isOpen) {
+          const d = app.state.waDays[i];
+          if (!d) return;
+          d.isOpen = !!isOpen;
+          app.renderWeeklyAttendance();
+        },
+        waSetDate: function (i, val) {
+          const d = app.state.waDays[i];
+          if (!d) return;
+          const v = String(val || "").trim();
+          if (v) {
+            const duplicate = app.state.waDays.some(
+              (x, j) => j !== i && x.date === v,
+            );
+            if (duplicate) {
+              app.showToast(
+                "This date is already used by another day in this week",
+                "error",
+              );
+              app.renderWeeklyAttendance();
+              return;
+            }
+          }
+          d.date = v;
+          app.renderWeeklyAttendance();
+        },
+        waSetMark: function (i, adminNo, status) {
+          const d = app.state.waDays[i];
+          if (!d || !d.marks[adminNo]) return;
+          d.marks[adminNo].status = status === "Present" ? "Present" : "Absent";
+          if (status === "Present") {
+            if (d.marks[adminNo].punctuality !== "Late")
+              d.marks[adminNo].punctuality = "Early";
+          } else {
+            d.marks[adminNo].punctuality = "";
+          }
+          app.renderWeeklyAttendance();
+        },
+        waSetPunct: function (i, adminNo, p) {
+          const d = app.state.waDays[i];
+          if (!d || !d.marks[adminNo]) return;
+          if (d.marks[adminNo].status !== "Present") return;
+          d.marks[adminNo].punctuality = p === "Late" ? "Late" : "Early";
+          app.renderWeeklyAttendance();
+        },
+        waMarkAllPresent: function (i) {
+          const d = app.state.waDays[i];
+          if (!d) return;
+          (app.state.attStudents || []).forEach((s) => {
+            const m = d.marks[s.id];
+            if (m) {
+              m.status = "Present";
+              if (!m.punctuality) m.punctuality = "Early";
+            }
+          });
+          app.renderWeeklyAttendance();
+        },
+        waClearDay: function (i) {
+          const d = app.state.waDays[i];
+          if (!d) return;
+          Object.keys(d.marks).forEach((k) => {
+            d.marks[k] = { status: "Absent", punctuality: "" };
+          });
+          app.renderWeeklyAttendance();
+        },
+        waAddDay: function () {
+          const day = { date: "", isOpen: true, marks: {} };
+          (app.state.attStudents || []).forEach((s) => {
+            day.marks[s.id] = { status: "Absent", punctuality: "" };
+          });
+          app.state.waDays.push(day);
+          app.state.waActiveDay = app.state.waDays.length - 1;
+          app.renderWeeklyAttendance();
+        },
+        waRemoveDay: function (i) {
+          if (!app.state.waDays[i]) return;
+          app.state.waDays.splice(i, 1);
+          if (app.state.waActiveDay >= app.state.waDays.length)
+            app.state.waActiveDay = Math.max(0, app.state.waDays.length - 1);
+          app.renderWeeklyAttendance();
+        },
+
+        renderWeeklyAttendance: function () {
+          const container = document.getElementById("wa-days-container");
+          if (!container) return;
+          const cls = app.attCurrentClass();
+          const roster = app.state.attStudents || [];
+          const badge = document.getElementById("wa-week-status");
+          if (badge)
+            badge.textContent = app.state.waHasSavedData
+              ? "✅ Saved"
+              : "🆕 Not saved yet";
+
+          if (!cls) {
+            container.innerHTML =
+              '<div style="text-align:center; padding:40px; color:var(--secondary);">Select a class above to begin</div>';
+            return;
+          }
+          if (roster.length === 0) {
+            container.innerHTML =
+              '<div style="text-align:center; padding:40px; color:var(--secondary);">No students found for this class.</div>';
+            return;
+          }
+
+          const days = app.state.waDays || [];
+
+          // Day tabs
+          const tabs = days
+            .map((d, i) => {
+              const active = i === app.state.waActiveDay;
+              const lbl = app.waDayLabel(d.date, i);
+              const dateTxt = d.date ? app.waFormatDate(d.date) : "No date";
+              return `<button class="fee-sub-tab-btn ${active ? "active" : ""}" style="${d.isOpen ? "" : "opacity:0.55;"}" onclick="app.waSelectDay(${i})">${app.escapeHtml(lbl)}<br><small>${dateTxt}${d.isOpen ? "" : " • Closed"}</small></button>`;
+            })
+            .join("");
+
+          // Active day card
+          const i = app.state.waActiveDay;
+          const day = days[i];
+          let dayHtml = "";
+          if (day) {
+            dayHtml = `
+            <div class="wa-day-card">
+              <div class="wa-day-head">
+                <span class="wa-day-title">📅 ${app.escapeHtml(app.waDayLabel(day.date, i))}</span>
+                <input type="date" class="form-control wa-date-input" value="${day.date || ""}" onchange="app.waSetDate(${i}, this.value)" />
+                <span class="wa-seg">
+                  <button class="wa-btn ${day.isOpen ? "active-open" : ""}" onclick="app.waSetDayOpen(${i}, true)">🏫 Open</button>
+                  <button class="wa-btn ${!day.isOpen ? "active-absent" : ""}" onclick="app.waSetDayOpen(${i}, false)">🚫 Closed</button>
+                </span>
+                <button class="btn btn-outline btn-sm" style="margin-left:auto" onclick="app.waRemoveDay(${i})">✕ Remove</button>
+              </div>
+              ${
+                day.isOpen
+                  ? `
+              <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn btn-primary btn-sm" onclick="app.waMarkAllPresent(${i})">✅ Mark All Present</button>
+                <button class="btn btn-outline btn-sm" onclick="app.waClearDay(${i})">🧹 Clear Day</button>
+              </div>
+              <div class="wa-students">
+                ${roster
+                  .map((s) => {
+                    const m = day.marks[s.id] || {
+                      status: "Absent",
+                      punctuality: "",
+                    };
+                    const present = m.status === "Present";
+                    const idAttr = String(s.id).replace(/'/g, "\\'");
+                    return `
+                <div class="wa-student-row">
+                  <span class="wa-student-name">${app.escapeHtml(s.name)} <span class="student-id-badge">${app.escapeHtml(String(s.id))}</span></span>
+                  <span class="wa-seg">
+                    <button class="wa-btn ${present ? "active-present" : ""}" onclick="app.waSetMark(${i}, '${idAttr}', 'Present')">✅ Present</button>
+                    <button class="wa-btn ${!present ? "active-absent" : ""}" onclick="app.waSetMark(${i}, '${idAttr}', 'Absent')">❌ Absent</button>
+                  </span>
+                  <span class="wa-seg">
+                    <button class="wa-btn ${present && m.punctuality !== "Late" ? "active-early" : ""}" ${!present ? "disabled" : ""} onclick="app.waSetPunct(${i}, '${idAttr}', 'Early')">🟢 Early</button>
+                    <button class="wa-btn ${present && m.punctuality === "Late" ? "active-late" : ""}" ${!present ? "disabled" : ""} onclick="app.waSetPunct(${i}, '${idAttr}', 'Late')">🟠 Late</button>
+                  </span>
+                </div>`;
+                  })
+                  .join("")}
+              </div>`
+                  : `<p style="color: var(--secondary); margin: 8px 0 0;">🚫 School closed on this day — it will not count toward "Times School Opened".</p>`
+              }
+            </div>`;
+          }
+
+          container.innerHTML =
+            `<div class="fee-sub-tabs" style="flex-wrap: wrap;">${tabs}</div>` +
+            (dayHtml ||
+              '<div style="text-align:center; padding:40px; color:var(--secondary);">No days in this week — click "➕ Add Day".</div>');
+        },
+
+        // Save the selected week. The backend upserts by
+        // session + term + class + date, then returns recalculated term
+        // totals which we push into the existing final attendance fields.
+        saveWeeklyAttendance: async function () {
+          if (app.state.waSaving) return; // prevent double-submit
+          const cls = app.attCurrentClass();
+          if (!cls) return app.showToast("Select a class first", "warning");
+          const session = app.state.attSession;
+          const term = app.state.attTerm;
+          if (!session || !term)
+            return app.showToast(
+              "Select Academic Session and Term before saving",
+              "warning",
+            );
+          const week = app.state.waWeek || 1;
+          const roster = app.state.attStudents || [];
+          if (roster.length === 0)
+            return app.showToast("No students to save", "warning");
+
+          const days = app.state.waDays || [];
+          if (days.length === 0)
+            return app.showToast(
+              "Add at least one school day before saving",
+              "warning",
+            );
+
+          const payloadDays = [];
+          const seenDates = {};
+          for (let i = 0; i < days.length; i++) {
+            const d = days[i];
+            if (!d.date) {
+              if (d.isOpen)
+                return app.showToast(
+                  `${app.waDayLabel("", i)} is missing a date — set the Week Start Date or the day's date`,
+                  "warning",
+                );
+              continue; // closed days without a date store nothing
+            }
+            if (seenDates[d.date])
+              return app.showToast(
+                "Duplicate date in this week: " + app.waFormatDate(d.date),
+                "error",
+              );
+            seenDates[d.date] = true;
+            if (!d.isOpen) {
+              payloadDays.push({ date: d.date, isOpen: false, students: [] });
+              continue;
+            }
+            const students = roster.map((s) => {
+              const m = d.marks[s.id] || {};
+              const status = m.status === "Present" ? "Present" : "Absent";
+              return {
+                adminNo: s.id,
+                status: status,
+                punctuality:
+                  status === "Present"
+                    ? m.punctuality === "Late"
+                      ? "Late"
+                      : "Early"
+                    : "",
+              };
+            });
+            payloadDays.push({
+              date: d.date,
+              isOpen: true,
+              students: students,
+            });
+          }
+          if (payloadDays.length === 0)
+            return app.showToast(
+              "Nothing to save — set the week dates first",
+              "warning",
+            );
+          if (!payloadDays.some((d) => d.isOpen))
+            return app.showToast(
+              "Mark at least one day as School Open before saving",
+              "warning",
+            );
+
+          app.state.waSaving = true;
+          const saveBtn = document.getElementById("floating-save-btn");
+          if (saveBtn) saveBtn.disabled = true;
+          app.toggleLoader(true);
+          try {
+            const res = await DataService.saveWeeklyAttendance({
+              session: session,
+              term: term,
+              className: cls,
+              week: String(week),
+              days: payloadDays,
+            });
+            if (!res || res.status !== "success")
+              throw new Error((res && res.message) || "Save failed");
+
+            // Recalculated term totals -> update the existing final
+            // attendance structure (schoolOpened/present/punctual/absent)
+            const summary = res.summary;
+            if (summary && summary.students) {
+              const studentsData = roster
+                .filter((s) => summary.students[s.id])
+                .map((s) => ({
+                  adminNo: s.id,
+                  attendance: {
+                    schoolOpened: summary.schoolOpened || 0,
+                    present: summary.students[s.id].present || 0,
+                    punctual: summary.students[s.id].punctual || 0,
+                    absent: summary.students[s.id].absent || 0,
+                  },
+                }));
+              if (studentsData.length > 0)
+                await DataService.saveBulkStudentData(studentsData);
+              roster.forEach((s) => {
+                const t = summary.students[s.id];
+                if (t)
+                  s.attendance = {
+                    schoolOpened: summary.schoolOpened || 0,
+                    present: t.present || 0,
+                    punctual: t.punctual || 0,
+                    absent: t.absent || 0,
+                  };
+              });
+            }
+
+            app.state.waHasSavedData = true;
+            app.toggleLoader(false);
+            app.showToast(
+              `Week ${week} Attendance Saved Successfully`,
+              "success",
+            );
+            app.renderWeeklyAttendance();
+          } catch (err) {
+            app.toggleLoader(false);
+            app.showToast(
+              err.message || "Failed to save weekly attendance",
+              "error",
+            );
+          } finally {
+            app.state.waSaving = false;
+            if (saveBtn) saveBtn.disabled = false;
           }
         },
 
@@ -6442,13 +7661,112 @@
             });
         },
 
+        /* NEW: ============ CLASS DIRECTORY MOBILE ACTIONS MENU ============ */
+
+        // Navigates using the SAME existing functions, then closes the menu
+        dirMenuAction: function (kind, cls) {
+          app.closeClassActionMenus();
+          if (kind === "exam") app.loadStudentList(cls, "exam");
+          else if (kind === "midterm") app.loadStudentList(cls, "midterm");
+          else if (kind === "attendance") app.loadAttendance(cls);
+          else if (kind === "records") app.loadOtherRecords(cls);
+        },
+
+        closeClassActionMenus: function () {
+          document.querySelectorAll(".dir-menu .act-check").forEach((cb) => {
+            cb.checked = false;
+            app.setDirMenuExpanded(cb, false);
+          });
+        },
+
+        setDirMenuExpanded: function (cb, expanded) {
+          if (!cb) return;
+          const label = document.querySelector('label[for="' + cb.id + '"]');
+          if (label)
+            label.setAttribute("aria-expanded", expanded ? "true" : "false");
+        },
+
+        // Delegated listeners (bound once) keep working after the dashboard
+        // cards are dynamically re-rendered.
+        initClassActionMenus: function () {
+          if (app._classMenuInit) return;
+          app._classMenuInit = true;
+
+          // Only one class Actions menu may be open at a time + aria state
+          document.addEventListener("change", (e) => {
+            const cb = e.target;
+            if (
+              !cb ||
+              !cb.classList ||
+              !cb.classList.contains("act-check") ||
+              !cb.closest(".dir-menu")
+            )
+              return;
+            if (cb.checked) {
+              document
+                .querySelectorAll(".dir-menu .act-check")
+                .forEach((other) => {
+                  if (other !== cb) {
+                    other.checked = false;
+                    app.setDirMenuExpanded(other, false);
+                  }
+                });
+            }
+            app.setDirMenuExpanded(cb, cb.checked);
+          });
+
+          // Close when the user taps/clicks outside any open class menu
+          document.addEventListener("click", (e) => {
+            const open = document.querySelectorAll(
+              ".dir-menu .act-check:checked",
+            );
+            if (open.length === 0) return;
+            open.forEach((cb) => {
+              const root = cb.closest(".dir-menu");
+              if (root && !root.contains(e.target)) {
+                cb.checked = false;
+                app.setDirMenuExpanded(cb, false);
+              }
+            });
+          });
+
+          // Keyboard accessibility: Enter/Space toggles, Escape closes
+          document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+              app.closeClassActionMenus();
+              return;
+            }
+            if (e.key !== "Enter" && e.key !== " ") return;
+            const label = e.target.closest
+              ? e.target.closest(".dir-menu .act-btn")
+              : null;
+            if (!label) return;
+            e.preventDefault();
+            const cb = document.getElementById(label.getAttribute("for"));
+            if (!cb) return;
+            cb.checked = !cb.checked;
+            app.setDirMenuExpanded(cb, cb.checked);
+            if (cb.checked) {
+              document
+                .querySelectorAll(".dir-menu .act-check")
+                .forEach((other) => {
+                  if (other !== cb) {
+                    other.checked = false;
+                    app.setDirMenuExpanded(other, false);
+                  }
+                });
+            }
+          });
+        },
+
         /* NEW: ============ SAVE DISPATCHER ============ */
 
         // NEW: Dispatches save to the correct function based on current section
         handleSave: function () {
           const section = app.state.currentSection;
           if (section === "attendance") {
-            app.saveAttendance();
+            if (app.state.attMode === "weekly") app.saveWeeklyAttendance();
+            else app.saveAttendance();
           } else if (section === "records") {
             app.saveRecords();
           } else {
@@ -6461,10 +7779,30 @@
           document
             .querySelectorAll(".modal-overlay")
             .forEach((m) => (m.style.display = "none")),
-        toggleLoader: (s) =>
-          (document.getElementById("loader").style.display = s
-            ? "flex"
-            : "none"),
+        toggleLoader: (s) => {
+          const loader = document.getElementById("loader");
+          const angelLoader = document.getElementById("angel-loader");
+          const defaultText = document.getElementById("default-loader-text");
+          const spinner = document.getElementById("loader-spinner");
+
+          const isAttendance = app.state.currentSection === "attendance";
+
+          if (s) {
+            loader.style.display = "flex";
+
+            if (isAttendance) {
+              spinner.style.display = "none";
+              defaultText.style.display = "none";
+              angelLoader.style.display = "flex";
+            } else {
+              spinner.style.display = "block";
+              defaultText.style.display = "block";
+              angelLoader.style.display = "none";
+            }
+          } else {
+            loader.style.display = "none";
+          }
+        },
         showToast: (m, t) => {
           const x = document.getElementById("toast");
           x.textContent = m;
