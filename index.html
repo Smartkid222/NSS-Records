@@ -2787,8 +2787,9 @@
             margin-bottom: 15px;
           "
         >
-          Expected columns: <b>AdmissionNumber,Name,Gender</b><br />Class will
-          be set automatically.
+          Expected columns: <b>AdmissionNumber,Name,Gender</b><br />Leave
+          AdmissionNumber blank (or omit the value) and the system will
+          auto-generate it. Class will be set automatically.
         </p>
         <div class="form-group">
           <input
@@ -2903,8 +2904,17 @@
           ><input type="text" id="newStdName" class="form-control" />
         </div>
         <div class="form-group">
-          <label>Admission Number</label
-          ><input type="text" id="newStdId" class="form-control" />
+          <label>Admission Number (Auto-generated)</label
+          ><input
+            type="text"
+            id="newStdId"
+            class="form-control"
+            readonly
+            style="background: #f1f5f9; cursor: not-allowed"
+            value="Auto"
+          /><small style="color: var(--secondary)"
+            >Preview of the next number — it is confirmed when you save.</small
+          >
         </div>
         <div class="flex gap-4">
           <div class="form-group w-full">
@@ -3226,10 +3236,14 @@
 
     <script>
       const CLASSES = [
-        "Playgroup",
-        "Nursery 1",
-        "Nursery 2",
-        "KG",
+        "Playgroup A",
+        "Playgroup B",
+        "Nursery 1A",
+        "Nursery 1B",
+        "Nursery 2A",
+        "Nursery 2B",
+        "Kindergarten A",
+        "Kindergarten B",
         "Primary 1A",
         "Primary 1B",
         "Primary 2A",
@@ -3238,11 +3252,11 @@
         "Primary 3B",
         "Primary 4A",
         "Primary 4B",
-        "Primary 5A",
+        "Primary 5",
         "Primary 5B",
       ];
       const SUBJECTS = {
-        Playgroup: [
+        "Playgroup A": [
           "Language Art",
           "Number Concept",
           "Creative Arts",
@@ -3254,7 +3268,7 @@
           "ICT",
           "Social Skills",
         ],
-        Nursery: [
+        "Nursery 1A": [
           "Language Dev",
           "Number Work",
           "Phonics",
@@ -3267,7 +3281,7 @@
           "CRK",
           "ICT",
         ],
-        KG: [
+        "Kindergarten A": [
           "English",
           "Mathematics",
           "Phonics",
@@ -3451,6 +3465,9 @@
         },
         async addStudent(data) {
           return await this._call({ ...data, action: "addStudent" });
+        },
+        async getNextAdmissionNumber() {
+          return await this._call({ action: "getNextAdmissionNumber" });
         },
         async updateStudent(data) {
           return await this._call({ ...data, action: "updateStudent" });
@@ -3800,28 +3817,93 @@
             populateSel("bookClassFilter");
           });
 
-          // Restore session: remember-me (30 days), else this tab's session
-          const remembered = localStorage.getItem("ps_remember_user");
-          if (remembered) {
-            try {
-              const user = JSON.parse(remembered);
-              const savedTime = parseInt(
-                localStorage.getItem("ps_remember_time") || "0",
+          // NEW: auto sign-in handoff from the school website, else the
+          // normal session restore (remember-me 30 days / this tab's session)
+          this.readWebsiteHandoff((creds) => {
+            if (creds) {
+              document.getElementById("loginEmail").value = creds.u || "";
+              document.getElementById("loginPass").value = creds.p || "";
+              const rm = document.getElementById("rememberMe");
+              if (rm) rm.checked = !!creds.r;
+              app.showToast(
+                "Signing you in from the school website…",
+                "success",
               );
-              const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
-              if (Date.now() - savedTime < THIRTY_DAYS) {
-                this.state.currentUser = user;
-                this.showDashboard();
+              app.handleLogin({ preventDefault: () => {} });
+              return;
+            }
+            // Restore session: remember-me (30 days), else this tab's session
+            const remembered = localStorage.getItem("ps_remember_user");
+            if (remembered) {
+              try {
+                const user = JSON.parse(remembered);
+                const savedTime = parseInt(
+                  localStorage.getItem("ps_remember_time") || "0",
+                );
+                const THIRTY_DAYS = 30 * 24 * 60 * 60 * 1000;
+                if (Date.now() - savedTime < THIRTY_DAYS) {
+                  this.state.currentUser = user;
+                  this.showDashboard();
+                  return;
+                }
+              } catch (e) {}
+              localStorage.removeItem("ps_remember_user");
+              localStorage.removeItem("ps_remember_time");
+            }
+            const u = sessionStorage.getItem("ps_user");
+            if (u) {
+              this.state.currentUser = JSON.parse(u);
+              this.showDashboard();
+            }
+          });
+        },
+
+        // NEW: reads the nscauth token the school website appends after
+        // verifying a staff sign-in. Works inside Apps Script (this page
+        // runs in a cross-origin sandboxed iframe there) and when hosted
+        // on a normal server or opened locally.
+        readWebsiteHandoff: function (callback) {
+          const extract = (s) => {
+            const m = /nscauth=([^&]+)/.exec(String(s || ""));
+            return m ? m[1] : null;
+          };
+          const finish = (hashToken, queryToken) => {
+            const rawToken = hashToken || queryToken;
+            if (!rawToken) {
+              callback(null);
+              return;
+            }
+            try {
+              let b64 = String(rawToken).replace(/-/g, "+").replace(/_/g, "/");
+              while (b64.length % 4) b64 += "=";
+              const creds = JSON.parse(decodeURIComponent(escape(atob(b64))));
+              if (!creds || !creds.u) {
+                callback(null);
                 return;
               }
-            } catch (e) {}
-            localStorage.removeItem("ps_remember_user");
-            localStorage.removeItem("ps_remember_time");
-          }
-          const u = sessionStorage.getItem("ps_user");
-          if (u) {
-            this.state.currentUser = JSON.parse(u);
-            this.showDashboard();
+              callback(creds);
+            } catch (err) {
+              callback(null);
+            }
+          };
+
+          if (
+            window.google &&
+            window.google.script &&
+            window.google.script.url &&
+            window.google.script.url.getLocation
+          ) {
+            window.google.script.url.getLocation((loc) => {
+              finish(
+                loc && loc.hash ? extract(loc.hash) : null,
+                loc && loc.parameter ? loc.parameter.nscauth : null,
+              );
+            });
+          } else {
+            finish(
+              extract(location.hash),
+              (/[?&]nscauth=([^&]+)/.exec(location.search) || [])[1] || null,
+            );
           }
         },
 
@@ -5157,7 +5239,7 @@
             app.showToast("Error saving data", "error");
           }
         },
-        openAddStudentModal: () => {
+        openAddStudentModal: async () => {
           const g = document.getElementById("modal-class-group");
           if (app.state.currentUser.role === "Admin") {
             g.classList.remove("hidden");
@@ -5167,21 +5249,37 @@
             document.getElementById("newStdClass").value =
               app.state.currentClass;
           }
+          document.getElementById("newStdName").value = "";
+          const idBox = document.getElementById("newStdId");
+          idBox.value = "Generating…";
+          try {
+            const res = await DataService.getNextAdmissionNumber();
+            idBox.value =
+              res.status === "success" ? res.nextId : "Auto on save";
+          } catch (err) {
+            idBox.value = "Auto on save";
+          }
           document.getElementById("modal-add-student").style.display = "flex";
         },
         confirmAddStudent: async () => {
           const n = document.getElementById("newStdName").value;
-          const id = document.getElementById("newStdId").value;
           const g = document.getElementById("newStdGender").value;
           let c = document.getElementById("newStdClass").value;
-          if (!n || !id) return app.showToast("Fill fields", "warning");
+          if (!n)
+            return app.showToast("Please enter the student name", "warning");
           if (app.state.currentUser.role !== "Admin")
             c = app.state.currentClass;
-          const s = { id, name: n, gender: g, class: c, scores: {} };
+          // No id sent — the backend generates the next admission number
+          const s = { name: n, gender: g, class: c, scores: {} };
           app.toggleLoader(true);
-          await DataService.addStudent(s);
+          const res = await DataService.addStudent(s);
           app.toggleLoader(false);
-          app.showToast("Student Added", "success");
+          if (res.status !== "success")
+            return app.showToast(
+              res.message || "Could not add student",
+              "error",
+            );
+          app.showToast(`Student Added — Adm No: ${res.id}`, "success");
           app.closeModals();
           if (
             !document
@@ -6862,15 +6960,24 @@
           container.innerHTML = "";
 
           const clubOptions = [
-            "Drama Club",
-            "Press Club",
-            "Debate Club",
-            "Sports Club",
+            "Brownies Club",
+            "Ballel Club",
+            "Music & Drama Club",
+            "Karate Club",
+            "ICT Club",
+            "Art & Craft Club",
           ];
           const officeOptions = [
             "Class Prefect",
-            "Assistant Prefect",
+            "Assistant Class Prefect",
             "Time Keeper",
+            "Assistant Time Keeper",
+            "Sports Prefect",
+            "Assistant Sports Prefect",
+            "Head Girl",
+            "Head Boy",
+            "Assembly Prefect",
+            "Assistant Assembly Prefect",
             "None",
           ];
 
@@ -7605,9 +7712,9 @@
             const parsed = [];
             for (let i = 1; i < lines.length; i++) {
               const cols = lines[i].split(",").map((c) => c.trim());
-              if (cols.length >= 3 && cols[0] && cols[1]) {
+              if (cols.length >= 3 && cols[1]) {
                 parsed.push({
-                  id: cols[0],
+                  id: cols[0] || "",
                   name: cols[1],
                   gender: cols[2] || "Male",
                 });
@@ -7622,7 +7729,7 @@
               .slice(0, 5)
               .map(
                 (s) => `
-            <tr><td>${s.id}</td><td>${s.name}</td><td>${s.gender}</td></tr>
+            <tr><td>${s.id || "(auto)"}</td><td>${s.name}</td><td>${s.gender}</td></tr>
           `,
               )
               .join("");
@@ -7646,10 +7753,10 @@
               app.toggleLoader(false);
               app.closeModals();
               if (res.status === "success") {
-                app.showToast(
-                  `Bulk upload complete! Added: ${res.added}, Skipped: ${res.skipped}`,
-                  "success",
-                );
+                let msg = `Bulk upload complete! Added: ${res.added}, Skipped: ${res.skipped}`;
+                if (res.generated && res.generated.length > 0)
+                  msg += ` — ${res.generated.length} admission number(s) auto-generated`;
+                app.showToast(msg, "success");
                 app.refreshTeacherStudents();
               } else {
                 app.showToast(res.message || "Bulk add failed", "error");
